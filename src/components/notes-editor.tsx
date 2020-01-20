@@ -26,13 +26,16 @@ export default class NotesEditor extends React.Component<NotesEditorProps> {
       <div style={{
         width: length,
         height: 128 * noteHeight
-      }}>{notes.map(([note, index]) => <div key={index} className={selectedIndex === index ? "note selected" : "note"} style={{
-        left: note.delta,
-        top: noteHeight * (127 - note.note),
-        width: note.duration,
-        height: noteHeight
-      }}
-        onClick={() => onSelect(index)} />)}</div>
+      }}>
+        {notes.map(([note, index]) => <div key={index} className={selectedIndex === index ? "note selected" : "note"}
+          style={{
+            left: note.delta,
+            top: noteHeight * (127 - note.note),
+            width: note.duration,
+            height: noteHeight
+          }}
+          onClick={() => onSelect(index)} />)}
+      </div>
     </div>;
   }
 }
