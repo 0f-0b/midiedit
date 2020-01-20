@@ -72,9 +72,9 @@ class App extends React.Component<{}, AppState> {
   public componentDidUpdate(): void {
     const { filePath, dirty } = this.state;
     const title = [remote.app.name];
-    if (filePath) title.push(" — " + path.basename(filePath));
-    if (dirty) title.push(" *");
-    document.title = title.join("");
+    if (filePath) title.push("— " + path.basename(filePath));
+    if (dirty) title.push("*");
+    document.title = title.join(" ");
     ipcRenderer.send("update-state", filePath, dirty);
   }
 
