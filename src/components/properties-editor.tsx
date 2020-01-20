@@ -1,7 +1,7 @@
 import * as React from "react";
-import { ReactNode } from "react";
+import { ComponentPropsWithoutRef, ReactNode } from "react";
 import { __ } from "../i18n";
-import { HTMLProps, mergeClass } from "./props";
+import { mergeClass } from "./props";
 
 export abstract class Property<T> {
   public constructor(
@@ -93,6 +93,19 @@ export class ByteStringProperty extends Property<number[]> {
   }
 }
 
+interface SelectProps extends ComponentPropsWithoutRef<"select"> {
+  options: readonly string[];
+}
+
+class Select extends React.Component<SelectProps> {
+  public render(): ReactNode {
+    const { options, ...props } = this.props;
+    return <div className="select-wrapper">
+      <select {...props}>{options.map((option, index) => <option key={index} value={index}>{option}</option>)}</select>
+    </div>;
+  }
+}
+
 export class SelectProperty extends Property<number> {
   public constructor(value: number, onChange: (value: number) => void,
     public readonly options: readonly string[]) {
@@ -100,13 +113,11 @@ export class SelectProperty extends Property<number> {
   }
 
   public render(): ReactNode {
-    return <select value={this.value} onChange={event => this.onChange(event.target.selectedIndex)}>
-      {this.options.map((option, index) => <option key={index} value={index}>{option}</option>)}
-    </select>;
+    return <Select options={this.options} value={this.value} onChange={event => this.onChange(event.target.selectedIndex)} />;
   }
 }
 
-export interface PropertiesEditorProps extends HTMLProps<HTMLDivElement> {
+export interface PropertiesEditorProps extends ComponentPropsWithoutRef<"div"> {
   properties: [string, Property<any>][];
 }
 

@@ -21,12 +21,30 @@ body {
   margin: 0px;
 }
 
-input[type="text"], input[type="number"] {
+input[type="text"], input[type="number"], select:not([multiple]) {
   color: var(--foreground-color);
   background-color: var(--background-color);
   height: 14px;
-  border-color: var(--border-color);
+  border: 2px inset var(--border-color);
   border-radius: 4px;
+}
+
+select:not([multiple]) {
+  -webkit-appearance: none;
+  height: unset;
+}
+
+.select-wrapper {
+  position: relative;
+  display: inherit;
+}
+
+.select-wrapper::after {
+  content: "▼";
+  font-size: 1em;
+  top: 0px;
+  right: 5px;
+  position: absolute;
 }
 
 #root {

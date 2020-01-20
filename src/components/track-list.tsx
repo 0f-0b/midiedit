@@ -5,7 +5,7 @@ import { Track } from "../midi";
 import List, { ListProps } from "./list";
 import { mergeClass } from "./props";
 
-export interface TrackListProps extends Omit<ListProps, "elements" | "notEmpty"> {
+export interface TrackListProps extends Omit<ListProps, "elements" | "notEmpty" | "onChange"> {
   tracks: Track[];
   onChange: (index: number) => void;
 }

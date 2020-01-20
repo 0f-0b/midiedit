@@ -41,7 +41,7 @@ const makeSysExProperties: MakeProperties = (event: SysExEvent, onChange: () => 
   })]
 ];
 const typeData: readonly (readonly [number, number, string, any, MakeProperties])[] = [
-  [-1, NaN, "event.note", { channel: 0, duration: 1, note: 60, velocity: 100 }, (event: NoteEvent, onChange: () => void, trackLength: number) => [
+  [-1, 0, "event.note", { channel: 0, duration: 1, note: 60, attack: 100, release: 0 }, (event: NoteEvent, onChange: () => void, trackLength: number) => [
     ["time", new IntegerProperty(event.delta, value => {
       event.delta = value;
       event.duration = Math.min(event.duration, trackLength - value);
@@ -147,8 +147,8 @@ const typeData: readonly (readonly [number, number, string, any, MakeProperties]
       onChange();
     })]
   ]],
-  [EVENT_SYSEX, NaN, "event.sysEx", emptyData, makeSysExProperties],
-  [EVENT_DIVSYSEX, NaN, "event.divSysEx", emptyData, makeSysExProperties],
+  [EVENT_SYSEX, 0, "event.sysEx", emptyData, makeSysExProperties],
+  [EVENT_DIVSYSEX, 0, "event.divSysEx", emptyData, makeSysExProperties],
   [EVENT_MIDI, EVENT_MIDI_NOTE_AFTERTOUCH, "event.midi.noteAftertouch", { channel: 0, param1: 0, param2: 0 }, (event: NoteAftertouchEvent, onChange: () => void, trackLength: number) => [
     timeProperty(event, onChange, trackLength),
     channelProperty(event, onChange),
@@ -202,7 +202,7 @@ const typeData: readonly (readonly [number, number, string, any, MakeProperties]
 ];
 
 function getTypeIndex(type: number, subtype: number): number {
-  return typeData.findIndex(data => data[0] === type && (Number.isNaN(data[1]) || data[1] === subtype));
+  return typeData.findIndex(data => data[0] === type && ([-1, EVENT_SYSEX, EVENT_DIVSYSEX].includes(type) || data[1] === subtype));
 }
 
 export function emptyEvent(type: number, subtype: number): Event {

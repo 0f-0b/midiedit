@@ -1,8 +1,8 @@
 import * as React from "react";
-import { ReactNode } from "react";
-import { HTMLProps, mergeClass } from "./props";
+import { ComponentPropsWithoutRef, ReactNode } from "react";
+import { mergeClass } from "./props";
 
-export interface SplitPaneProps extends HTMLProps<HTMLDivElement> {
+export interface SplitPaneProps extends ComponentPropsWithoutRef<"div"> {
   direction?: "row" | "column";
   first: ReactNode;
   second: ReactNode;

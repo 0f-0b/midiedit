@@ -1,8 +1,8 @@
 import * as React from "react";
-import { ReactNode } from "react";
-import { HTMLProps, mergeClass } from "./props";
+import { ComponentPropsWithoutRef, ReactNode } from "react";
+import { mergeClass } from "./props";
 
-export interface ListProps extends HTMLProps<HTMLUListElement> {
+export interface ListProps extends Omit<ComponentPropsWithoutRef<"ul">, "onSelect"> {
   elements: readonly ReactNode[];
   selectedIndex: number;
   notEmpty?: boolean;

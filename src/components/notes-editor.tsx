@@ -1,9 +1,9 @@
 import * as React from "react";
-import { ReactNode } from "react";
+import { ComponentPropsWithoutRef, ReactNode } from "react";
 import { NoteEvent, Track } from "../midi";
-import { HTMLProps, mergeClass } from "./props";
+import { mergeClass } from "./props";
 
-export interface NotesEditorProps extends HTMLProps<HTMLDivElement> {
+export interface NotesEditorProps extends Omit<ComponentPropsWithoutRef<"div">, "onSelect"> {
   track: Track;
   selectedIndex: number;
   onSelect: (index: number) => void;
