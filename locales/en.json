@@ -1,0 +1,93 @@
+{
+  "name": "MIDIEdit",
+  "menu": {
+    "preferences": "&Options…",
+    "preferences_darwin": "Preferences…",
+    "new": "&New",
+    "new_darwin": "New",
+    "open": "&Open…",
+    "open_darwin": "Open…",
+    "save": "&Save",
+    "save_darwin": "Save",
+    "help": "&Help",
+    "help_darwin": "{{name}} Help"
+  },
+  "property": {
+    "ticksPerBeat": "Ticks per beat: ",
+    "sequenceNumber": "Sequence number: ",
+    "time": "Time: ",
+    "duration": "Duration: ",
+    "channel": "Channel: ",
+    "noteIndex": "Note: ",
+    "attack": "Attack velocity: ",
+    "release": "Release velocity: ",
+    "type": "Type: ",
+    "sysExType": "SysEx type: ",
+    "text": "Text: ",
+    "data": "Data: ",
+    "tempo": "Tempo (μs / quarter note): ",
+    "smpteOffset": {
+      "hour": "Hour: ",
+      "minutes": "Minutes: ",
+      "seconds": "Seconds: ",
+      "frames": "Frames: ",
+      "subframes": "Subframes: "
+    },
+    "timeSignature": {
+      "numerator": "Numerator: ",
+      "denominator": "Denominator (log2): ",
+      "metronomeClick": "Clocks / metronome click: ",
+      "quarterNote": "Clocks / quarter note: "
+    },
+    "keySignature": {
+      "key": "Key: ",
+      "isMinor": "Minor: "
+    },
+    "aftertouch": "Pressure: ",
+    "controlChange": {
+      "id": "ID: ",
+      "value": "Value: "
+    },
+    "program": "Program: ",
+    "pitch": "Pitch: "
+  },
+  "event": {
+    "note": "Note",
+    "meta": {
+      "text": "Text",
+      "copyrightNotice": "Copyright Notice",
+      "instrumentName": "Instrument Name",
+      "lyrics": "Lyrics",
+      "marker": "Marker",
+      "cuePoint": "Cue Point",
+      "channelPrefix": "Channel Prefix",
+      "setTempo": "Set Tempo",
+      "smpteOffset": "SMPTE Offset",
+      "timeSignature": "Time Signature",
+      "keySignature": "Key Signature",
+      "sequencerSpecific": "Sequencer Specific"
+    },
+    "sysEx": "SysEx",
+    "divSysEx": "SysEx (Continuation)",
+    "midi": {
+      "noteAftertouch": "Note Aftertouch",
+      "controlChange": "Control Change",
+      "programChange": "Program Change",
+      "channelAftertouch": "Channel Aftertouch",
+      "pitchBend": "Pitch Bend"
+    }
+  },
+  "unnamedTrack": "Unnamed Track",
+  "trackDescription": "#{{id}}, $t(eventCount, { \"count\": {{eventCount}} })",
+  "trackLength": "Length (ticks): ",
+  "eventCount": "{{count}} event",
+  "eventCount_plural": "{{count}} events",
+  "eventDescription": "Time: {{time}}",
+  "cancel": "Cancel",
+  "save": "Save",
+  "dontSave": "Don't Save",
+  "saveMessage": "Do you want to save the changes you made to {{fileName}}?",
+  "saveMessageNoName": "Do you want to save the changes you made to this file?",
+  "saveDetail": "Your changes will be lost if you don't save them.",
+  "failToOpenMessage": "Failed to open {{fileName}}"
+}

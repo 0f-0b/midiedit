@@ -1,0 +1,89 @@
+{
+  "menu": {
+    "preferences": "设置…（&O）",
+    "preferences_darwin": "偏好设置…",
+    "new": "新建（&N）",
+    "new_darwin": "新建",
+    "open": "打开…（&O）",
+    "open_darwin": "打开…",
+    "save": "保存（&S）",
+    "save_darwin": "保存",
+    "help": "帮助（&H）",
+    "help_darwin": "{{name}} 帮助"
+  },
+  "property": {
+    "ticksPerBeat": "刻每拍：",
+    "sequenceNumber": "序列号：",
+    "time": "时间：",
+    "duration": "时长：",
+    "channel": "通道：",
+    "noteIndex": "音符：",
+    "type": "类型：",
+    "sysExType": "SysEx 类型：",
+    "text": "文本：",
+    "data": "数据：",
+    "tempo": "节奏（微秒 / 四分音符）：",
+    "smpteOffset": {
+      "hour": "时：",
+      "minutes": "分：",
+      "seconds": "秒：",
+      "frames": "帧：",
+      "subframes": "子帧："
+    },
+    "timeSignature": {
+      "numerator": "分子：",
+      "denominator": "分母（log2）：",
+      "metronomeClick": "时钟周期 / 节拍器击打：",
+      "quarterNote": "时钟周期 / 四分音符："
+    },
+    "keySignature": {
+      "key": "调：",
+      "isMinor": "小调："
+    },
+    "aftertouch": "压力：",
+    "controlChange": {
+      "id": "ID：",
+      "value": "值："
+    },
+    "program": "程序：",
+    "pitch": "音高："
+  },
+  "event": {
+    "note": "音符",
+    "meta": {
+      "text": "文本",
+      "copyrightNotice": "版权声明",
+      "instrumentName": "乐器名称",
+      "lyrics": "歌词",
+      "marker": "标记",
+      "cuePoint": "提示点",
+      "channelPrefix": "通道前缀",
+      "setTempo": "设置节奏",
+      "smpteOffset": "SMPTE 偏移",
+      "timeSignature": "拍号",
+      "keySignature": "调号",
+      "sequencerSpecific": "音序器特定"
+    },
+    "sysEx": "SysEx",
+    "divSysEx": "SysEx（延续）",
+    "midi": {
+      "noteAftertouch": "音符触后",
+      "controlChange": "控制变更",
+      "programChange": "程序变更",
+      "channelAftertouch": "通道触后",
+      "pitchBend": "弯音"
+    }
+  },
+  "unnamedTrack": "未命名音轨",
+  "trackDescription": "#{{id}}，$t(eventCount, { \"count\": {{eventCount}} })",
+  "trackLength": "长度（刻）：",
+  "eventCount": "{{count}} 个事件",
+  "eventDescription": "时间：{{time}}",
+  "cancel": "取消",
+  "save": "保存",
+  "dontSave": "不保存",
+  "saveMessage": "是否要保存对 {{fileName}} 的更改？",
+  "saveMessageNoName": "是否要保存对此文件的更改？",
+  "saveDetail": "如果不保存，更改将丢失。",
+  "failToOpenMessage": "无法打开 {{fileName}}"
+}
