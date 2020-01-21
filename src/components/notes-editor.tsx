@@ -52,7 +52,7 @@ export default class NotesEditor extends React.Component<NotesEditorProps> {
         width: length,
         height: 128 * noteHeight
       }}>
-        {notes.map(([note, index]) => <div key={index} className={"note"}
+        {notes.map(([note, index]) => <div key={index} className="note"
           style={{
             ...getBounds(note),
             backgroundColor: colors[note.channel % colors.length][0]
