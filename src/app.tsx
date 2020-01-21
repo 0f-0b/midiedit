@@ -19,6 +19,7 @@ interface AppState {
   filePath: string;
   midi: MIDI;
   selectedTrack: number;
+  selectedEvent: number;
   dirty: boolean;
   error?: string;
 }
@@ -54,19 +55,34 @@ class App extends React.Component<{}, AppState> {
           }, -1, 65536)]
         ]} />
         <TrackList tracks={midi.tracks} selectedIndex={selectedTrack}
-          onSelect={selectedTrack => this.setState({ selectedTrack })}
+          onSelect={selectedTrack => this.setState({
+            selectedTrack,
+            selectedEvent: 0
+          })}
           onChange={() => this.setState({ dirty: true })}
           onAdd={(index, selectedTrack) => {
             midi.tracks.splice(index, 0, emptyTrack());
-            this.setState({ midi, selectedTrack, dirty: true });
+            this.setState({
+              midi,
+              selectedTrack,
+              selectedEvent: 0,
+              dirty: true
+            });
           }}
           onDelete={(index, selectedTrack) => {
             midi.tracks.splice(index, 1);
-            this.setState({ midi, selectedTrack, dirty: true });
+            this.setState({
+              midi,
+              selectedTrack,
+              selectedEvent: 0,
+              dirty: true
+            });
           }} />
       </>}
       second={<TrackEditor track={midi.tracks[selectedTrack]}
-        onUpdate={() => this.setState({ dirty: true })} />} />;
+        selectedIndex={this.state.selectedEvent}
+        onSelect={selectedEvent => this.setState({ selectedEvent })}
+        onChange={() => this.setState({ dirty: true })} />} />;
   }
 
   public componentDidUpdate(): void {
@@ -111,7 +127,7 @@ class App extends React.Component<{}, AppState> {
     };
   }
 
-  private async openFile(filePath?: string): Promise<Partial<AppState> | null> {
+  private async openFile(filePath?: string): Promise<AppState | null> {
     if (!filePath) {
       filePath = (await remote.dialog.showOpenDialog(remote.getCurrentWindow(), { properties: ["openFile"], filters })).filePaths[0];
       if (!filePath) return null;
@@ -123,6 +139,7 @@ class App extends React.Component<{}, AppState> {
         filePath,
         midi,
         selectedTrack: 0,
+        selectedEvent: 0,
         dirty: false
       };
     } catch (e) {
@@ -131,7 +148,7 @@ class App extends React.Component<{}, AppState> {
         message: __("failToOpenMessage", { fileName: path.basename(filePath) }),
         detail: e?.stack ?? e.toString()
       });
-      return {};
+      return null;
     }
   }
 
@@ -140,6 +157,7 @@ class App extends React.Component<{}, AppState> {
       filePath: "",
       midi: emptyMIDI(),
       selectedTrack: 0,
+      selectedEvent: 0,
       dirty: false
     };
   }

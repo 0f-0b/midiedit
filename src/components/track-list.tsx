@@ -3,7 +3,6 @@ import { ReactNode } from "react";
 import { __ } from "../i18n";
 import { Track } from "../midi";
 import IntegerInput from "./input/integer";
-import TextInput from "./input/text";
 import List, { ListProps } from "./list";
 import { mergeClass } from "./props";
 
@@ -17,9 +16,9 @@ export default class TrackList extends React.Component<TrackListProps> {
     const { tracks, onChange, className, ...props } = this.props;
     return <List className={mergeClass("track-list", className)}
       elements={tracks.map((track, index) => <>
-        <TextInput placeholder={__("unnamedTrack")} size={20} value={track.name}
-          onChange={value => {
-            track.name = value;
+        <input value={track.name} placeholder={__("unnamedTrack")} size={20}
+          onChange={event => {
+            track.name = event.target.value;
             onChange(index);
           }} /><br />
         {__("trackDescription", {

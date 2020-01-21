@@ -157,11 +157,13 @@ select:not([multiple]) {
 
 .note {
   position: absolute;
-  background-color: red;
+  cursor: pointer;
 }
 
 .note.selected {
-  background-color: darkred;
+  margin: -2px 0 0 -2px;
+  border-width: 2px;
+  border-style: solid;
 }
 
 .event-list {

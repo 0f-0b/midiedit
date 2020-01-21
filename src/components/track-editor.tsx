@@ -8,61 +8,54 @@ import PropertiesEditor from "./properties-editor";
 import { mergeClass } from "./props";
 import SplitPane, { SplitPaneProps } from "./split-pane";
 
-export interface TrackEditorProps extends Omit<SplitPaneProps, "direction" | "first" | "second"> {
+export interface TrackEditorProps extends Omit<SplitPaneProps, "direction" | "first" | "second" | "onSelect"> {
   track: Track;
-  onUpdate: () => void;
-}
-
-export interface TrackEditorState {
   selectedIndex: number;
+  onSelect: (index: number) => void;
+  onChange: () => void;
 }
 
-export default class TrackEditor extends React.Component<TrackEditorProps, TrackEditorState> {
+export default class TrackEditor extends React.Component<TrackEditorProps> {
   public constructor(props: TrackEditorProps) {
     super(props);
-    this.state = { selectedIndex: 0 };
   }
 
   public render(): ReactNode {
-    const { track, onUpdate, className, ...props } = this.props;
-    const { selectedIndex } = this.state;
+    const { track, selectedIndex, onSelect, onChange, className, ...props } = this.props;
     return <SplitPane className={mergeClass("track-editor", className)}
       direction="column"
       first={<NotesEditor track={track}
         selectedIndex={selectedIndex}
-        onSelect={index => this.setState({ selectedIndex: index })}
+        onSelect={onSelect}
         onAdd={() => {
-          this.setState({ selectedIndex: track.events.length });
           track.events.push(emptyEvent(-1, 0));
+          onSelect(track.events.length);
+          onChange();
         }}
         onDelete={index => {
-          this.setState({ selectedIndex: 0 });
           track.events.splice(index, 1);
+          onSelect(0);
+          onChange();
         }} />}
       second={<SplitPane
         first={<EventList events={track.events}
           selectedIndex={selectedIndex}
-          onSelect={index => this.setState({ selectedIndex: index })}
+          onSelect={onSelect}
           onAdd={(index, selectedIndex) => {
             track.events.splice(index, 0, emptyEvent(-1, 0));
-            this.setState({ selectedIndex });
-            onUpdate();
+            onSelect(selectedIndex);
+            onChange();
           }}
           onDelete={(index, selectedIndex) => {
             track.events.splice(index, 1);
-            this.setState({ selectedIndex });
-            onUpdate();
+            onSelect(selectedIndex);
+            onChange();
           }} />}
         second={<PropertiesEditor keyPrefix={selectedIndex.toString()} properties={track.events.length
           ? eventProperties(track.events[selectedIndex], event => {
             track.events[selectedIndex] = event;
-            this.setState({ selectedIndex });
-            onUpdate();
+            onChange();
           }, track.length) : []} />}
         {...props} />} />;
-  }
-
-  public componentDidUpdate(prevProps: Readonly<TrackEditorProps>): void {
-    if (prevProps.track !== this.props.track) this.setState({ selectedIndex: 0 });
   }
 }
