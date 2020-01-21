@@ -53,17 +53,16 @@ export default class TrackEditor extends React.Component<TrackEditorProps, Track
             this.setState({ selectedIndex });
             onUpdate();
           }} />}
-        second={<PropertiesEditor properties={selectedIndex in track.events
+        second={<PropertiesEditor keyPrefix={selectedIndex.toString()} properties={track.events.length
           ? eventProperties(track.events[selectedIndex], event => {
             track.events[selectedIndex] = event;
             this.setState({ selectedIndex });
             onUpdate();
-          }, track.length)
-          : []} />}
+          }, track.length) : []} />}
         {...props} />} />;
   }
 
-  public componentDidUpdate(prevProps: Readonly<TrackEditorProps>, prevState: Readonly<TrackEditorState>): void {
+  public componentDidUpdate(prevProps: Readonly<TrackEditorProps>): void {
     if (prevProps.track !== this.props.track) this.setState({ selectedIndex: 0 });
   }
 }

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { ComponentPropsWithoutRef, ReactNode } from "react";
 import { __ } from "../i18n";
+import IntegerInput from "./input/integer";
+import TextInput from "./input/text";
 import { mergeClass } from "./props";
 
 export abstract class Property<T> {
@@ -20,8 +22,7 @@ export class BooleanProperty extends Property<boolean> {
 
 export class StringProperty extends Property<string> {
   public render(): ReactNode {
-    return <input value={this.value}
-      onChange={event => this.onChange(event.target.value)} />;
+    return <TextInput value={this.value} onChange={this.onChange} />;
   }
 }
 
@@ -33,62 +34,20 @@ export class IntegerProperty extends Property<number> {
   }
 
   public render(): ReactNode {
-    return <input type="number" value={this.value} min={this.min} max={this.max}
-      onChange={event => {
-        const value = event.target.valueAsNumber;
-        if (Number.isInteger(value)
-          && (this.min === undefined || value >= this.min)
-          && (this.max === undefined || value <= this.max)) this.onChange(value);
-      }} />;
-  }
-}
-
-interface TextInputProps {
-  value: string;
-  onChange: (value: string) => boolean;
-}
-
-interface TextInputState {
-  value: string;
-  error: boolean;
-}
-
-class TextInput extends React.Component<TextInputProps, TextInputState> {
-  public constructor(props: TextInputProps) {
-    super(props);
-    this.state = {
-      value: props.value,
-      error: false
-    };
-  }
-
-  public render(): ReactNode {
-    return <input value={this.state.value}
-      style={{
-        color: this.state.error ? "red" : undefined
-      }}
-      onChange={event => {
-        const value = event.target.value;
-        this.setState({
-          value: value,
-          error: !this.props.onChange(value)
-        });
-      }} />;
+    return <IntegerInput value={this.value} min={this.min} max={this.max} onChange={this.onChange}/>;
   }
 }
 
 export class ByteStringProperty extends Property<number[]> {
   public render(): ReactNode {
-    const value = this.value;
-    return <TextInput value={value.map(byte => byte.toString(16).padStart(2, "0")).join("")}
+    return <TextInput value={this.value.map(byte => byte.toString(16).padStart(2, "0")).join("")}
+      validate={/^(?:[0-9A-Fa-f]{2})*$/}
       onChange={value => {
-        if (value.length & 1) return false;
-        const length = value.length >>> 1;
-        const result = new Array(length);
-        for (let i = 0; i < length; i++)
-          if (!Number.isInteger(result[i] = parseInt(value.substring(i << 1, (i << 1) | 1), 16))) return false;
+        const length = value.length;
+        const result = new Array(length >>> 1);
+        for (let i = 0; i < length; i += 2)
+          result[i] = parseInt(value.substring(i, i + 2), 16);
         this.onChange(result);
-        return true;
       }} />;
   }
 }
@@ -118,15 +77,17 @@ export class SelectProperty extends Property<number> {
 }
 
 export interface PropertiesEditorProps extends ComponentPropsWithoutRef<"div"> {
+  keyPrefix?: string;
   properties: [string, Property<any>][];
 }
 
 export default class PropertiesEditor extends React.Component<PropertiesEditorProps> {
   public render(): ReactNode {
-    const { properties, className, ...props } = this.props;
+    const { keyPrefix, properties, className, ...props } = this.props;
     return <div className={mergeClass("properties-editor", className)} {...props}>
-      {properties.map(([id, property]) => <React.Fragment key={id}>
-        <label>{__(`property.${id}`)}
+      {properties.map(([id, property]) => <React.Fragment key={keyPrefix ? keyPrefix + id : id}>
+        <label>
+          {__(`property.${id}`)}
           {property.render()}
         </label><br />
       </React.Fragment>)}

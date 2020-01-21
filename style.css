@@ -21,12 +21,16 @@ body {
   margin: 0px;
 }
 
-input[type="text"], input[type="number"], select:not([multiple]) {
+input:not([type]), input[type="text"], input[type="number"], select:not([multiple]) {
   color: var(--foreground-color);
   background-color: var(--background-color);
   height: 14px;
   border: 2px inset var(--border-color);
   border-radius: 4px;
+}
+
+:invalid {
+  border-color: red !important;
 }
 
 select:not([multiple]) {
@@ -85,7 +89,7 @@ select:not([multiple]) {
   border-right: 1px solid var(--border-color);
 }
 
-.list-element>.edit-buttons {
+.list-element-buttons {
   float: right;
   width: 16px;
 }
