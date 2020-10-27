@@ -1,0 +1,175 @@
+* {
+  line-height: 1.5;
+  user-select: none;
+  outline-color: var(--focus-color);
+  --background-color: #222;
+  --focus-color: #333;
+  --border-color: #444;
+  --foreground-color: #fff;
+}
+
+:root {
+  height: 100%;
+}
+
+body {
+  color: var(--foreground-color);
+  background-color: var(--background-color);
+  font-family: "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
+  font-size: 12px;
+  height: 100%;
+  margin: 0px;
+}
+
+label {
+  display: block;
+  padding: 2px;
+}
+
+input:not([type]), input[type="text"], input[type="number"], select:not([multiple]) {
+  display: inline-block;
+  color: var(--foreground-color);
+  background-color: var(--background-color);
+  min-width: 60px;
+  height: 14px;
+  border: 2px inset var(--border-color);
+  border-radius: 4px;
+}
+
+select:not([multiple]) {
+  height: 20px;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#root>.split-pane>:first-child {
+  width: 200px;
+}
+
+#root>.split-pane>:last-child {
+  flex: 1 0 auto;
+  width: calc(100% - 201px);
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: scroll;
+}
+
+.list-element {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.list-element.selected {
+  background-color: var(--focus-color);
+}
+
+.list-element-content {
+  cursor: pointer;
+  width: calc(100% - 28px);
+  padding: 6px;
+  border-right: 1px solid var(--border-color);
+}
+
+.list-element-buttons {
+  float: right;
+  width: 16px;
+}
+
+.split-pane {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.split-pane.column {
+  flex-direction: column;
+}
+
+.split-pane.row>:first-child {
+  border-right: 1px solid var(--border-color);
+}
+
+.split-pane.column>:first-child {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.edit-button {
+  font-size: 10px;
+  line-height: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+}
+
+.track-list {
+  height: calc(100% - 46px - 2em);
+}
+
+.track-properties input {
+  width: 80px;
+}
+
+.events-editor>:first-child {
+  height: 60%;
+  overflow-x: scroll;
+}
+
+.events-editor>:last-child {
+  width: 100%;
+  height: calc(40% - 1px);
+}
+
+.events-editor>:last-child>.split-pane>:first-child {
+  width: 180px;
+}
+
+.events-editor>:last-child>.split-pane>:last-child {
+  width: calc(100% - 181px);
+}
+
+.event-properties {
+  height: calc(100% - 20px);
+  padding: 8px;
+  overflow-y: scroll;
+}
+
+.notes-editor {
+  position: relative;
+  height: 100%;
+  background-color: black;
+  overflow: scroll;
+}
+
+.notes-editor>.edit-buttons {
+  position: fixed;
+}
+
+.notes-edit-region {
+  transform: scaleY(-1);
+}
+
+.note {
+  position: absolute;
+  cursor: pointer;
+}
+
+.event-list {
+  height: 100%;
+}
+
+.edit-buttons {
+  padding: 6px;
+}
+
+.metadata {
+  padding: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
