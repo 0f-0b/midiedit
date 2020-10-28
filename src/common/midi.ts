@@ -55,8 +55,8 @@ export function newTrack(length: number): Track {
 
 export function newMidi(): Midi {
   return {
-    ticksPerBeat: 192,
-    tracks: [newTrack(768)]
+    ticksPerBeat: 96,
+    tracks: [newTrack(384)]
   };
 }
 

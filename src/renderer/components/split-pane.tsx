@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ReactNode } from "react";
-import { mergeClass } from "./util";
+import { mergeClass } from "../util";
 
 export interface SplitPaneProps extends React.ComponentPropsWithoutRef<"div"> {
   direction?: "row" | "column";
