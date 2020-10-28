@@ -39,49 +39,6 @@ export type Property =
   | IntegerProperty
   | SelectProperty
   | ByteArrayProperty;
-type PropertyByType<T extends Property["type"]> =
-  T extends "string" ? StringProperty :
-  T extends "integer" ? IntegerProperty :
-  T extends "select" ? SelectProperty :
-  T extends "byte-array" ? ByteArrayProperty :
-  never;
-
-const propertyTypes: {
-  [T in Property["type"]]: (property: PropertyByType<T>) => JSX.Element;
-} = {
-  "string"(property: StringProperty) {
-    return <label>
-      {property.label}
-      <StringInput value={property.value} onChange={property.onChange} />
-    </label>;
-  },
-  "integer"(property: IntegerProperty) {
-    return <label>
-      {property.label}
-      <IntegerInput value={property.value} min={property.min} max={property.max} onChange={property.onChange} />
-    </label>;
-  },
-  "select"(property: SelectProperty) {
-    return <label>
-      {property.label}
-      <SelectInput value={property.value} options={property.options} onChange={property.onChange} />
-    </label>;
-  },
-  "byte-array"(property: ByteArrayProperty) {
-    return <label>
-      {property.label}
-      <input value="unimplemented" readOnly />
-    </label>;
-  }
-};
-
-interface PropertyEditorProps {
-  property: Property;
-}
-
-function PropertyEditor({ property }: PropertyEditorProps): JSX.Element {
-  return propertyTypes[property.type](property as never);
-}
 
 export interface PropertiesEditorProps extends React.ComponentPropsWithoutRef<"div"> {
   properties: { [id: string]: Property; };
@@ -89,6 +46,20 @@ export interface PropertiesEditorProps extends React.ComponentPropsWithoutRef<"d
 
 export function PropertiesEditor({ properties, ...props }: PropertiesEditorProps): JSX.Element {
   return <div {...props}>
-    {Object.entries(properties).map(([id, property]) => <PropertyEditor property={property} key={id} />)}
+    {Object.entries(properties).map(([id, property]) => <label key={id}>
+      {property.label}
+      {(() => {
+        switch (property.type) {
+          case "string":
+            return <StringInput value={property.value} onChange={property.onChange} />;
+          case "integer":
+            return <IntegerInput value={property.value} min={property.min} max={property.max} onChange={property.onChange} />;
+          case "select":
+            return <SelectInput value={property.value} options={property.options} onChange={property.onChange} />;
+          case "byte-array":
+            return <input value="unimplemented" readOnly />;
+        }
+      })()}
+    </label>)}
   </div>;
 }
