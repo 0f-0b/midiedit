@@ -4,9 +4,9 @@ import EventList from "./event-list";
 import { getEventProperties } from "./events";
 import NotesEditor from "./notes-editor";
 import { PropertiesEditor } from "./properties-editor";
-import SplitPane, { SplitPaneProps } from "./split-pane";
+import SplitView, { SplitViewProps } from "./split-view";
 
-export interface TrackEditorProps extends Omit<SplitPaneProps, "className" | "direction" | "first" | "second" | "onChange"> {
+export interface TrackEditorProps extends Omit<SplitViewProps, "className" | "direction" | "first" | "second" | "onChange"> {
   trackLength: number;
   events: Event[];
   selectedIndex: number;
@@ -14,10 +14,11 @@ export interface TrackEditorProps extends Omit<SplitPaneProps, "className" | "di
 }
 
 export default function EventsEditor({ trackLength, events, selectedIndex, onChange, ...props }: TrackEditorProps): JSX.Element {
-  return <SplitPane className="events-editor"
-    direction="column"
+  return <SplitView className="events-editor"
+    direction="vertical"
     first={<NotesEditor trackLength={trackLength} events={events} selectedIndex={selectedIndex} onChange={onChange} />}
-    second={<SplitPane
+    second={<SplitView className="event-list-container"
+      direction="horizontal"
       first={<EventList events={events} selectedIndex={selectedIndex} onChange={onChange} />}
       second={<PropertiesEditor className="event-properties" properties={getEventProperties(events[selectedIndex], event => onChange([
         ...events.slice(0, selectedIndex),

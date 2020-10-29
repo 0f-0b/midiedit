@@ -43,16 +43,10 @@ select:not([multiple]) {
 #root {
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
-#root>.split-pane>:first-child {
-  width: 200px;
-}
-
-#root>.split-pane>:last-child {
-  flex: 1 0 auto;
-  width: calc(100% - 201px);
+.app {
+  grid-template-columns: 200px minmax(0, auto);
 }
 
 .list {
@@ -93,20 +87,24 @@ select:not([multiple]) {
 }
 
 .split-pane {
-  display: flex;
+  display: grid;
   width: 100%;
   height: 100%;
 }
 
-.split-pane.column {
-  flex-direction: column;
+.split-pane.horizontal {
+  grid-template-rows: 100%;
 }
 
-.split-pane.row>:first-child {
+.split-pane.vertical {
+  grid-template-columns: 100%;
+}
+
+.split-pane.horizontal>:first-child {
   border-right: 1px solid var(--border-color);
 }
 
-.split-pane.column>:first-child {
+.split-pane.vertical>:first-child {
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -118,22 +116,12 @@ select:not([multiple]) {
   width: 80px;
 }
 
-.events-editor>:first-child {
-  height: 60%;
-  overflow-x: scroll;
+.events-editor {
+  grid-template-rows: 60% minmax(0, auto);
 }
 
-.events-editor>:last-child {
-  width: 100%;
-  height: calc(40% - 1px);
-}
-
-.events-editor>:last-child>.split-pane>:first-child {
-  width: 180px;
-}
-
-.events-editor>:last-child>.split-pane>:last-child {
-  width: calc(100% - 181px);
+.event-list-container {
+  grid-template-columns: 180px minmax(0, auto);
 }
 
 .event-properties {

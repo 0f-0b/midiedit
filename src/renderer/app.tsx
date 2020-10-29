@@ -5,7 +5,7 @@ import { newMidi } from "../common/midi";
 import EventsEditor from "./events-editor";
 import { askSave, openFile, saveFile } from "./files";
 import { PropertiesEditor } from "./properties-editor";
-import SplitPane from "./split-pane";
+import SplitView from "./split-view";
 import TrackList from "./track-list";
 
 function App(): JSX.Element {
@@ -58,7 +58,8 @@ function App(): JSX.Element {
       ipcRenderer.removeAllListeners("save-file");
     };
   }, [filePath, midi, dirty]);
-  return <SplitPane className="main-split"
+  return <SplitView className="app"
+    direction="horizontal"
     first={<>
       <PropertiesEditor className="metadata"
         properties={{
