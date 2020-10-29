@@ -21,10 +21,9 @@ export async function openFile(window: BrowserWindow, filePath: string | undefin
   filePath ??= (await dialog.showOpenDialog(window, { properties: ["openFile"], filters })).filePaths[0];
   if (!filePath)
     return null;
+  let midi: Midi;
   try {
-    const midi = readMidi(await fs.readFile(filePath));
-    app.addRecentDocument(filePath);
-    return { path: filePath, midi };
+    midi = readMidi(await fs.readFile(filePath));
   } catch (e) {
     await dialog.showMessageBox(window, {
       type: "error",
@@ -33,13 +32,24 @@ export async function openFile(window: BrowserWindow, filePath: string | undefin
     });
     return null;
   }
+  app.addRecentDocument(filePath);
+  return { path: filePath, midi };
 }
 
 export async function saveFile(window: BrowserWindow, filePath: string | undefined, midi: Midi): Promise<SaveResult | null> {
   filePath ??= (await dialog.showSaveDialog(window, { filters })).filePath;
   if (!filePath)
     return null;
-  await fs.writeFile(filePath, new Uint8Array(writeMidi(midi)));
+  try {
+    await fs.writeFile(filePath, new Uint8Array(writeMidi(midi)));
+  } catch (e) {
+    await dialog.showMessageBox(window, {
+      type: "error",
+      message: `Failed to save ${path.basename(filePath)}`,
+      detail: String(e?.stack ?? e)
+    });
+    return null;
+  }
   app.addRecentDocument(filePath);
   return { path: filePath };
 }

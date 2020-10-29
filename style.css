@@ -45,10 +45,6 @@ select:not([multiple]) {
   height: 100%;
 }
 
-.app {
-  grid-template-columns: 200px minmax(0, auto);
-}
-
 .list {
   list-style: none;
   padding: 0;
@@ -56,26 +52,29 @@ select:not([multiple]) {
   overflow-y: scroll;
 }
 
-.list-element {
+.list-element-container {
   display: flex;
   border-bottom: 1px solid var(--border-color);
 }
 
-.list-element.selected {
+.list-element-container.selected {
   background-color: var(--focus-color);
 }
 
-.list-element-content {
+.list-element {
   cursor: pointer;
-  width: calc(100% - 28px);
+  width: 100%;
   padding: 6px;
-  border-right: 1px solid var(--border-color);
 }
 
-.list-element-buttons {
+.list-buttons {
   float: right;
-  width: 16px;
   padding: 6px;
+}
+
+.list-element-container>.list-buttons {
+  width: 16px;
+  border-left: 1px solid var(--border-color);
 }
 
 .edit-button {
@@ -108,8 +107,20 @@ select:not([multiple]) {
   border-bottom: 1px solid var(--border-color);
 }
 
+.app {
+  grid-template-columns: 200px minmax(0, auto);
+}
+
+.side {
+  grid-template-rows: min-content minmax(0, auto);
+}
+
+.metadata {
+  padding: 6px;
+}
+
 .track-list {
-  height: calc(100% - 29px - 1em);
+  height: 100%;
 }
 
 .track-properties input {
@@ -286,9 +297,4 @@ select:not([multiple]) {
 
 .event-list {
   height: 100%;
-}
-
-.metadata {
-  padding: 8px;
-  border-bottom: 1px solid var(--border-color);
 }

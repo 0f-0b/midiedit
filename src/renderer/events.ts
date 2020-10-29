@@ -192,7 +192,7 @@ const typeData: readonly (readonly [number, number, string, unknown, (event: nev
     },
     tempo: {
       type: "integer",
-      label: "Tempo (μs / quarter note): ",
+      label: "Tempo (μs / beat): ",
       value: event.tempo,
       min: 1,
       max: 16777215,

@@ -16,6 +16,7 @@ declare class MIDIFile {
 
 declare namespace MIDIFile {
   type Format = 0 | 1 | 2;
+  type SMPTEFrames = 24 | 25 | 29.97 | 30;
   type ResolvedEvent = Event & {
     playTime: number;
     track?: number;
@@ -44,9 +45,9 @@ declare namespace MIDIFile {
     getTimeDivision(): typeof Header.FRAMES_PER_SECONDS | typeof Header.TICKS_PER_BEAT;
     getTicksPerBeat(): number;
     setTicksPerBeat(ticksPerBeat: number): void;
-    getSMPTEFrames(): number;
+    getSMPTEFrames(): SMPTEFrames;
     getTicksPerFrame(): number;
-    setSMTPEDivision(smpteFrames: number, ticksPerFrame: number): void;
+    setSMTPEDivision(smpteFrames: SMPTEFrames | 29, ticksPerFrame: number): void;
   }
 
   class Track {

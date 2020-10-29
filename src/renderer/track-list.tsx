@@ -4,6 +4,22 @@ import { StringInput } from "./inputs/string-input";
 import List, { ListProps } from "./list";
 import { PropertiesEditor } from "./properties-editor";
 
+function limitTime(event: Event, trackLength: number): Event | null {
+  if (event.delta > trackLength)
+    return null;
+  if (event.type === -1) {
+    const maxDuration = trackLength - event.delta;
+    if (maxDuration === 0)
+      return null;
+    if (event.duration > maxDuration)
+      return {
+        ...event,
+        duration: maxDuration
+      };
+  }
+  return event;
+}
+
 export interface TrackListProps extends Omit<ListProps, "className" | "onChange" | "elements" | "notEmpty" | "onSelect" | "onAdd" | "onDelete"> {
   tracks: Track[];
   onChange: (tracks: Track[], selectedIndex: number) => void;
@@ -25,21 +41,14 @@ export default function TrackList({ tracks, onChange, ...props }: TrackListProps
             type: "integer",
             label: "Length: ",
             value: track.length,
-            min: 1,
+            min: 0,
             onChange(value) {
               track.length = value;
               const newEvents: Event[] = [];
               for (const event of track.events) {
-                if (event.delta > value)
-                  continue;
-                if (event.type === -1) {
-                  const maxDuration = value - event.delta;
-                  if (maxDuration <= 0)
-                    continue;
-                  if (event.duration > maxDuration)
-                    event.duration = maxDuration;
-                }
-                newEvents.push(event);
+                const newEvent = limitTime(event, value);
+                if (newEvent)
+                  newEvents.push(newEvent);
               }
               onChange([
                 ...tracks.slice(0, index),

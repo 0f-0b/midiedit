@@ -1,6 +1,12 @@
 import { ChannelAftertouchEvent, ControllerEvent, CopyrightNoticeEvent, CuePointEvent, Event as RawEvent, EVENT_META, EVENT_META_END_OF_TRACK, EVENT_META_TRACK_NAME, EVENT_MIDI, EVENT_MIDI_NOTE_OFF, EVENT_MIDI_NOTE_ON, InstrumentNameEvent, KeySignatureEvent, LyricsEvent, MarkerEvent, MIDIChannelPrefixEvent, NoteAftertouchEvent, PitchBendEvent, ProgramChangeEvent, SequenceNumberEvent, SequencerSpecificEvent, SetTempoEvent, SMPTEOffsetEvent, SysExEvent, TextEvent, TimeSignatureEvent } from "midievents";
 import * as MIDIFile from "midifile";
 
+export type Format = MIDIFile.Format;
+export type Division =
+  | { type: 0; ticksPerBeat: number; }
+  | { type: 1; smpteFormat: number; ticksPerFrame: number; };
+export type DivisionType = Division["type"];
+
 export interface NoteEvent {
   delta: number;
   type: -1;
@@ -41,9 +47,12 @@ export interface Track {
 }
 
 export interface Midi {
-  ticksPerBeat: number;
+  format: Format;
+  division: Division;
   tracks: Track[];
 }
+
+export const smpteFrames = Object.freeze([24, 25, 29.97, 30] as const);
 
 export function newTrack(length: number): Track {
   return {
@@ -53,10 +62,20 @@ export function newTrack(length: number): Track {
   };
 }
 
+export function newDivision(type: DivisionType): Division {
+  switch (type) {
+    case 0:
+      return { type, ticksPerBeat: 96 };
+    case 1:
+      return { type, smpteFormat: 0, ticksPerFrame: 4 };
+  }
+}
+
 export function newMidi(): Midi {
   return {
-    ticksPerBeat: 96,
-    tracks: [newTrack(384)]
+    format: 1,
+    division: newDivision(0),
+    tracks: [newTrack(1)]
   };
 }
 
@@ -81,7 +100,7 @@ class Channel {
   }
 }
 
-export function readTrack(midi: Midi, track: Track, events: readonly RawEvent[]): void {
+function readTrack(track: Track, events: readonly RawEvent[]): void {
   const channels: Channel[] = Array.from({ length: 16 }, (_, index) => new Channel((startTime, endTime, note, attack, release) =>
     track.events.push({
       delta: startTime,
@@ -126,7 +145,7 @@ export function readTrack(midi: Midi, track: Track, events: readonly RawEvent[])
   track.length = Math.max(time, 1);
 }
 
-export function writeTrack(midi: Midi, track: Track): RawEvent[] {
+function writeTrack(track: Track): RawEvent[] {
   const result: RawEvent[] = [];
   if (track.name) {
     const data = Array.from(Buffer.from(track.name));
@@ -176,29 +195,33 @@ export function writeTrack(midi: Midi, track: Track): RawEvent[] {
 
 export function readMidi(buf: ArrayBuffer): Midi {
   const file = new MIDIFile(buf);
-  if (file.header.getFormat() > 1)
-    throw "unsupported format";
-  if (file.header.getTimeDivision() !== MIDIFile.Header.TICKS_PER_BEAT)
-    throw "unsupported time division";
-  const result: Midi = {
-    ticksPerBeat: file.header.getTicksPerBeat(),
-    tracks: file.tracks.map(() => newTrack(1))
+  const midi: Midi = {
+    format: file.header.getFormat(),
+    division: file.header.getTimeDivision() === MIDIFile.Header.TICKS_PER_BEAT
+      ? { type: 0, ticksPerBeat: file.header.getTicksPerBeat() }
+      : { type: 1, smpteFormat: smpteFrames.indexOf(file.header.getSMPTEFrames()), ticksPerFrame: file.header.getTicksPerFrame() },
+    tracks: file.tracks.map(() => newTrack(0))
   };
   for (let i = 0, len = file.tracks.length; i < len; i++)
-    readTrack(result, result.tracks[i], file.getTrackEvents(i));
-  return result;
+    readTrack(midi.tracks[i], file.getTrackEvents(i));
+  if ((midi.division.type === 1) as boolean)
+    throw "SMPTE time is unsupported";
+  return midi;
 }
 
 export function writeMidi(midi: Midi): ArrayBuffer {
-  const trackCount = midi.tracks.length;
-  if (!trackCount)
-    throw "no tracks";
+  if ((midi.division.type === 1) as boolean)
+    throw "SMPTE time is unsupported";
   const file = new MIDIFile;
-  file.header.setFormat(trackCount === 1 ? 0 : 1);
-  file.header.setTicksPerBeat(midi.ticksPerBeat);
-  for (let i = 1; i < trackCount; i++)
-    file.addTrack(i);
-  for (let i = 0; i < trackCount; i++)
-    file.setTrackEvents(i, writeTrack(midi, midi.tracks[i]));
+  const header = file.header;
+  header.setFormat(midi.format);
+  header.setTracksCount(midi.tracks.length);
+  if (midi.division.type === 0)
+    header.setTicksPerBeat(midi.division.ticksPerBeat);
+  else
+    header.setSMTPEDivision(smpteFrames[midi.division.smpteFormat], midi.division.ticksPerFrame);
+  file.tracks = midi.tracks.map(() => new MIDIFile.Track);
+  for (let i = 0, len = midi.tracks.length; i < len; i++)
+    file.setTrackEvents(i, writeTrack(midi.tracks[i]));
   return file.getContent();
 }

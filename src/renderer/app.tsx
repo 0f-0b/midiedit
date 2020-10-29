@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom";
 import { newMidi } from "../common/midi";
 import EventsEditor from "./events-editor";
 import { askSave, openFile, saveFile } from "./files";
-import { PropertiesEditor } from "./properties-editor";
+import Metadata from "./metadata";
 import SplitView from "./split-view";
 import TrackList from "./track-list";
 
@@ -60,22 +60,22 @@ function App(): JSX.Element {
   }, [filePath, midi, dirty]);
   return <SplitView className="app"
     direction="horizontal"
-    first={<>
-      <PropertiesEditor className="metadata"
-        properties={{
-          ticksPerBeat: {
-            type: "integer",
-            label: "Ticks per beat: ",
-            value: midi.ticksPerBeat,
-            min: 1,
-            max: 32767,
-            onChange(value) {
-              setMidi({ ...midi, ticksPerBeat: value });
-              setDirty(true);
-            }
+    first={<SplitView className="side"
+      direction="vertical"
+      first={<Metadata
+        midi={midi}
+        onChange={midi => {
+          setMidi(midi);
+          if (selectedTrack >= midi.tracks.length) {
+            setSelectedTrack(0);
+            setSelectedEvent(0);
           }
-        }} />
-      <TrackList tracks={midi.tracks} selectedIndex={selectedTrack}
+          setDirty(true);
+        }} />}
+      second={<TrackList
+        tracks={midi.tracks}
+        selectedIndex={selectedTrack}
+        readOnly={midi.format === 0}
         onChange={(tracks, selectedIndex) => {
           if (selectedTrack !== selectedIndex) {
             setSelectedTrack(selectedIndex);
@@ -83,8 +83,7 @@ function App(): JSX.Element {
           }
           setMidi({ ...midi, tracks });
           setDirty(true);
-        }} />
-    </>}
+        }} />} />}
     second={<EventsEditor
       trackLength={midi.tracks[selectedTrack].length}
       events={midi.tracks[selectedTrack].events}
