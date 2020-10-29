@@ -16,7 +16,7 @@ export default function List({ elements, selectedIndex, notEmpty, onSelect, onAd
   return <ul className={mergeClass("list", className)} {...props}>
     {elements.map((element, index) => {
       const selected = index === selectedIndex;
-      return <li key={index} className={selected ? "list-element selected" : "list-element"} aria-selected={selected}>
+      return <li key={index} className={`list-element${selected ? " selected" : ""}`} aria-selected={selected}>
         <div className="list-element-content" onClick={() => onSelect(index)}>{element}</div>
         <div className="list-element-buttons">
           <AddButton onClick={() => onAdd(index, selectedIndex + +(index <= selectedIndex))} />
