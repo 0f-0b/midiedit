@@ -7,14 +7,6 @@ import { newEvent } from "./events";
 import { indexedFilter } from "./util";
 
 const noteHeight = 8;
-const colors = [
-  ["#00a", "#55f"],
-  ["#0a0", "#5f5"],
-  ["#0aa", "#5ff"],
-  ["#a00", "#f55"],
-  ["#a0a", "#f5f"],
-  ["#aa0", "#ff5"]
-];
 
 export interface NotesEditorProps extends Omit<React.ComponentPropsWithoutRef<"div">, "className" | "onSelect" | "onChange"> {
   trackLength: number;
@@ -60,13 +52,12 @@ export default function NotesEditor({ trackLength, events, selectedIndex, onChan
         onMouseLeave={() => setDragOffset(undefined)}>
         {notes.map(({ value, index }) => {
           const selected = selectedIndex === index;
-          return <div key={index} className="note"
+          return <div key={index} className={`note channel-${value.channel}${selected ? " selected" : ""}`}
             style={{
               left: value.delta,
               top: noteHeight * (127 - value.note),
               width: value.duration,
-              height: noteHeight,
-              backgroundColor: colors[value.channel % colors.length][+selected]
+              height: noteHeight
             }}
             onMouseDown={event => {
               onChange(events, index);
