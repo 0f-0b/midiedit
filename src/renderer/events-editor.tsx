@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Event } from "../../common/midi";
-import { getEventProperties } from "../events";
+import { Event } from "../common/midi";
 import EventList from "./event-list";
+import { getEventProperties } from "./events";
 import NotesEditor from "./notes-editor";
 import { PropertiesEditor } from "./properties-editor";
 import SplitPane, { SplitPaneProps } from "./split-pane";

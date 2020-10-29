@@ -1,7 +1,7 @@
 import * as React from "react";
-import { IntegerInput } from "./properties/integer-input";
-import { SelectInput } from "./properties/select-input";
-import { StringInput } from "./properties/string-input";
+import { IntegerInput } from "./inputs/integer-input";
+import { SelectInput } from "./inputs/select-input";
+import { StringInput } from "./inputs/string-input";
 
 export interface StringProperty {
   type: "string";

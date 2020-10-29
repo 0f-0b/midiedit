@@ -111,7 +111,7 @@ select:not([multiple]) {
 }
 
 .track-list {
-  height: calc(100% - 46px - 2em);
+  height: calc(100% - 29px - 1em);
 }
 
 .track-properties input {

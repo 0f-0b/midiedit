@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Event, newTrack, Track } from "../../common/midi";
+import { Event, newTrack, Track } from "../common/midi";
+import { StringInput } from "./inputs/string-input";
 import List, { ListProps } from "./list";
 import { PropertiesEditor } from "./properties-editor";
-import { StringInput } from "./properties/string-input";
 
 export interface TrackListProps extends Omit<ListProps, "className" | "onChange" | "elements" | "notEmpty" | "onSelect" | "onAdd" | "onDelete"> {
   tracks: Track[];

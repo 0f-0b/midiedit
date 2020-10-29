@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ReactNode } from "react";
-import { mergeClass } from "../util";
 import { AddButton, RemoveButton } from "./edit-buttons";
+import { mergeClass } from "./util";
 
 export interface ListProps extends Omit<React.ComponentPropsWithoutRef<"ul">, "onSelect"> {
   elements: readonly ReactNode[];

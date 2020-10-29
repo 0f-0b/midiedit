@@ -1,6 +1,6 @@
 import { ChannelAftertouchEvent, ControllerEvent, EVENT_DIVSYSEX, EVENT_META, EVENT_META_COPYRIGHT_NOTICE, EVENT_META_CUE_POINT, EVENT_META_INSTRUMENT_NAME, EVENT_META_KEY_SIGNATURE, EVENT_META_LYRICS, EVENT_META_MARKER, EVENT_META_MIDI_CHANNEL_PREFIX, EVENT_META_SEQUENCER_SPECIFIC, EVENT_META_SEQUENCE_NUMBER, EVENT_META_SET_TEMPO, EVENT_META_SMTPE_OFFSET, EVENT_META_TEXT, EVENT_META_TIME_SIGNATURE, EVENT_MIDI, EVENT_MIDI_CHANNEL_AFTERTOUCH, EVENT_MIDI_CONTROLLER, EVENT_MIDI_NOTE_AFTERTOUCH, EVENT_MIDI_PITCH_BEND, EVENT_MIDI_PROGRAM_CHANGE, EVENT_SYSEX, KeySignatureEvent, MIDIChannelPrefixEvent, NoteAftertouchEvent, PitchBendEvent, ProgramChangeEvent, SequenceNumberEvent, SequencerSpecificEvent, SetTempoEvent, SMPTEOffsetEvent, SysExEvent, TextEvent, TimeSignatureEvent } from "midievents";
 import { Event, NoteEvent } from "../common/midi";
-import { ByteArrayProperty, IntegerProperty, Property, StringProperty } from "./components/properties-editor";
+import { ByteArrayProperty, IntegerProperty, Property, StringProperty } from "./properties-editor";
 
 function buildTextProperties(event: TextEvent, onChange: (event: TextEvent) => void, trackLength: number): {
   time: IntegerProperty;

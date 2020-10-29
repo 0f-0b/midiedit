@@ -1,10 +1,10 @@
 import { useThrottleCallback } from "@react-hook/throttle";
 import "ecma-proposal-math-extensions";
 import * as React from "react";
-import { Event, NoteEvent } from "../../common/midi";
-import { newEvent } from "../events";
-import { indexedFilter } from "../util";
+import { Event, NoteEvent } from "../common/midi";
 import { AddButton, RemoveButton } from "./edit-buttons";
+import { newEvent } from "./events";
+import { indexedFilter } from "./util";
 
 const noteHeight = 8;
 const colors = [

@@ -2,11 +2,11 @@ import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { newMidi } from "../common/midi";
-import EventsEditor from "./components/events-editor";
-import { PropertiesEditor } from "./components/properties-editor";
-import SplitPane from "./components/split-pane";
-import TrackList from "./components/track-list";
+import EventsEditor from "./events-editor";
 import { askSave, openFile, saveFile } from "./files";
+import { PropertiesEditor } from "./properties-editor";
+import SplitPane from "./split-pane";
+import TrackList from "./track-list";
 
 function App(): JSX.Element {
   const [filePath, setFilePath] = React.useState<string | undefined>(undefined);

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Event } from "../../common/midi";
-import { getEventName, newEvent } from "../events";
+import { Event } from "../common/midi";
+import { getEventName, newEvent } from "./events";
 import List, { ListProps } from "./list";
 
 export interface EventListProps extends Omit<ListProps, "className" | "onChange" | "elements" | "notEmpty" | "onSelect" | "onAdd" | "onDelete"> {
