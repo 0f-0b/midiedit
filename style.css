@@ -134,17 +134,21 @@ select:not([multiple]) {
   position: relative;
   height: 100%;
   background-color: black;
+}
+
+.notes-edit-region-container {
+  height: 100%;
   overflow: scroll;
 }
 
-.notes-edit-buttons {
-  position: fixed;
-  padding: 6px;
-  z-index: 1;
+.notes-edit-region {
+  position: relative;
 }
 
-.notes-edit-region {
-  transform: scaleY(-1);
+.notes-edit-buttons {
+  position: absolute;
+  top: 6px;
+  left: 6px;
 }
 
 .note {
