@@ -22,18 +22,17 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
-    "@react-hook/throttle": "^2.2.0",
-    "ecma-proposal-math-extensions": "0.0.2",
     "midievents": "^2.0.0",
     "midifile": "^2.0.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-virtualized": "^9.22.2"
   },
   "devDependencies": {
-    "@types/ecma-proposal-math-extensions": "0.0.2",
     "@types/node": "^14.14.6",
     "@types/react": "^16.9.55",
     "@types/react-dom": "^16.9.9",
+    "@types/react-virtualized": "^9.21.10",
     "@typescript-eslint/eslint-plugin": "^4.6.0",
     "@typescript-eslint/parser": "^4.6.0",
     "electron": "^10.1.5",

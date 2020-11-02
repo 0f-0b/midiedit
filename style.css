@@ -45,15 +45,9 @@ select:not([multiple]) {
   height: 100%;
 }
 
-.list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  overflow-y: scroll;
-}
-
 .list-element-container {
   display: flex;
+  box-sizing: border-box;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -119,12 +113,12 @@ select:not([multiple]) {
   padding: 6px;
 }
 
-.track-list {
-  height: 100%;
-}
-
-.track-properties input {
-  width: 80px;
+.track-name {
+  display: list-item;
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .events-editor {
@@ -135,166 +129,86 @@ select:not([multiple]) {
   grid-template-columns: 180px minmax(0, auto);
 }
 
+.event-name {
+  display: list-item;
+}
+
 .event-properties {
   height: calc(100% - 20px);
   padding: 8px;
   overflow-y: scroll;
 }
 
-.notes-editor {
-  position: relative;
+.notes-viewer {
   height: 100%;
   background-color: black;
-}
-
-.notes-edit-region-container {
-  height: 100%;
   overflow: scroll;
-}
-
-.notes-edit-region {
-  position: relative;
-}
-
-.notes-edit-buttons {
-  position: absolute;
-  top: 6px;
-  left: 6px;
 }
 
 .note {
   position: absolute;
-  cursor: pointer;
 }
 
 .note.channel-0 {
-  background-color: #00a;
-}
-
-.note.channel-0.selected {
-  background-color: #55f;
+  background-color: #00f;
 }
 
 .note.channel-1 {
-  background-color: #0a0;
-}
-
-.note.channel-1.selected {
-  background-color: #5f5;
+  background-color: #0f0;
 }
 
 .note.channel-2 {
-  background-color: #0aa;
-}
-
-.note.channel-2.selected {
-  background-color: #5ff;
+  background-color: #0ff;
 }
 
 .note.channel-3 {
-  background-color: #a00;
-}
-
-.note.channel-3.selected {
-  background-color: #f55;
+  background-color: #f00;
 }
 
 .note.channel-4 {
-  background-color: #a0a;
-}
-
-.note.channel-4.selected {
-  background-color: #f5f;
+  background-color: #f0f;
 }
 
 .note.channel-5 {
-  background-color: #aa0;
-}
-
-.note.channel-5.selected {
-  background-color: #ff5;
+  background-color: #ff0;
 }
 
 .note.channel-6 {
-  background-color: #00a;
-}
-
-.note.channel-6.selected {
-  background-color: #55f;
+  background-color: #00f;
 }
 
 .note.channel-7 {
-  background-color: #0a0;
-}
-
-.note.channel-7.selected {
-  background-color: #5f5;
+  background-color: #0f0;
 }
 
 .note.channel-8 {
-  background-color: #0aa;
-}
-
-.note.channel-8.selected {
-  background-color: #5ff;
+  background-color: #0ff;
 }
 
 .note.channel-9 {
-  background-color: #a00;
-}
-
-.note.channel-9.selected {
-  background-color: #f55;
+  background-color: #f00;
 }
 
 .note.channel-10 {
-  background-color: #a0a;
-}
-
-.note.channel-10.selected {
-  background-color: #f5f;
+  background-color: #f0f;
 }
 
 .note.channel-11 {
-  background-color: #aa0;
-}
-
-.note.channel-11.selected {
-  background-color: #ff5;
+  background-color: #ff0;
 }
 
 .note.channel-12 {
-  background-color: #00a;
-}
-
-.note.channel-12.selected {
-  background-color: #55f;
+  background-color: #00f;
 }
 
 .note.channel-13 {
-  background-color: #0a0;
-}
-
-.note.channel-13.selected {
-  background-color: #5f5;
+  background-color: #0f0;
 }
 
 .note.channel-14 {
-  background-color: #0aa;
-}
-
-.note.channel-14.selected {
-  background-color: #5ff;
+  background-color: #0ff;
 }
 
 .note.channel-15 {
-  background-color: #a00;
-}
-
-.note.channel-15.selected {
-  background-color: #f55;
-}
-
-.event-list {
-  height: 100%;
+  background-color: #f00;
 }

@@ -1,29 +1,27 @@
 import * as React from "react";
-import { Event } from "../common/midi";
+import { Track } from "../common/midi";
 import EventList from "./event-list";
 import { getEventProperties } from "./events";
-import NotesEditor from "./notes-editor";
+import NotesViewer from "./notes-viewer";
 import { PropertiesEditor } from "./properties-editor";
-import SplitView, { SplitViewProps } from "./split-view";
+import SplitView from "./split-view";
 
-export interface TrackEditorProps extends Omit<SplitViewProps, "className" | "direction" | "first" | "second" | "onChange"> {
-  trackLength: number;
-  events: Event[];
+export interface TrackEditorProps {
+  track: Track;
   selectedIndex: number;
-  onChange: (events: Event[], selectedIndex: number) => void;
+  onChange: (track: Track, selectedIndex: number) => void;
 }
 
-export default function EventsEditor({ trackLength, events, selectedIndex, onChange, ...props }: TrackEditorProps): JSX.Element {
+export default function EventsEditor({ track, selectedIndex, onChange }: TrackEditorProps): JSX.Element {
   return <SplitView className="events-editor"
     direction="vertical"
-    first={<NotesEditor trackLength={trackLength} events={events} selectedIndex={selectedIndex} onChange={onChange} />}
+    first={<NotesViewer track={track} scale={1} noteHeight={8} visibleChannels={new Array(16).fill(true)} />}
     second={<SplitView className="event-list-container"
       direction="horizontal"
-      first={<EventList events={events} selectedIndex={selectedIndex} onChange={onChange} />}
-      second={<PropertiesEditor className="event-properties" properties={getEventProperties(events[selectedIndex], event => onChange([
-        ...events.slice(0, selectedIndex),
+      first={<EventList track={track} selectedIndex={selectedIndex} onChange={onChange} />}
+      second={<PropertiesEditor className="event-properties" properties={getEventProperties(track[selectedIndex], event => onChange([
+        ...track.slice(0, selectedIndex),
         event,
-        ...events.slice(selectedIndex + 1)
-      ], selectedIndex), trackLength)} />} />}
-    {...props} />;
+        ...track.slice(selectedIndex + 1)
+      ], selectedIndex))} />} />} />;
 }

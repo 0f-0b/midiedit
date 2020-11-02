@@ -1,4 +1,4 @@
-import { Event, LyricsEvent, MIDIEvent, TextEvent } from "midievents";
+import { Event, MIDIEvent, TextEvent } from "midievents";
 
 declare class MIDIFile {
   header: MIDIFile.Header;
@@ -17,19 +17,9 @@ declare class MIDIFile {
 declare namespace MIDIFile {
   type Format = 0 | 1 | 2;
   type SMPTEFrames = 24 | 25 | 29.97 | 30;
-  type ResolvedEvent = Event & {
-    playTime: number;
-    track?: number;
-  };
-  type ResolvedMIDIEvent = MIDIEvent & {
-    playTime: number;
-    track?: number;
-  };
-  type ResolvedLyricEvent = (LyricsEvent | TextEvent) & {
-    playTime: number;
-    track?: number;
-    text: string;
-  };
+  type ResolvedEvent = Event & { playTime: number; track?: number; };
+  type ResolvedMIDIEvent = MIDIEvent & { playTime: number; track?: number; };
+  type ResolvedLyricEvent = TextEvent & { playTime: number; track?: number; text: string; };
 
   class Header {
     static readonly HEADER_LENGTH: 14;

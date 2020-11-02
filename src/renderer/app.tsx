@@ -20,10 +20,10 @@ function App(): JSX.Element {
     ipcRenderer.on("new-file", async () => {
       if (dirty && !await askSave(filePath, midi))
         return;
-      setFilePath(undefined);
-      setMidi(newMidi());
       setSelectedTrack(0);
       setSelectedEvent(0);
+      setFilePath(undefined);
+      setMidi(newMidi());
       setDirty(false);
     });
     ipcRenderer.on("open-file", async (_, preferredPath?: string) => {
@@ -39,10 +39,10 @@ function App(): JSX.Element {
       const opened = await openFile(preferredPath);
       if (!opened)
         return;
-      setFilePath(opened.path);
-      setMidi(opened.midi);
       setSelectedTrack(0);
       setSelectedEvent(0);
+      setFilePath(opened.path);
+      setMidi(opened.midi);
       setDirty(false);
     });
     ipcRenderer.on("save-file", async () => {
@@ -75,7 +75,7 @@ function App(): JSX.Element {
       second={<TrackList
         tracks={midi.tracks}
         selectedIndex={selectedTrack}
-        readOnly={midi.format === 0}
+        multiTrack={midi.format !== 0}
         onChange={(tracks, selectedIndex) => {
           if (selectedTrack !== selectedIndex) {
             setSelectedTrack(selectedIndex);
@@ -85,18 +85,10 @@ function App(): JSX.Element {
           setDirty(true);
         }} />} />}
     second={<EventsEditor
-      trackLength={midi.tracks[selectedTrack].length}
-      events={midi.tracks[selectedTrack].events}
+      track={midi.tracks[selectedTrack]}
       selectedIndex={selectedEvent}
-      onChange={(events, selectedIndex) => {
-        setMidi({
-          ...midi,
-          tracks: [
-            ...midi.tracks.slice(0, selectedTrack),
-            { ...midi.tracks[selectedTrack], events },
-            ...midi.tracks.slice(selectedTrack + 1)
-          ]
-        });
+      onChange={(track, selectedIndex) => {
+        setMidi({ ...midi, tracks: [...midi.tracks.slice(0, selectedTrack), track, ...midi.tracks.slice(selectedTrack + 1)] });
         setSelectedEvent(selectedIndex);
         setDirty(true);
       }} />} />;

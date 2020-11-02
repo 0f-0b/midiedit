@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Division, DivisionType, Format, Midi, newDivision, smpteFrames } from "../common/midi";
-import { PropertiesEditor, PropertiesEditorProps, Property } from "./properties-editor";
+import { PropertiesEditor, Property } from "./properties-editor";
 
 function divisionProperties(division: Division, onChange: (division: Division) => void): { [id: string]: Property; } {
   switch (division.type) {
@@ -46,12 +46,12 @@ function divisionProperties(division: Division, onChange: (division: Division) =
   }
 }
 
-export interface MetadataProps extends Omit<PropertiesEditorProps, "properties" | "onChange"> {
+export interface MetadataProps {
   midi: Midi;
   onChange: (midi: Midi) => void;
 }
 
-export default function Metadata({ midi, onChange, ...props }: MetadataProps): JSX.Element {
+export default function Metadata({ midi, onChange }: MetadataProps): JSX.Element {
   return <PropertiesEditor className="metadata"
     properties={{
       format: {
@@ -74,5 +74,5 @@ export default function Metadata({ midi, onChange, ...props }: MetadataProps): J
         }
       },
       ...divisionProperties(midi.division, division => onChange({ ...midi, division }))
-    }} {...props} />;
+    }} />;
 }
