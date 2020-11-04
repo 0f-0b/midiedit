@@ -4,15 +4,10 @@ import { Midi } from "../common/midi";
 import { askSave, openFile, saveFile } from "./files";
 import { buildMenu } from "./menu";
 
-(async () => {
-  let opened: string | undefined;
-  app.on("open-file", (event, file) => {
-    event.preventDefault();
-    opened = file;
-  });
-  await app.whenReady();
+let window: BrowserWindow;
+app.once("ready", () => {
   Menu.setApplicationMenu(buildMenu());
-  const window = new BrowserWindow({
+  window = new BrowserWindow({
     title: app.name,
     width: 800,
     height: 600,
@@ -25,9 +20,6 @@ import { buildMenu } from "./menu";
     }
   });
   window.loadFile(path.resolve(__dirname, "../../index.html"));
-  if (opened !== undefined)
-    window.webContents.send("open-file", opened);
-  app.removeAllListeners("open-file");
   app.on("open-file", (event, path) => {
     event.preventDefault();
     window.webContents.send("open-file", path);
@@ -46,4 +38,4 @@ import { buildMenu } from "./menu";
   ipcMain.handle("open-file", (_, filePath: string | undefined) => openFile(window, filePath));
   ipcMain.handle("save-file", (_, filePath: string | undefined, midi: Midi) => saveFile(window, filePath, midi));
   ipcMain.handle("ask-save", (_, filePath: string | undefined, midi: Midi) => askSave(window, filePath, midi));
-})();
+});
