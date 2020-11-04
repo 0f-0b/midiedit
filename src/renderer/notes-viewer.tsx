@@ -2,6 +2,9 @@ import * as React from "react";
 import { AutoSizer, Collection } from "react-virtualized";
 import { getTrackLength, Track } from "../common/midi";
 
+const channelCount = 16;
+const keyCount = 128;
+
 interface Note {
   channel: number;
   key: number;
@@ -10,8 +13,6 @@ interface Note {
 }
 
 function extractNotes(track: Track, visible: boolean[]): Note[] {
-  const channelCount = 16;
-  const keyCount = 128;
   const notes: Note[] = [];
   const channels = Array.from({ length: channelCount }, () => new Array<number>(keyCount));
   let time = 0;
@@ -68,14 +69,14 @@ export default function NotesViewer({ track, scale, noteHeight, visibleChannels 
             if (index === notes.length)
               return {
                 x: trackLength * scale,
-                y: 128 * noteHeight,
+                y: keyCount * noteHeight,
                 width: 0,
                 height: 0
               };
             const note = notes[index];
             return {
               x: note.start * scale,
-              y: noteHeight * (127 - note.key),
+              y: noteHeight * ((keyCount - 1) - note.key),
               width: (note.end - note.start) * scale,
               height: noteHeight
             };
