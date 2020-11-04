@@ -1,5 +1,4 @@
 import { app, BrowserWindow, ipcMain, Menu } from "electron";
-import { once } from "events";
 import * as path from "path";
 import { Midi } from "../common/midi";
 import { askSave, openFile, saveFile } from "./files";
@@ -11,7 +10,7 @@ import { buildMenu } from "./menu";
     event.preventDefault();
     opened = file;
   });
-  await once(app, "ready");
+  await app.whenReady();
   Menu.setApplicationMenu(buildMenu());
   const window = new BrowserWindow({
     title: app.name,
