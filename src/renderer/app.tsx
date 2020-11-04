@@ -1,5 +1,7 @@
 import { ipcRenderer } from "electron";
 import * as React from "react";
+import { useEffect, useState } from "react";
+import { useBeforeunload } from "react-beforeunload";
 import * as ReactDOM from "react-dom";
 import { newMidi } from "../common/midi";
 import EventsEditor from "./events-editor";
@@ -7,57 +9,62 @@ import { askSave, openFile, saveFile } from "./files";
 import Metadata from "./metadata";
 import SplitView from "./split-view";
 import TrackList from "./track-list";
+import useIpc from "./use-ipc";
 
 function App(): JSX.Element {
-  const [filePath, setFilePath] = React.useState<string | undefined>(undefined);
-  const [midi, setMidi] = React.useState(newMidi());
-  const [selectedTrack, setSelectedTrack] = React.useState(0);
-  const [selectedEvent, setSelectedEvent] = React.useState(0);
-  const [dirty, setDirty] = React.useState(false);
-  React.useEffect(() => ipcRenderer.send("ready"), []);
-  React.useEffect(() => ipcRenderer.send("update-state", filePath, dirty), [filePath, dirty]);
-  React.useEffect(() => {
-    ipcRenderer.on("new-file", async () => {
-      if (dirty && !await askSave(filePath, midi))
+  const [filePath, setFilePath] = useState<string | undefined>(undefined);
+  const [midi, setMidi] = useState(newMidi());
+  const [selectedTrack, setSelectedTrack] = useState(0);
+  const [selectedEvent, setSelectedEvent] = useState(0);
+  const [dirty, setDirty] = useState(false);
+  useEffect(() => ipcRenderer.send("ready"), []);
+  useEffect(() => ipcRenderer.send("update-state", filePath, dirty), [filePath, dirty]);
+  useIpc("new-file", async () => {
+    if (dirty && !await askSave(filePath, midi))
+      return;
+    setSelectedTrack(0);
+    setSelectedEvent(0);
+    setFilePath(undefined);
+    setMidi(newMidi());
+    setDirty(false);
+  });
+  useIpc("open-file", async (_, preferredPath?: string) => {
+    if (dirty) {
+      const saved = await askSave(filePath, midi);
+      if (!saved)
         return;
-      setSelectedTrack(0);
-      setSelectedEvent(0);
-      setFilePath(undefined);
-      setMidi(newMidi());
-      setDirty(false);
-    });
-    ipcRenderer.on("open-file", async (_, preferredPath?: string) => {
-      if (dirty) {
-        const saved = await askSave(filePath, midi);
-        if (!saved)
-          return;
-        if (saved.path !== undefined) {
-          setFilePath(saved.path);
-          setDirty(false);
-        }
-      }
-      const opened = await openFile(preferredPath);
-      if (!opened)
-        return;
-      setSelectedTrack(0);
-      setSelectedEvent(0);
-      setFilePath(opened.path);
-      setMidi(opened.midi);
-      setDirty(false);
-    });
-    ipcRenderer.on("save-file", async () => {
-      const saved = await saveFile(filePath, midi);
-      if (saved) {
+      if (saved.path !== undefined) {
         setFilePath(saved.path);
         setDirty(false);
       }
-    });
-    return () => {
-      ipcRenderer.removeAllListeners("new-file");
-      ipcRenderer.removeAllListeners("open-file");
-      ipcRenderer.removeAllListeners("save-file");
-    };
-  }, [filePath, midi, dirty]);
+    }
+    const opened = await openFile(preferredPath);
+    if (!opened)
+      return;
+    setSelectedTrack(0);
+    setSelectedEvent(0);
+    setFilePath(opened.path);
+    setMidi(opened.midi);
+    setDirty(false);
+  });
+  useIpc("save-file", async () => {
+    const saved = await saveFile(filePath, midi);
+    if (saved) {
+      setFilePath(saved.path);
+      setDirty(false);
+    }
+  });
+  useBeforeunload(event => {
+    if (dirty) {
+      event.preventDefault();
+      askSave(filePath, midi).then(saved => {
+        if (!saved)
+          return;
+        setDirty(false);
+        window.close();
+      });
+    }
+  });
   return <SplitView className="app"
     direction="horizontal"
     first={<SplitView className="side"

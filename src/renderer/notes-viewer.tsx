@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useRef } from "react";
 import { AutoSizer, Collection } from "react-virtualized";
 import { getTrackLength, Track } from "../common/midi";
 
@@ -56,8 +57,8 @@ export interface NotesViewerProps {
 export default function NotesViewer({ track, scale, noteHeight, visibleChannels }: NotesViewerProps): JSX.Element {
   const trackLength = getTrackLength(track);
   const notes = extractNotes(track, visibleChannels);
-  const collection = React.useRef<Collection>(null);
-  React.useEffect(() => collection.current?.recomputeCellSizesAndPositions(), [trackLength, notes]);
+  const collection = useRef<Collection>(null);
+  useEffect(() => collection.current?.recomputeCellSizesAndPositions(), [trackLength, notes]);
   return <div className="notes-viewer">
     <AutoSizer>
       {({ width, height }) =>
