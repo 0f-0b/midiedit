@@ -11,7 +11,6 @@ import { buildMenu } from "./menu";
     event.preventDefault();
     opened = file;
   });
-  app.on("window-all-closed", () => app.quit());
   await once(app, "ready");
   Menu.setApplicationMenu(buildMenu());
   const window = new BrowserWindow({
