@@ -9,19 +9,16 @@ import SplitView from "./split-view";
 export interface TrackEditorProps {
   track: Track;
   selectedIndex: number;
-  onChange: (track: Track, selectedIndex: number) => void;
+  onSelect: (index: number) => void;
+  onChange: (track: Track) => void;
 }
 
-export default function EventsEditor({ track, selectedIndex, onChange }: TrackEditorProps): JSX.Element {
+export default function EventsEditor({ track, selectedIndex, onSelect, onChange }: TrackEditorProps): JSX.Element {
   return <SplitView className="events-editor"
     direction="vertical"
     first={<NotesViewer track={track} scale={1} noteHeight={8} visibleChannels={new Array(16).fill(true)} />}
     second={<SplitView className="event-list-container"
       direction="horizontal"
-      first={<EventList track={track} selectedIndex={selectedIndex} onChange={onChange} />}
-      second={<PropertiesEditor className="event-properties" properties={getEventProperties(track[selectedIndex], event => onChange([
-        ...track.slice(0, selectedIndex),
-        event,
-        ...track.slice(selectedIndex + 1)
-      ], selectedIndex))} />} />} />;
+      first={<EventList track={track} selectedIndex={selectedIndex} onSelect={onSelect} onChange={onChange} />}
+      second={<PropertiesEditor className="event-properties" properties={getEventProperties(track[selectedIndex], event => onChange([...track.slice(0, selectedIndex), event, ...track.slice(selectedIndex + 1)]))} />} />} />;
 }

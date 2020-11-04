@@ -76,20 +76,20 @@ function App(): JSX.Element {
         tracks={midi.tracks}
         selectedIndex={selectedTrack}
         multiTrack={midi.format !== 0}
-        onChange={(tracks, selectedIndex) => {
-          if (selectedTrack !== selectedIndex) {
-            setSelectedTrack(selectedIndex);
-            setSelectedEvent(0);
-          }
+        onSelect={index => {
+          setSelectedTrack(index);
+          setSelectedEvent(0);
+        }}
+        onChange={tracks => {
           setMidi({ ...midi, tracks });
           setDirty(true);
         }} />} />}
     second={<EventsEditor
       track={midi.tracks[selectedTrack]}
       selectedIndex={selectedEvent}
-      onChange={(track, selectedIndex) => {
+      onSelect={index => setSelectedEvent(index)}
+      onChange={track => {
         setMidi({ ...midi, tracks: [...midi.tracks.slice(0, selectedTrack), track, ...midi.tracks.slice(selectedTrack + 1)] });
-        setSelectedEvent(selectedIndex);
         setDirty(true);
       }} />} />;
 }

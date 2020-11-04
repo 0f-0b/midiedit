@@ -6,10 +6,11 @@ export interface TrackListProps {
   tracks: Track[];
   selectedIndex: number;
   multiTrack: boolean;
-  onChange: (tracks: Track[], selectedIndex: number) => void;
+  onSelect: (index: number) => void;
+  onChange: (tracks: Track[]) => void;
 }
 
-export default function TrackList({ tracks, selectedIndex, multiTrack, onChange }: TrackListProps): JSX.Element {
+export default function TrackList({ tracks, selectedIndex, multiTrack, onSelect, onChange }: TrackListProps): JSX.Element {
   return <List
     rowCount={tracks.length}
     rowHeight={50}
@@ -23,9 +24,16 @@ export default function TrackList({ tracks, selectedIndex, multiTrack, onChange 
     }}
     selectedIndex={selectedIndex}
     canAppend={multiTrack}
-    canInsert={() => multiTrack}
-    canRemove={() => multiTrack && tracks.length > 1}
-    onSelect={index => onChange(tracks, index)}
-    onAdd={(index, selectedIndex) => onChange([...tracks.slice(0, index), newTrack(), ...tracks.slice(index)], selectedIndex)}
-    onRemove={(index, selectedIndex) => onChange([...tracks.slice(0, index), ...tracks.slice(index + 1)], selectedIndex)} />;
+    canInsert={multiTrack}
+    canRemove={tracks.length > 1}
+    onSelect={index => onSelect(index)}
+    onAdd={index => {
+      onChange([...tracks.slice(0, index), newTrack(), ...tracks.slice(index)]);
+      onSelect(index);
+    }}
+    onRemove={index => {
+      onChange([...tracks.slice(0, index), ...tracks.slice(index + 1)]);
+      if (selectedIndex !== 0 && index <= selectedIndex)
+        onSelect(selectedIndex - 1);
+    }} />;
 }

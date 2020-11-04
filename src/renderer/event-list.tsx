@@ -6,10 +6,11 @@ import List from "./list";
 export interface EventListProps {
   track: Track;
   selectedIndex: number;
-  onChange: (track: Track, selectedIndex: number) => void;
+  onSelect: (index: number) => void;
+  onChange: (track: Track) => void;
 }
 
-export default function EventList({ track, selectedIndex, onChange }: EventListProps): JSX.Element {
+export default function EventList({ track, selectedIndex, onSelect, onChange }: EventListProps): JSX.Element {
   return <List
     rowCount={track.length}
     rowHeight={50}
@@ -22,9 +23,16 @@ export default function EventList({ track, selectedIndex, onChange }: EventListP
     }}
     selectedIndex={selectedIndex}
     canAppend={false}
-    canInsert={() => true}
+    canInsert={true}
     canRemove={index => index < track.length - 1}
-    onSelect={index => onChange(track, index)}
-    onAdd={(index, selectedIndex) => onChange([...track.slice(0, index), newTrackEvent("text", 0), ...track.slice(index)], selectedIndex)}
-    onRemove={(index, selectedIndex) => onChange([...track.slice(0, index), ...track.slice(index + 1)], selectedIndex)} />;
+    onSelect={index => onSelect(index)}
+    onAdd={index => {
+      onChange([...track.slice(0, index), newTrackEvent("text", 0), ...track.slice(index)]);
+      onSelect(index);
+    }}
+    onRemove={index => {
+      onChange([...track.slice(0, index), ...track.slice(index + 1)]);
+      if (selectedIndex !== 0 && index <= selectedIndex)
+        onSelect(selectedIndex - 1);
+    }} />;
 }

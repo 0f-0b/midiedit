@@ -9,11 +9,11 @@ export interface ListProps {
   rowRenderer: (index: number) => ReactNode;
   selectedIndex: number;
   canAppend: boolean;
-  canInsert: (index: number) => boolean;
-  canRemove: (index: number) => boolean;
+  canInsert: boolean | ((index: number) => boolean);
+  canRemove: boolean | ((index: number) => boolean);
   onSelect: (index: number) => void;
-  onAdd: (index: number, selectedIndex: number) => void;
-  onRemove: (index: number, selectedIndex: number) => void;
+  onAdd: (index: number) => void;
+  onRemove: (index: number) => void;
 }
 
 export default function List({ rowCount, rowHeight, rowRenderer, selectedIndex, onSelect, canAppend, canInsert, canRemove, onAdd, onRemove }: ListProps): JSX.Element {
@@ -22,17 +22,17 @@ export default function List({ rowCount, rowHeight, rowRenderer, selectedIndex, 
     if (index === rowCount)
       return <div key={key} style={style}>
         <div className="list-buttons">
-          <AddButton onClick={() => onAdd(rowCount, selectedIndex)} />
+          <AddButton onClick={() => onAdd(rowCount)} />
         </div>
       </div>;
     const selected = index === selectedIndex;
-    const canInsertHere = canInsert(index);
-    const canRemoveHere = canRemove(index);
+    const canInsertHere = typeof canInsert === "boolean" ? canInsert : canInsert(index);
+    const canRemoveHere = typeof canRemove === "boolean" ? canRemove : canRemove(index);
     return <div key={key} style={style} className={`list-element-container${selected ? " selected" : ""}`}>
-      <div className="list-element" onClick={() => onSelect(index)}>{rowRenderer(index)}</div>
+      <div className="list-element" onClick={() => selected || onSelect(index)}>{rowRenderer(index)}</div>
       {(canInsertHere || canRemoveHere) && <div className="list-buttons">
-        {canInsertHere && <AddButton onClick={() => onAdd(index, selectedIndex + +(index <= selectedIndex))} />}
-        {canRemoveHere && <RemoveButton onClick={() => onRemove(index, Math.max(0, selectedIndex - +(index <= selectedIndex)))} />}
+        {canInsertHere && <AddButton onClick={() => onAdd(index)} />}
+        {canRemoveHere && <RemoveButton onClick={() => onRemove(index)} />}
       </div>}
     </div>;
   };
