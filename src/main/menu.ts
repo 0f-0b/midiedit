@@ -22,6 +22,11 @@ function menuTemplate(): MenuItemConstructorOptions[] {
           click: (_, window) => window?.webContents.send("save-file")
         },
         { type: "separator" },
+        {
+          label: "&Export as JSON",
+          click: (_, window) => window?.webContents.send("export-json")
+        },
+        { type: "separator" },
         { role: "quit" }
       ]
     },
@@ -94,6 +99,11 @@ function darwinMenuTemplate(): MenuItemConstructorOptions[] {
           label: "Save",
           accelerator: "CmdOrCtrl+S",
           click: (_, window) => window?.webContents.send("save-file")
+        },
+        { type: "separator" },
+        {
+          label: "&Export as JSON",
+          click: (_, window) => window?.webContents.send("export-json")
         }
       ]
     },

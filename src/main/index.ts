@@ -1,8 +1,8 @@
 import { app, BrowserWindow, ipcMain, Menu } from "electron";
 import * as path from "path";
 import { Midi } from "../common/midi";
-import { askSave, openFile, saveFile } from "./files";
 import { buildMenu } from "./menu";
+import { askSave, exportJson, openFile, saveFile } from "./remote";
 
 let window: BrowserWindow;
 app.once("ready", () => {
@@ -38,4 +38,5 @@ app.once("ready", () => {
   ipcMain.handle("open-file", (_, filePath: string | undefined) => openFile(window, filePath));
   ipcMain.handle("save-file", (_, filePath: string | undefined, midi: Midi) => saveFile(window, filePath, midi));
   ipcMain.handle("ask-save", (_, filePath: string | undefined, midi: Midi) => askSave(window, filePath, midi));
+  ipcMain.handle("export-json", (_, midi: Midi) => exportJson(window, midi));
 });

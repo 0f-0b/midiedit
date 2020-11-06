@@ -3,8 +3,12 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { Midi, readMidi, writeMidi } from "../common/midi";
 
-const filters: FileFilter[] = [
-  { name: "MIDI Music", extensions: ["mid", "midi"] },
+const midiFilters: FileFilter[] = [
+  { name: "Standard MIDI File", extensions: ["mid", "midi"] },
+  { name: "All Files", extensions: ["*"] }
+];
+const jsonFilters: FileFilter[] = [
+  { name: "JSON File", extensions: ["json"] },
   { name: "All Files", extensions: ["*"] }
 ];
 
@@ -18,7 +22,7 @@ export interface SaveResult {
 }
 
 export async function openFile(window: BrowserWindow, filePath: string | undefined): Promise<OpenResult | null> {
-  filePath ??= (await dialog.showOpenDialog(window, { properties: ["openFile"], filters })).filePaths[0];
+  filePath ??= (await dialog.showOpenDialog(window, { properties: ["openFile"], filters: midiFilters })).filePaths[0];
   if (!filePath)
     return null;
   let midi: Midi;
@@ -37,7 +41,7 @@ export async function openFile(window: BrowserWindow, filePath: string | undefin
 }
 
 export async function saveFile(window: BrowserWindow, filePath: string | undefined, midi: Midi): Promise<SaveResult | null> {
-  filePath ??= (await dialog.showSaveDialog(window, { filters })).filePath;
+  filePath ??= (await dialog.showSaveDialog(window, { filters: midiFilters })).filePath;
   if (!filePath)
     return null;
   try {
@@ -70,5 +74,20 @@ export async function askSave(window: BrowserWindow, filePath: string | undefine
       return { path: undefined };
     default:
       return null;
+  }
+}
+
+export async function exportJson(window: BrowserWindow, midi: Midi): Promise<void> {
+  const filePath = (await dialog.showSaveDialog(window, { filters: jsonFilters })).filePath;
+  if (!filePath)
+    return;
+  try {
+    await fs.writeFile(filePath, JSON.stringify(midi, undefined, 2) + "\n");
+  } catch (e) {
+    await dialog.showMessageBox(window, {
+      type: "error",
+      message: `Failed to export to ${path.basename(filePath)}`,
+      detail: String(e?.stack ?? e)
+    });
   }
 }

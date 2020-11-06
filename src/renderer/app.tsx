@@ -5,8 +5,8 @@ import { useBeforeunload } from "react-beforeunload";
 import * as ReactDOM from "react-dom";
 import { newMidi } from "../common/midi";
 import EventsEditor from "./events-editor";
-import { askSave, openFile, saveFile } from "./files";
 import Metadata from "./metadata";
+import { askSave, exportJson, openFile, saveFile } from "./remote";
 import SplitView from "./split-view";
 import TrackList from "./track-list";
 import useIpc from "./use-ipc";
@@ -54,6 +54,7 @@ function App(): JSX.Element {
       setDirty(false);
     }
   });
+  useIpc("export-json", () => exportJson(midi));
   useBeforeunload(event => {
     if (dirty) {
       event.preventDefault();
