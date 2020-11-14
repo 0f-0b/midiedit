@@ -19,7 +19,7 @@ app.once("ready", () => {
       nodeIntegration: true
     }
   });
-  window.loadFile(path.resolve(__dirname, "../../index.html"));
+  void window.loadFile(path.resolve(__dirname, "../../index.html"));
   app.on("open-file", (event, path) => {
     event.preventDefault();
     window.webContents.send("open-file", path);

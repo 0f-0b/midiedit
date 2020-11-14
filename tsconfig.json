@@ -2,25 +2,23 @@
   "compilerOptions": {
     "target": "es2020",
     "module": "commonjs",
-    "moduleResolution": "node",
     "jsx": "react",
-    "baseUrl": ".",
+    "declaration": true,
+    "sourceMap": true,
     "outDir": "./lib",
-    "strict": true,
     "removeComments": true,
     "importHelpers": true,
-    "sourceMap": true,
-    "declaration": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "strict": true,
+    "baseUrl": "./src",
     "paths": {
       "*": [
-        "node_modules/*",
-        "src/types/*"
+        "../types/*"
       ]
-    }
+    },
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/**/*"
+    "./src/**/*"
   ]
 }

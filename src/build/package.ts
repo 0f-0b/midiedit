@@ -4,7 +4,7 @@ import packager = require("electron-packager");
 
 const root = path.resolve(__dirname, "../..");
 
-childProcess.execFile("git", ["rev-parse", "--short=7", "HEAD"], (err, stdout) => packager({
+childProcess.execFile("git", ["rev-parse", "--short=7", "HEAD"], (err, stdout) => void packager({
   dir: root,
   out: "dist",
   overwrite: true,
@@ -14,7 +14,4 @@ childProcess.execFile("git", ["rev-parse", "--short=7", "HEAD"], (err, stdout) =
   buildVersion: err ? "unknown" : stdout.trim(),
   appBundleId: "com.sjx233.midiedit",
   appCategoryType: "public.app-category.music"
-}).catch(error => {
-  process.stderr.write(`unexpected error: ${error?.stack ?? error}\n`);
-  process.exit(1);
 }));

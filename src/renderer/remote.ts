@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { ipcRenderer } from "electron";
 import { Midi } from "../common/midi";
 import type { OpenResult, SaveResult } from "../main/remote";

@@ -14,9 +14,8 @@
   "main": "lib/main/index.js",
   "repository": "github:sjx233/midiedit",
   "scripts": {
-    "lint": "eslint --ext .js,.ts,.jsx,.tsx src",
+    "lint": "eslint './src/**/*' './types/**/*'",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "package": "node lib/build/package.js",
     "postversion": "git push && git push --tags"

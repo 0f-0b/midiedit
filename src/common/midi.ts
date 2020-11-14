@@ -516,7 +516,7 @@ export function readMidi(buf: ArrayBuffer): Midi {
 }
 
 export function writeMidi(midi: Midi): ArrayBuffer {
-  if ((midi.division.type === 1) as boolean)
+  if ((midi.division.type === 1) as unknown)
     throw "SMPTE time is unsupported";
   const file = new MIDIFile;
   file.header.setFormat(midi.format);

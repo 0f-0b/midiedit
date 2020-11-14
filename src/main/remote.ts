@@ -31,8 +31,7 @@ export async function openFile(window: BrowserWindow, filePath: string | undefin
   } catch (e) {
     await dialog.showMessageBox(window, {
       type: "error",
-      message: `Failed to open ${path.basename(filePath)}`,
-      detail: String(e?.stack ?? e)
+      message: `Failed to open ${path.basename(filePath)}`
     });
     return null;
   }
@@ -49,8 +48,7 @@ export async function saveFile(window: BrowserWindow, filePath: string | undefin
   } catch (e) {
     await dialog.showMessageBox(window, {
       type: "error",
-      message: `Failed to save ${path.basename(filePath)}`,
-      detail: String(e?.stack ?? e)
+      message: `Failed to save ${path.basename(filePath)}`
     });
     return null;
   }
@@ -86,8 +84,7 @@ export async function exportJson(window: BrowserWindow, midi: Midi): Promise<voi
   } catch (e) {
     await dialog.showMessageBox(window, {
       type: "error",
-      message: `Failed to export to ${path.basename(filePath)}`,
-      detail: String(e?.stack ?? e)
+      message: `Failed to export to ${path.basename(filePath)}`
     });
   }
 }

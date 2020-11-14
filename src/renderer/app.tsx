@@ -19,6 +19,7 @@ function App(): JSX.Element {
   const [dirty, setDirty] = useState(false);
   useEffect(() => ipcRenderer.send("ready"), []);
   useEffect(() => ipcRenderer.send("update-state", filePath, dirty), [filePath, dirty]);
+  /* eslint-disable @typescript-eslint/no-misused-promises */
   useIpc("new-file", async () => {
     if (dirty && !await askSave(filePath, midi))
       return;
@@ -55,15 +56,17 @@ function App(): JSX.Element {
     }
   });
   useIpc("export-json", () => exportJson(midi));
+  /* eslint-enable @typescript-eslint/no-misused-promises */
   useBeforeunload(event => {
     if (dirty) {
       event.preventDefault();
-      askSave(filePath, midi).then(saved => {
+      void (async () => {
+        const saved = await askSave(filePath, midi);
         if (!saved)
           return;
         setDirty(false);
         window.close();
-      });
+      })();
     }
   });
   return <SplitView className="app"
