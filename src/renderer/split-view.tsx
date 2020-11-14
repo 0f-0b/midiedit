@@ -9,7 +9,7 @@ export interface SplitViewProps extends React.ComponentPropsWithoutRef<"div"> {
 }
 
 export default function SplitView({ direction, first, second, className, ...props }: SplitViewProps): JSX.Element {
-  return <div className={mergeClass(`split-pane ${direction}`, className)} {...props}>
+  return <div className={mergeClass(`split-view ${direction}`, className)} {...props}>
     <div>{first}</div>
     <div>{second}</div>
   </div>;

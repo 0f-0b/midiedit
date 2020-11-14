@@ -79,25 +79,25 @@ select:not([multiple]) {
   padding: 0;
 }
 
-.split-pane {
+.split-view {
   display: grid;
   width: 100%;
   height: 100%;
 }
 
-.split-pane.horizontal {
+.split-view.horizontal {
   grid-template-rows: 100%;
 }
 
-.split-pane.vertical {
+.split-view.vertical {
   grid-template-columns: 100%;
 }
 
-.split-pane.horizontal>:first-child {
+.split-view.horizontal>:first-child {
   border-right: 1px solid var(--border-color);
 }
 
-.split-pane.vertical>:first-child {
+.split-view.vertical>:first-child {
   border-bottom: 1px solid var(--border-color);
 }
 
