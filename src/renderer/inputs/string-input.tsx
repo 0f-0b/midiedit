@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export interface StringInputProps extends Omit<React.ComponentPropsWithoutRef<"input">, "onChange"> {
   value: string;
   onChange: (value: string) => void;

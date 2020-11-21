@@ -1,4 +1,3 @@
-import * as React from "react";
 import { IntegerInput } from "./inputs/integer-input";
 import { SelectInput } from "./inputs/select-input";
 import { StringInput } from "./inputs/string-input";

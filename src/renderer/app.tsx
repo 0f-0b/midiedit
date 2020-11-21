@@ -1,5 +1,4 @@
 import { ipcRenderer } from "electron";
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { useBeforeunload } from "react-beforeunload";
 import * as ReactDOM from "react-dom";

@@ -32,8 +32,7 @@
   },
   "rules": {
     // typescript-eslint/typescript-eslint#1824
-    "indent": [
-      "off"
-    ]
+    "indent": "off",
+    "react/react-in-jsx-scope": "off"
   }
 }
