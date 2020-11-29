@@ -1,3 +1,5 @@
+import * as React from "react";
+
 export interface IntegerInputProps extends Omit<React.ComponentPropsWithoutRef<"input">, "onChange"> {
   value: number;
   min?: number;

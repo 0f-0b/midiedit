@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useEffect, useRef } from "react";
 import { AutoSizer, Collection } from "react-virtualized";
 import { getTrackLength, Track } from "../common/midi";

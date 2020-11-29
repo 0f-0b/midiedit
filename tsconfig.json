@@ -3,11 +3,7 @@
     "target": "es2020",
     "module": "commonjs",
     "jsx": "react-jsx",
-    "declaration": true,
-    "sourceMap": true,
-    "outDir": "./lib",
-    "removeComments": true,
-    "importHelpers": true,
+    "noEmit": true,
     "strict": true,
     "baseUrl": "./src",
     "paths": {

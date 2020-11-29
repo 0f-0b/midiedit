@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Division, DivisionType, Format, Midi, newDivision, smpteFrames } from "../common/midi";
 import { PropertiesEditor, Property } from "./properties-editor";
 

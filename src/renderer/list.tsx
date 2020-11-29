@@ -1,3 +1,4 @@
+import * as React from "react";
 import { ReactNode } from "react";
 import { AutoSizer, List as VList, ListRowRenderer } from "react-virtualized";
 import { AddButton, RemoveButton } from "./edit-buttons";

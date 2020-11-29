@@ -1,11 +1,11 @@
-import { ipcRenderer } from "electron";
+import * as React from "react";
 import { useEffect, useState } from "react";
 import { useBeforeunload } from "react-beforeunload";
 import * as ReactDOM from "react-dom";
 import { newMidi } from "../common/midi";
+import { api } from "./api";
 import EventsEditor from "./events-editor";
 import Metadata from "./metadata";
-import { askSave, exportJson, openFile, saveFile } from "./remote";
 import SplitView from "./split-view";
 import TrackList from "./track-list";
 import useIpc from "./use-ipc";
@@ -16,11 +16,11 @@ function App(): JSX.Element {
   const [selectedTrack, setSelectedTrack] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState(0);
   const [dirty, setDirty] = useState(false);
-  useEffect(() => ipcRenderer.send("ready"), []);
-  useEffect(() => ipcRenderer.send("update-state", filePath, dirty), [filePath, dirty]);
+  useEffect(() => api.ready(), []);
+  useEffect(() => api.updateState(filePath, dirty), [filePath, dirty]);
   /* eslint-disable @typescript-eslint/no-misused-promises */
   useIpc("new-file", async () => {
-    if (dirty && !await askSave(filePath, midi))
+    if (dirty && !await api.askSave(filePath, midi))
       return;
     setSelectedTrack(0);
     setSelectedEvent(0);
@@ -30,7 +30,7 @@ function App(): JSX.Element {
   });
   useIpc("open-file", async (_, preferredPath?: string) => {
     if (dirty) {
-      const saved = await askSave(filePath, midi);
+      const saved = await api.askSave(filePath, midi);
       if (!saved)
         return;
       if (saved.path !== undefined) {
@@ -38,7 +38,7 @@ function App(): JSX.Element {
         setDirty(false);
       }
     }
-    const opened = await openFile(preferredPath);
+    const opened = await api.openFile(preferredPath);
     if (!opened)
       return;
     setSelectedTrack(0);
@@ -48,19 +48,19 @@ function App(): JSX.Element {
     setDirty(false);
   });
   useIpc("save-file", async () => {
-    const saved = await saveFile(filePath, midi);
+    const saved = await api.saveFile(filePath, midi);
     if (saved) {
       setFilePath(saved.path);
       setDirty(false);
     }
   });
-  useIpc("export-json", () => exportJson(midi));
+  useIpc("export-json", () => api.exportJson(midi));
   /* eslint-enable @typescript-eslint/no-misused-promises */
   useBeforeunload(event => {
     if (dirty) {
       event.preventDefault();
       void (async () => {
-        const saved = await askSave(filePath, midi);
+        const saved = await api.askSave(filePath, midi);
         if (!saved)
           return;
         setDirty(false);

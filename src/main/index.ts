@@ -16,10 +16,11 @@ app.once("ready", () => {
     backgroundColor: "#222",
     show: false,
     webPreferences: {
-      nodeIntegration: true
+      contextIsolation: true,
+      preload: path.join(app.getAppPath(), "preload.js")
     }
   });
-  void window.loadFile(path.resolve(__dirname, "../../index.html"));
+  void window.loadFile(path.join(app.getAppPath(), "index.html"));
   app.on("open-file", (event, path) => {
     event.preventDefault();
     window.webContents.send("open-file", path);

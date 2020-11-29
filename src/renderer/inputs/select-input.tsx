@@ -1,3 +1,5 @@
+import * as React from "react";
+
 export interface SelectInputProps extends Omit<React.ComponentPropsWithoutRef<"select">, "onChange"> {
   value: number;
   options: readonly string[];

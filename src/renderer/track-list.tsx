@@ -1,3 +1,4 @@
+import * as React from "react";
 import { newTrack, TextEvent, Track } from "../common/midi";
 import List from "./list";
 

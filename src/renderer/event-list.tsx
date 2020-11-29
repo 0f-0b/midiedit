@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Track } from "../common/midi";
 import { getEventName, newTrackEvent } from "./events";
 import List from "./list";
