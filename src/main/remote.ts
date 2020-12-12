@@ -80,7 +80,7 @@ export async function exportJson(window: BrowserWindow, midi: Midi): Promise<voi
   if (!filePath)
     return;
   try {
-    await fs.writeFile(filePath, JSON.stringify(midi, undefined, 2) + "\n");
+    await fs.writeFile(filePath, JSON.stringify(midi, (_, value: unknown) => value instanceof Uint8Array ? String.fromCharCode(...value) : value, 2) + "\n");
   } catch (e) {
     await dialog.showMessageBox(window, {
       type: "error",
