@@ -19,8 +19,20 @@ export default function InsertNotesWindow({ track, selectedIndex, onSelect, onCh
   const [key, setKey] = useState(60);
   const [attack, setAttack] = useState(64);
   const [release, setRelease] = useState(64);
+
+  function insert() {
+    onChange([
+      ...track.slice(0, selectedIndex),
+      { type: "note-on", channel, key, velocity: attack, delta: delta },
+      { type: "note-off", channel, key, velocity: release, delta: duration },
+      ...track.slice(selectedIndex)
+    ]);
+    onSelect(selectedIndex + 2);
+  }
+
   return <NewWindow name="insert-notes" copyStyles onUnload={onUnload}>
     <PropertiesEditor className="properties"
+      onKeyDown={event => event.code === "Enter" && insert()}
       properties={{
         delta: {
           type: "integer",
@@ -81,14 +93,6 @@ export default function InsertNotesWindow({ track, selectedIndex, onSelect, onCh
           }
         }
       }} />
-    <button className="confirm-button" onClick={() => {
-      onChange([
-        ...track.slice(0, selectedIndex),
-        { type: "note-on", channel, key, velocity: attack, delta: delta },
-        { type: "note-off", channel, key, velocity: release, delta: duration },
-        ...track.slice(selectedIndex)
-      ]);
-      onSelect(selectedIndex + 2);
-    }}>Insert</button>
+    <button className="confirm-button" onClick={insert}>Insert</button>
   </NewWindow>;
 }
