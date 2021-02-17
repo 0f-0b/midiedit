@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AutoSizer, Collection } from "react-virtualized";
 import { getTrackLength, Track } from "../common/midi";
 
@@ -49,12 +49,13 @@ function extractNotes(track: Track, visible: boolean[]): Note[] {
 
 export interface NotesViewerProps {
   track: Track;
-  scale: number;
-  noteHeight: number;
   visibleChannels: boolean[];
 }
 
-export default function NotesViewer({ track, scale, noteHeight, visibleChannels }: NotesViewerProps): JSX.Element {
+export default function NotesViewer({ track, visibleChannels }: NotesViewerProps): JSX.Element {
+  const [scale, setScale] = useState(0);
+  const tickWidth = 2 ** scale;
+  const noteHeight = 8;
   const trackLength = getTrackLength(track);
   const notes = extractNotes(track, visibleChannels);
   const collection = useRef<Collection>(null);
@@ -69,17 +70,17 @@ export default function NotesViewer({ track, scale, noteHeight, visibleChannels 
           cellSizeAndPositionGetter={({ index }) => {
             if (index === notes.length)
               return {
-                x: trackLength * scale,
-                y: keyCount * noteHeight,
+                x: Math.ceil(trackLength * tickWidth),
+                y: Math.ceil(keyCount * noteHeight),
                 width: 0,
                 height: 0
               };
             const note = notes[index];
             return {
-              x: note.start * scale,
-              y: noteHeight * ((keyCount - 1) - note.key),
-              width: (note.end - note.start) * scale,
-              height: noteHeight
+              x: Math.floor(note.start * tickWidth),
+              y: Math.floor(noteHeight * ((keyCount - 1) - note.key)),
+              width: Math.ceil((note.end - note.start) * tickWidth),
+              height: Math.ceil(noteHeight)
             };
           }}
           cellRenderer={({ index, key, style }) => {
@@ -90,5 +91,7 @@ export default function NotesViewer({ track, scale, noteHeight, visibleChannels 
           }}
           ref={collection} />}
     </AutoSizer>
+    <input className="scale" type="range" value={scale} min={-4} max={4} step="any"
+      onChange={event => setScale(event.target.valueAsNumber)} />
   </div>;
 }

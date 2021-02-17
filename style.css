@@ -153,6 +153,12 @@ select:not([multiple]) {
   overflow: scroll;
 }
 
+.scale {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+
 .note {
   position: absolute;
 }
