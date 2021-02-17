@@ -1,5 +1,7 @@
 import { Menu, MenuItemConstructorOptions } from "electron";
 
+const devOnly: (menu: MenuItemConstructorOptions[]) => MenuItemConstructorOptions[] = process.env.NODE_ENV === "production" ? () => [] : menu => menu;
+
 function menuTemplate(): MenuItemConstructorOptions[] {
   return [
     {
@@ -40,22 +42,29 @@ function menuTemplate(): MenuItemConstructorOptions[] {
         { role: "copy" },
         { role: "paste" },
         { role: "delete" },
-        { role: "selectAll" }
-      ]
-    },
-    {
-      label: "Debug",
-      submenu: [
+        { role: "selectAll" },
+        { type: "separator" },
         {
-          role: "reload",
-          accelerator: "CmdOrCtrl+R"
-        },
-        {
-          role: "toggleDevTools",
-          accelerator: "F12"
+          label: "&Insert Notes",
+          click: (_, window) => window?.webContents.send("insert-notes")
         }
       ]
     },
+    ...devOnly([
+      {
+        label: "Debug",
+        submenu: [
+          {
+            role: "reload",
+            accelerator: "CmdOrCtrl+R"
+          },
+          {
+            role: "toggleDevTools",
+            accelerator: "F12"
+          }
+        ]
+      }
+    ]),
     {
       role: "help",
       submenu: [
@@ -117,23 +126,30 @@ function darwinMenuTemplate(): MenuItemConstructorOptions[] {
         { role: "copy" },
         { role: "paste" },
         { role: "delete" },
-        { role: "selectAll" }
+        { role: "selectAll" },
+        { type: "separator" },
+        {
+          label: "&Insert Notes",
+          click: (_, window) => window?.webContents.send("insert-notes")
+        }
       ]
     },
     { role: "windowMenu" },
-    {
-      label: "Debug",
-      submenu: [
-        {
-          role: "reload",
-          accelerator: "CmdOrCtrl+R"
-        },
-        {
-          role: "toggleDevTools",
-          accelerator: "F12"
-        }
-      ]
-    }
+    ...devOnly([
+      {
+        label: "Debug",
+        submenu: [
+          {
+            role: "reload",
+            accelerator: "CmdOrCtrl+R"
+          },
+          {
+            role: "toggleDevTools",
+            accelerator: "F12"
+          }
+        ]
+      }
+    ])
   ];
 }
 

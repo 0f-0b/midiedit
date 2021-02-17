@@ -17,6 +17,7 @@ app.once("ready", () => {
     show: false,
     webPreferences: {
       contextIsolation: true,
+      nativeWindowOpen: true,
       preload: path.join(app.getAppPath(), "preload.js")
     }
   });
@@ -24,6 +25,24 @@ app.once("ready", () => {
   app.on("open-file", (event, path) => {
     event.preventDefault();
     window.webContents.send("open-file", path);
+  });
+  window.webContents.on("new-window", (event, _url, name, _disposition, options) => {
+    switch (name) {
+      case "insert-notes":
+        event.preventDefault();
+        event.newGuest = new BrowserWindow(Object.assign(options, {
+          parent: window,
+          title: "Insert Notes",
+          width: 240,
+          height: 200,
+          minWidth: 240,
+          minHeight: 200
+        }));
+        break;
+      default:
+        console.warn(`Unknown window '${name}'`);
+        break;
+    }
   });
   ipcMain.on("ready", () => window.show());
   ipcMain.on("update-state", (_, filePath: string | undefined, dirty: boolean) => {

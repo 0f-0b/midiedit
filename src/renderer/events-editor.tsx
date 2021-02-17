@@ -6,14 +6,14 @@ import NotesViewer from "./notes-viewer";
 import { PropertiesEditor } from "./properties-editor";
 import SplitView from "./split-view";
 
-export interface TrackEditorProps {
+export interface EventsEditorProps {
   track: Track;
   selectedIndex: number;
   onSelect: (index: number) => void;
   onChange: (track: Track) => void;
 }
 
-export default function EventsEditor({ track, selectedIndex, onSelect, onChange }: TrackEditorProps): JSX.Element {
+export default function EventsEditor({ track, selectedIndex, onSelect, onChange }: EventsEditorProps): JSX.Element {
   return <SplitView className="events-editor"
     direction="vertical"
     first={<NotesViewer track={track} scale={1} noteHeight={8} visibleChannels={new Array(16).fill(true)} />}

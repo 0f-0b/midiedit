@@ -24,5 +24,5 @@ contextBridge.exposeInMainWorld("api", {
   },
   exportJson(midi) {
     return ipcRenderer.invoke("export-json", midi);
-  },
+  }
 });

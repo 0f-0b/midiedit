@@ -52,7 +52,7 @@ export interface MetadataProps {
 }
 
 export default function Metadata({ midi, onChange }: MetadataProps): JSX.Element {
-  return <PropertiesEditor className="metadata"
+  return <PropertiesEditor className="properties"
     properties={{
       format: {
         type: "select",
