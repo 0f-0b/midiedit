@@ -7,12 +7,11 @@ import { PropertiesEditor } from "./properties-editor";
 export interface InsertNotesWindowProps {
   track: Track;
   selectedIndex: number;
-  onSelect: (index: number) => void;
-  onChange: (track: Track) => void;
+  onChange: (track: Track, selectedIndex: number) => void;
   onUnload?: () => void;
 }
 
-export default function InsertNotesWindow({ track, selectedIndex, onSelect, onChange, onUnload }: InsertNotesWindowProps): JSX.Element {
+export default function InsertNotesWindow({ track, selectedIndex, onChange, onUnload }: InsertNotesWindowProps): JSX.Element {
   const [delta, setDelta] = useState(0);
   const [duration, setDuration] = useState(0);
   const [channel, setChannel] = useState(0);
@@ -26,8 +25,7 @@ export default function InsertNotesWindow({ track, selectedIndex, onSelect, onCh
       { type: "note-on", channel, key, velocity: attack, delta: delta },
       { type: "note-off", channel, key, velocity: release, delta: duration },
       ...track.slice(selectedIndex)
-    ]);
-    onSelect(selectedIndex + 2);
+    ], selectedIndex + 2);
   }
 
   return <NewWindow name="insert-notes" copyStyles onUnload={onUnload}>

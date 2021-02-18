@@ -10,7 +10,7 @@ export interface EventsEditorProps {
   track: Track;
   selectedIndex: number;
   onSelect: (index: number) => void;
-  onChange: (track: Track) => void;
+  onChange: (track: Track, selectedIndex: number) => void;
 }
 
 export default function EventsEditor({ track, selectedIndex, onSelect, onChange }: EventsEditorProps): JSX.Element {
@@ -20,5 +20,8 @@ export default function EventsEditor({ track, selectedIndex, onSelect, onChange 
     second={<SplitView className="event-list-container"
       direction="horizontal"
       first={<EventList track={track} selectedIndex={selectedIndex} onSelect={onSelect} onChange={onChange} />}
-      second={<PropertiesEditor className="event-properties" properties={getEventProperties(track[selectedIndex], event => onChange([...track.slice(0, selectedIndex), event, ...track.slice(selectedIndex + 1)]))} />} />} />;
+      second={<PropertiesEditor className="event-properties"
+        properties={getEventProperties(track[selectedIndex], event => onChange(
+          [...track.slice(0, selectedIndex), event, ...track.slice(selectedIndex + 1)],
+          selectedIndex))} />} />} />;
 }

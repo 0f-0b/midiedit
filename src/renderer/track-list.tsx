@@ -7,7 +7,7 @@ export interface TrackListProps {
   selectedIndex: number;
   multiTrack: boolean;
   onSelect: (index: number) => void;
-  onChange: (tracks: Track[]) => void;
+  onChange: (tracks: Track[], selectedIndex: number) => void;
 }
 
 export default function TrackList({ tracks, selectedIndex, multiTrack, onSelect, onChange }: TrackListProps): JSX.Element {
@@ -27,13 +27,10 @@ export default function TrackList({ tracks, selectedIndex, multiTrack, onSelect,
     canInsert={multiTrack}
     canRemove={tracks.length > 1}
     onSelect={index => onSelect(index)}
-    onAdd={index => {
-      onChange([...tracks.slice(0, index), newTrack(), ...tracks.slice(index)]);
-      onSelect(index);
-    }}
-    onRemove={index => {
-      onChange([...tracks.slice(0, index), ...tracks.slice(index + 1)]);
-      if (selectedIndex !== 0 && index <= selectedIndex)
-        onSelect(selectedIndex - 1);
-    }} />;
+    onAdd={index => onChange(
+      [...tracks.slice(0, index), newTrack(), ...tracks.slice(index)],
+      index)}
+    onRemove={index => onChange(
+      [...tracks.slice(0, index), ...tracks.slice(index + 1)],
+      selectedIndex >= index && index > 0 ? selectedIndex - 1 : selectedIndex)} />;
 }

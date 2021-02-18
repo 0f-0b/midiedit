@@ -10,25 +10,32 @@ import Metadata from "./metadata";
 import SplitView from "./split-view";
 import TrackList from "./track-list";
 import useIpc from "./use-ipc";
+import useUndoable from "./use-undoable";
 
 function App(): JSX.Element {
   const [filePath, setFilePath] = useState<string | undefined>(undefined);
-  const [midi, setMidi] = useState(newMidi());
-  const [selectedTrack, setSelectedTrack] = useState(0);
-  const [selectedEvent, setSelectedEvent] = useState(0);
-  const [dirty, setDirty] = useState(false);
-  const [insertingNotes, setInsertingNotes] = useState(false);
+  const [{ midi, selectedTrack, selectedEvent }, setState, replaceState, resetState, undo, redo] = useUndoable(() => ({
+    midi: newMidi(),
+    selectedTrack: 0,
+    selectedEvent: 0
+  }));
+  const [persisted, setPersisted] = useState(midi);
+  const [showInsertNotes, setShowInsertNotes] = useState(false);
+  const dirty = midi !== persisted;
   useEffect(() => api.ready(), []);
   useEffect(() => api.updateState(filePath, dirty), [filePath, dirty]);
   /* eslint-disable @typescript-eslint/no-misused-promises */
   useIpc("new-file", async () => {
     if (dirty && !await api.askSave(filePath, midi))
       return;
-    setSelectedTrack(0);
-    setSelectedEvent(0);
     setFilePath(undefined);
-    setMidi(newMidi());
-    setDirty(false);
+    const root = newMidi();
+    resetState({
+      midi: root,
+      selectedTrack: 0,
+      selectedEvent: 0
+    });
+    setPersisted(root);
   });
   useIpc("open-file", async (_, preferredPath?: string) => {
     if (dirty) {
@@ -37,28 +44,33 @@ function App(): JSX.Element {
         return;
       if (saved.path !== undefined) {
         setFilePath(saved.path);
-        setDirty(false);
+        setPersisted(midi);
       }
     }
     const opened = await api.openFile(preferredPath);
     if (!opened)
       return;
-    setSelectedTrack(0);
-    setSelectedEvent(0);
     setFilePath(opened.path);
-    setMidi(opened.midi);
-    setDirty(false);
+    const root = opened.midi;
+    resetState({
+      midi: root,
+      selectedTrack: 0,
+      selectedEvent: 0
+    });
+    setPersisted(root);
   });
   useIpc("save-file", async () => {
     const saved = await api.saveFile(filePath, midi);
     if (saved) {
       setFilePath(saved.path);
-      setDirty(false);
+      setPersisted(midi);
     }
   });
   useIpc("export-json", () => api.exportJson(midi));
   /* eslint-enable @typescript-eslint/no-misused-promises */
-  useIpc("insert-notes", () => setInsertingNotes(true));
+  useIpc("undo", () => undo?.());
+  useIpc("redo", () => redo?.());
+  useIpc("insert-notes", () => setShowInsertNotes(!showInsertNotes));
   useBeforeunload(event => {
     if (dirty) {
       event.preventDefault();
@@ -66,7 +78,7 @@ function App(): JSX.Element {
         const saved = await api.askSave(filePath, midi);
         if (!saved)
           return;
-        setDirty(false);
+        setPersisted(midi);
         window.close();
       })();
     }
@@ -79,42 +91,48 @@ function App(): JSX.Element {
         first={<Metadata
           midi={midi}
           onChange={midi => {
-            setMidi(midi);
-            if (selectedTrack >= midi.tracks.length) {
-              setSelectedTrack(0);
-              setSelectedEvent(0);
-            }
-            setDirty(true);
+            setState({
+              midi,
+              selectedTrack: selectedTrack < midi.tracks.length ? selectedTrack : 0,
+              selectedEvent: selectedTrack < midi.tracks.length ? selectedEvent : 0
+            });
           }} />}
         second={<TrackList
           tracks={midi.tracks}
           selectedIndex={selectedTrack}
           multiTrack={midi.format !== 0}
-          onSelect={index => {
-            setSelectedTrack(index);
-            setSelectedEvent(0);
-          }}
-          onChange={tracks => {
-            setMidi({ ...midi, tracks });
-            setDirty(true);
-          }} />} />}
+          onSelect={index => replaceState({
+            midi,
+            selectedTrack: index,
+            selectedEvent: 0
+          })}
+          onChange={(tracks, selectedIndex) => setState({
+            midi: { ...midi, tracks },
+            selectedTrack: selectedIndex,
+            selectedEvent: selectedTrack === selectedIndex ? selectedEvent : 0
+          })} />} />}
       second={<EventsEditor
         track={midi.tracks[selectedTrack]}
         selectedIndex={selectedEvent}
-        onSelect={setSelectedEvent}
-        onChange={track => {
-          setMidi({ ...midi, tracks: [...midi.tracks.slice(0, selectedTrack), track, ...midi.tracks.slice(selectedTrack + 1)] });
-          setDirty(true);
-        }} />} />
-    {insertingNotes && <InsertNotesWindow
+        onSelect={index => replaceState({
+          midi,
+          selectedTrack,
+          selectedEvent: index
+        })}
+        onChange={(track, selectedIndex) => setState({
+          midi: { ...midi, tracks: [...midi.tracks.slice(0, selectedTrack), track, ...midi.tracks.slice(selectedTrack + 1)] },
+          selectedTrack,
+          selectedEvent: selectedIndex
+        })} />} />
+    {showInsertNotes && <InsertNotesWindow
       track={midi.tracks[selectedTrack]}
       selectedIndex={selectedEvent}
-      onSelect={setSelectedEvent}
-      onChange={track => {
-        setMidi({ ...midi, tracks: [...midi.tracks.slice(0, selectedTrack), track, ...midi.tracks.slice(selectedTrack + 1)] });
-        setDirty(true);
-      }}
-      onUnload={() => setInsertingNotes(false)} />}
+      onChange={(track, selectedIndex) => setState({
+        midi: { ...midi, tracks: [...midi.tracks.slice(0, selectedTrack), track, ...midi.tracks.slice(selectedTrack + 1)] },
+        selectedTrack,
+        selectedEvent: selectedIndex
+      })}
+      onUnload={() => setShowInsertNotes(false)} />}
   </>;
 }
 
