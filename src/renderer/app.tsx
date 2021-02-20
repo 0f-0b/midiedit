@@ -84,11 +84,9 @@ function App(): JSX.Element {
     }
   });
   return <>
-    <SplitView className="app"
-      direction="horizontal"
-      first={<SplitView className="side"
-        direction="vertical"
-        first={<Metadata
+    <SplitView className="app" direction="horizontal">
+      <SplitView className="side" direction="vertical">
+        <Metadata
           midi={midi}
           onChange={midi => {
             setState({
@@ -96,8 +94,8 @@ function App(): JSX.Element {
               selectedTrack: selectedTrack < midi.tracks.length ? selectedTrack : 0,
               selectedEvent: selectedTrack < midi.tracks.length ? selectedEvent : 0
             });
-          }} />}
-        second={<TrackList
+          }} />
+        <TrackList
           tracks={midi.tracks}
           selectedIndex={selectedTrack}
           multiTrack={midi.format !== 0}
@@ -110,8 +108,9 @@ function App(): JSX.Element {
             midi: { ...midi, tracks },
             selectedTrack: selectedIndex,
             selectedEvent: selectedTrack === selectedIndex ? selectedEvent : 0
-          })} />} />}
-      second={<EventsEditor
+          })} />
+      </SplitView>
+      <EventsEditor
         track={midi.tracks[selectedTrack]}
         selectedIndex={selectedEvent}
         onSelect={index => replaceState({
@@ -123,7 +122,8 @@ function App(): JSX.Element {
           midi: { ...midi, tracks: [...midi.tracks.slice(0, selectedTrack), track, ...midi.tracks.slice(selectedTrack + 1)] },
           selectedTrack,
           selectedEvent: selectedIndex
-        })} />} />
+        })} />
+    </SplitView>
     {showInsertNotes && <InsertNotesWindow
       track={midi.tracks[selectedTrack]}
       selectedIndex={selectedEvent}

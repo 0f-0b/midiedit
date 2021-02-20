@@ -14,14 +14,14 @@ export interface EventsEditorProps {
 }
 
 export default function EventsEditor({ track, selectedIndex, onSelect, onChange }: EventsEditorProps): JSX.Element {
-  return <SplitView className="events-editor"
-    direction="vertical"
-    first={<NotesViewer track={track} visibleChannels={new Array(16).fill(true)} />}
-    second={<SplitView className="event-list-container"
-      direction="horizontal"
-      first={<EventList track={track} selectedIndex={selectedIndex} onSelect={onSelect} onChange={onChange} />}
-      second={<PropertiesEditor className="event-properties"
+  return <SplitView className="events-editor" direction="vertical">
+    <NotesViewer track={track} visibleChannels={new Array(16).fill(true)} />
+    <SplitView className="event-list-container" direction="horizontal">
+      <EventList track={track} selectedIndex={selectedIndex} onSelect={onSelect} onChange={onChange} />
+      <PropertiesEditor className="event-properties"
         properties={getEventProperties(track[selectedIndex], event => onChange(
           [...track.slice(0, selectedIndex), event, ...track.slice(selectedIndex + 1)],
-          selectedIndex))} />} />} />;
+          selectedIndex))} />
+    </SplitView>
+  </SplitView>;
 }
