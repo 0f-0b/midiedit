@@ -1,0 +1,8 @@
+{
+  "parserOptions": {
+    "project": "./scripts/tsconfig.json"
+  },
+  "env": {
+    "node": true
+  }
+}

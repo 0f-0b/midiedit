@@ -1,0 +1,8 @@
+{
+  "parserOptions": {
+    "project": "./packages/main/tsconfig.eslint.json"
+  },
+  "env": {
+    "node": true
+  }
+}
