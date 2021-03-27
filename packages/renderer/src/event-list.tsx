@@ -31,5 +31,5 @@ export default function EventList({ track, selectedIndex, onSelect, onChange }: 
       index)}
     onRemove={index => onChange(
       [...track.slice(0, index), ...track.slice(index + 1)],
-      selectedIndex >= index && index > 0 ? selectedIndex - 1 : selectedIndex)} />;
+      selectedIndex >= index && selectedIndex > 0 ? selectedIndex - 1 : selectedIndex)} />;
 }

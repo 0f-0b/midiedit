@@ -87,13 +87,11 @@ export function App(): JSX.Element {
       <SplitView className="side" direction="vertical">
         <Metadata
           midi={midi}
-          onChange={midi => {
-            setState({
-              midi,
-              selectedTrack: selectedTrack < midi.tracks.length ? selectedTrack : 0,
-              selectedEvent: selectedTrack < midi.tracks.length ? selectedEvent : 0
-            });
-          }} />
+          onChange={midi => setState({
+            midi,
+            selectedTrack: selectedTrack < midi.tracks.length ? selectedTrack : 0,
+            selectedEvent: selectedTrack < midi.tracks.length ? selectedEvent : 0
+          })} />
         <TrackList
           tracks={midi.tracks}
           selectedIndex={selectedTrack}
@@ -106,7 +104,7 @@ export function App(): JSX.Element {
           onChange={(tracks, selectedIndex) => setState({
             midi: { ...midi, tracks },
             selectedTrack: selectedIndex,
-            selectedEvent: selectedTrack === selectedIndex ? selectedEvent : 0
+            selectedEvent: midi.tracks[selectedTrack] === tracks[selectedIndex] ? selectedEvent : 0
           })} />
       </SplitView>
       <EventsEditor

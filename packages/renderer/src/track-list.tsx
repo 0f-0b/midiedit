@@ -33,5 +33,5 @@ export default function TrackList({ tracks, selectedIndex, multiTrack, onSelect,
       index)}
     onRemove={index => onChange(
       [...tracks.slice(0, index), ...tracks.slice(index + 1)],
-      selectedIndex >= index && index > 0 ? selectedIndex - 1 : selectedIndex)} />;
+      selectedIndex >= index && selectedIndex > 0 ? selectedIndex - 1 : selectedIndex)} />;
 }
