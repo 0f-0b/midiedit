@@ -15,7 +15,7 @@ export interface EventsEditorProps {
 
 export default function EventsEditor({ track, selectedIndex, onSelect, onChange }: EventsEditorProps): JSX.Element {
   return <SplitView className="events-editor" direction="vertical">
-    <NotesViewer track={track} visibleChannels={new Array(16).fill(true)} />
+    <NotesViewer track={track} />
     <SplitView className="event-list-container" direction="horizontal">
       <EventList track={track} selectedIndex={selectedIndex} onSelect={onSelect} onChange={onChange} />
       <PropertiesEditor className="event-properties"

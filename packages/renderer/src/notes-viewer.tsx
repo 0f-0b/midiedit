@@ -13,7 +13,7 @@ interface Note {
   end: number;
 }
 
-function extractNotes(track: Track, visible: boolean[]): Note[] {
+function extractNotes(track: Track): Note[] {
   const notes: Note[] = [];
   const channels = Array.from({ length: channelCount }, () => new Array<number>(keyCount));
   let time = 0;
@@ -21,8 +21,6 @@ function extractNotes(track: Track, visible: boolean[]): Note[] {
     time += event.delta;
     if (event.type === "end-of-track") {
       for (let channel = 0; channel < channelCount; channel++) {
-        if (!visible[channel])
-          continue;
         const ch = channels[channel];
         for (let key = 0; key < keyCount; key++)
           if (key in ch)
@@ -33,8 +31,6 @@ function extractNotes(track: Track, visible: boolean[]): Note[] {
     if (event.type !== "note-on" && event.type !== "note-off")
       continue;
     const { channel, key } = event;
-    if (!visible[channel])
-      continue;
     const ch = channels[channel];
     if (event.type === "note-off" || event.velocity === 0) {
       if (key in ch) {
@@ -49,15 +45,14 @@ function extractNotes(track: Track, visible: boolean[]): Note[] {
 
 export interface NotesViewerProps {
   track: Track;
-  visibleChannels: boolean[];
 }
 
-export default function NotesViewer({ track, visibleChannels }: NotesViewerProps): JSX.Element {
+export default function NotesViewer({ track }: NotesViewerProps): JSX.Element {
   const [scale, setScale] = useState(0);
   const tickWidth = 2 ** scale;
   const noteHeight = 8;
   const trackLength = getTrackLength(track);
-  const notes = extractNotes(track, visibleChannels);
+  const notes = extractNotes(track);
   const collection = useRef<Collection>(null);
   useEffect(() => collection.current?.recomputeCellSizesAndPositions(), [trackLength, notes]);
   return <div className="notes-viewer">

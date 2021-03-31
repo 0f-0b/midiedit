@@ -1,7 +1,9 @@
 import * as React from "react";
+import { useMemo } from "react";
 import type { Track } from "../../../src/midi";
 import { getEventName, newTrackEvent } from "./events";
 import List from "./list";
+import { scan } from "./util";
 
 export interface EventListProps {
   track: Track;
@@ -11,6 +13,7 @@ export interface EventListProps {
 }
 
 export default function EventList({ track, selectedIndex, onSelect, onChange }: EventListProps): JSX.Element {
+  const time = useMemo(() => scan(track, (time, event) => time + event.delta, 0), [track]);
   return <List
     rowCount={track.length}
     rowHeight={50}
@@ -18,7 +21,7 @@ export default function EventList({ track, selectedIndex, onSelect, onChange }: 
       const event = track[index];
       return <>
         <b>{getEventName(event.type)}</b><br />
-        {`Delta: ${event.delta}`}
+        Delta: {event.delta}, Time: {time[index]}
       </>;
     }}
     selectedIndex={selectedIndex}
