@@ -1,0 +1,23 @@
+.split-view {
+  display: grid;
+  width: 100%;
+  height: 100%;
+}
+
+.horizontal-split-view {
+  composes: split-view;
+  grid-template-rows: 100%;
+}
+
+.vertical-split-view {
+  composes: split-view;
+  grid-template-columns: 100%;
+}
+
+.horizontal-split-view>:first-child {
+  border-right: 1px solid var(--border-color);
+}
+
+.vertical-split-view>:first-child {
+  border-bottom: 1px solid var(--border-color);
+}

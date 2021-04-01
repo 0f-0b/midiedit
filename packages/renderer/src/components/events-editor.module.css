@@ -1,0 +1,13 @@
+.events-editor {
+  grid-template-rows: 60% minmax(0, auto);
+}
+
+.event-list-container {
+  grid-template-columns: 180px minmax(0, auto);
+}
+
+.event-properties {
+  height: calc(100% - 20px);
+  padding: 8px;
+  overflow-y: scroll;
+}

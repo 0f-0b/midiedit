@@ -1,6 +1,7 @@
 import * as React from "react";
-import type { Division, DivisionType, Format, Midi } from "../../../src/midi";
-import { newDivision, smpteFrames } from "../../../src/midi";
+import type { Division, DivisionType, Format, Midi } from "../../../../src/midi";
+import { newDivision, smpteFrames } from "../../../../src/midi";
+import classes from "./metadata.module.css";
 import type { Property } from "./properties-editor";
 import { PropertiesEditor } from "./properties-editor";
 
@@ -54,7 +55,7 @@ export interface MetadataProps {
 }
 
 export default function Metadata({ midi, onChange }: MetadataProps): JSX.Element {
-  return <PropertiesEditor className="properties"
+  return <PropertiesEditor className={classes.metadata}
     properties={{
       format: {
         type: "select",

@@ -1,7 +1,8 @@
 import * as React from "react";
-import type { TextEvent, Track } from "../../../src/midi";
-import { newTrack } from "../../../src/midi";
+import type { TextEvent, Track } from "../../../../src/midi";
+import { newTrack } from "../../../../src/midi";
 import List from "./list";
+import classes from "./track-list.module.css";
 
 export interface TrackListProps {
   tracks: Track[];
@@ -19,7 +20,7 @@ export default function TrackList({ tracks, selectedIndex, multiTrack, onSelect,
       const track = tracks[index];
       const trackName = track.find(event => event.type === "text" && event.subtype === 2) as TextEvent | undefined;
       return <>
-        <b className="track-name">{trackName?.text ?? "(Unnamed)"}</b>
+        <b className={classes.trackName}>{trackName?.text ?? "(Unnamed)"}</b>
         {`#${index}, ${track.length} ${track.length === 1 ? "event" : "events"}`}
       </>;
     }}

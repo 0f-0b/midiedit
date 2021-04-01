@@ -1,0 +1,7 @@
+.app {
+  grid-template-columns: 200px minmax(0, auto);
+}
+
+.side {
+  grid-template-rows: min-content minmax(0, auto);
+}

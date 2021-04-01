@@ -1,0 +1,27 @@
+.element-container {
+  display: flex;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.selected-container {
+  composes: element-container;
+  background-color: var(--focus-color);
+}
+
+.element {
+  cursor: pointer;
+  width: 100%;
+  padding: 6px;
+}
+
+.buttons {
+  float: right;
+  padding: 6px;
+}
+
+.element-buttons {
+  composes: buttons;
+  width: 16px;
+  border-left: 1px solid var(--border-color);
+}

@@ -1,0 +1,15 @@
+.input {
+  display: inline-block;
+  color: var(--foreground-color);
+  background-color: var(--background-color);
+  min-width: 60px;
+  height: 14px;
+  box-sizing: content-box;
+  border: 2px inset var(--border-color);
+  border-radius: 4px;
+}
+
+.select {
+  composes: input;
+  height: 20px;
+}

@@ -1,7 +1,9 @@
 import * as React from "react";
+import { ByteArrayInput } from "./inputs/byte-array-input";
 import { IntegerInput } from "./inputs/integer-input";
 import { SelectInput } from "./inputs/select-input";
 import { StringInput } from "./inputs/string-input";
+import classes from "./properties-editor.module.css";
 
 export interface StringProperty {
   type: "string";
@@ -46,7 +48,7 @@ export interface PropertiesEditorProps extends React.ComponentPropsWithoutRef<"d
 
 export function PropertiesEditor({ properties, ...props }: PropertiesEditorProps): JSX.Element {
   return <div {...props}>
-    {Object.entries(properties).map(([id, property]) => <label key={id}>
+    {Object.entries(properties).map(([id, property]) => <label key={id} className={classes.label}>
       {property.label}
       {(() => {
         switch (property.type) {
@@ -57,7 +59,7 @@ export function PropertiesEditor({ properties, ...props }: PropertiesEditorProps
           case "select":
             return <SelectInput value={property.value} options={property.options} onChange={property.onChange} />;
           case "byte-array":
-            return <input value="unimplemented" readOnly />;
+            return <ByteArrayInput value={property.value} onChange={property.onChange} />;
         }
       })()}
     </label>)}

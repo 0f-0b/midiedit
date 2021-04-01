@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { AutoSizer, Collection } from "react-virtualized";
-import { getTrackLength, Track } from "../../../src/midi";
+import { getTrackLength, Track } from "../../../../src/midi";
+import classes from "./notes-viewer.module.css";
 
 const channelCount = 16;
 const keyCount = 128;
@@ -43,6 +44,19 @@ function extractNotes(track: Track): Note[] {
   return notes;
 }
 
+const colors: string[] = [
+  classes.color0,
+  classes.color1,
+  classes.color2,
+  classes.color3,
+  classes.color4,
+  classes.color5
+];
+
+function color(index: number): string {
+  return colors[index % colors.length];
+}
+
 export interface NotesViewerProps {
   track: Track;
 }
@@ -55,7 +69,7 @@ export default function NotesViewer({ track }: NotesViewerProps): JSX.Element {
   const notes = extractNotes(track);
   const collection = useRef<Collection>(null);
   useEffect(() => collection.current?.recomputeCellSizesAndPositions(), [trackLength, notes]);
-  return <div className="notes-viewer">
+  return <div className={classes.notesViewer}>
     <AutoSizer>
       {({ width, height }) =>
         <Collection
@@ -82,11 +96,11 @@ export default function NotesViewer({ track }: NotesViewerProps): JSX.Element {
             if (index === notes.length)
               return undefined;
             const note = notes[index];
-            return <div key={key} className={`note channel-${note.channel}`} style={style} />;
+            return <div key={key} className={[classes.note, color(note.channel)].join(" ")} style={style} />;
           }}
           ref={collection} />}
     </AutoSizer>
-    <input className="scale" type="range" value={scale} min={-4} max={4} step="any"
+    <input className={classes.scale} type="range" value={scale} min={-4} max={4} step="any"
       onChange={event => setScale(event.target.valueAsNumber)} />
   </div>;
 }

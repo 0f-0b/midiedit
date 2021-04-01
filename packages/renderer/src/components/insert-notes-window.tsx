@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
 import NewWindow from "react-new-window";
-import type { Track } from "../../../src/midi";
+import type { Track } from "../../../../src/midi";
+import classes from "./insert-notes-window.module.css";
 import { PropertiesEditor } from "./properties-editor";
 
 export interface InsertNotesWindowProps {
@@ -29,7 +30,7 @@ export default function InsertNotesWindow({ track, selectedIndex, onChange, onUn
   }
 
   return <NewWindow name="insert-notes" copyStyles onUnload={onUnload}>
-    <PropertiesEditor className="properties"
+    <PropertiesEditor className={classes.properties}
       onKeyDown={event => event.code === "Enter" && insert()}
       properties={{
         delta: {
@@ -91,6 +92,6 @@ export default function InsertNotesWindow({ track, selectedIndex, onChange, onUn
           }
         }
       }} />
-    <button className="confirm-button" onClick={insert}>Insert</button>
+    <button className={classes.confirmButton} onClick={insert}>Insert</button>
   </NewWindow>;
 }

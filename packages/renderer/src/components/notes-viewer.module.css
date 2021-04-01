@@ -1,0 +1,39 @@
+.notes-viewer {
+  height: 100%;
+  background-color: black;
+  overflow: scroll;
+}
+
+.scale {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+
+.note {
+  position: absolute;
+}
+
+.color-0 {
+  background-color: #00f;
+}
+
+.color-1 {
+  background-color: #0f0;
+}
+
+.color-2 {
+  background-color: #0ff;
+}
+
+.color-3 {
+  background-color: #f00;
+}
+
+.color-4 {
+  background-color: #f0f;
+}
+
+.color-5 {
+  background-color: #ff0;
+}
