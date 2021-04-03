@@ -1,45 +1,48 @@
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AutoSizer, Collection } from "react-virtualized";
-import { getTrackLength, Track } from "../../../../src/midi";
+import { Track } from "../../../../src/midi";
 import classes from "./notes-viewer.module.css";
 
 const channelCount = 16;
 const keyCount = 128;
 
 interface Note {
-  channel: number;
-  key: number;
   start: number;
   end: number;
+  channel: number;
+  key: number;
+  velocity: number;
 }
 
 function extractNotes(track: Track): Note[] {
   const notes: Note[] = [];
-  const channels = Array.from({ length: channelCount }, () => new Array<number>(keyCount));
+  const channels = Array.from({ length: channelCount * keyCount }, () => ({ time: 0, velocity: 0 }));
   let time = 0;
+
+  function update(channel: number, key: number, velocity: number): void {
+    const note = channels[channel * keyCount + key];
+    if (note.velocity)
+      notes.push({ start: note.time, end: time, channel, key, velocity: note.velocity });
+    note.time = time;
+    note.velocity = velocity;
+  }
+
   for (const event of track) {
     time += event.delta;
-    if (event.type === "end-of-track") {
-      for (let channel = 0; channel < channelCount; channel++) {
-        const ch = channels[channel];
-        for (let key = 0; key < keyCount; key++)
-          if (key in ch)
-            notes.push({ channel, key, start: ch[key], end: time });
-      }
-      break;
+    switch (event.type) {
+      case "note-off":
+        update(event.channel, event.key, 0);
+        break;
+      case "note-on":
+        update(event.channel, event.key, event.velocity);
+        break;
+      case "end-of-track":
+        for (let channel = 0; channel < channelCount; channel++)
+          for (let key = 0; key < keyCount; key++)
+            update(channel, key, 0);
+        break;
     }
-    if (event.type !== "note-on" && event.type !== "note-off")
-      continue;
-    const { channel, key } = event;
-    const ch = channels[channel];
-    if (event.type === "note-off" || event.velocity === 0) {
-      if (key in ch) {
-        notes.push({ channel, key, start: ch[key], end: time });
-        delete ch[key];
-      }
-    } else
-      ch[key] ??= time;
   }
   return notes;
 }
@@ -65,10 +68,10 @@ export default function NotesViewer({ track }: NotesViewerProps): JSX.Element {
   const [scale, setScale] = useState(0);
   const tickWidth = 2 ** scale;
   const noteHeight = 8;
-  const trackLength = getTrackLength(track);
-  const notes = extractNotes(track);
+  const trackLength = useMemo(() => track.reduce((time, event) => time + event.delta, 0), [track]);
+  const notes = useMemo(() => extractNotes(track), [track]);
   const collection = useRef<Collection>(null);
-  useEffect(() => collection.current?.recomputeCellSizesAndPositions(), [trackLength, notes]);
+  useEffect(() => collection.current?.recomputeCellSizesAndPositions(), [trackLength, notes, scale]);
   return <div className={classes.notesViewer}>
     <AutoSizer>
       {({ width, height }) =>
@@ -96,7 +99,7 @@ export default function NotesViewer({ track }: NotesViewerProps): JSX.Element {
             if (index === notes.length)
               return undefined;
             const note = notes[index];
-            return <div key={key} className={[classes.note, color(note.channel)].join(" ")} style={style} />;
+            return <div key={key} className={[classes.note, color(note.channel)].join(" ")} style={{ ...style, opacity: note.velocity * 0.007874015748031496 }} />;
           }}
           ref={collection} />}
     </AutoSizer>

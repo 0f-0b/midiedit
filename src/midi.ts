@@ -161,13 +161,3 @@ export function newMidi(): Midi {
     tracks: [newTrack()]
   };
 }
-
-export function getTrackLength(track: Track): number {
-  let length = 0;
-  for (const event of track) {
-    length += event.delta;
-    if (event.type === "end-of-track")
-      break;
-  }
-  return length;
-}
