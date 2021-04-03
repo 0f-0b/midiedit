@@ -19,11 +19,13 @@
     "start": "electron .",
     "package": "npm run build && node scripts/package.js",
     "clean": "rm -rf dist packages/*/dist",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "midievents": "^2.0.0",
     "midifile": "^2.0.0",
+    "patch-package": "^6.4.7",
     "react": "^17.0.2",
     "react-beforeunload": "^2.4.0",
     "react-dom": "^17.0.2",
