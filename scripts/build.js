@@ -10,4 +10,7 @@ import * as vite from "vite";
     });
     console.groupEnd();
   }
-})().catch(() => process.exit(1));
+})().catch(e => {
+  console.error(e);
+  process.exit(1);
+});
