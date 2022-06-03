@@ -1,6 +1,6 @@
 import eslint from "@rollup/plugin-eslint";
-import reactRefresh from "@vitejs/plugin-react-refresh";
-import { defineConfig, Plugin } from "vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig, type Plugin } from "vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 
 function preprocessor(plugin: Plugin): Plugin {
@@ -11,7 +11,7 @@ export default defineConfig(({ command }) => ({
   root: "./packages/main",
   plugins: [
     command === "build" ? preprocessor(eslint({ include: ["./packages/main/src/**/*.ts"] })) : [],
-    reactRefresh(),
+    react(),
     createHtmlPlugin()
   ],
   css: {
