@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import NewWindow from "react-new-window";
 import type { Track } from "../../../../src/midi";
 import classes from "./insert-notes-window.module.css";
@@ -12,7 +11,7 @@ export interface InsertNotesWindowProps {
   onUnload?: () => void;
 }
 
-export default function InsertNotesWindow({ track, selectedIndex, onChange, onUnload }: InsertNotesWindowProps): JSX.Element {
+export function InsertNotesWindow({ track, selectedIndex, onChange, onUnload }: InsertNotesWindowProps): JSX.Element {
   const [delta, setDelta] = useState(0);
   const [duration, setDuration] = useState(0);
   const [channel, setChannel] = useState(0);

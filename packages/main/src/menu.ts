@@ -1,5 +1,4 @@
-import type { MenuItemConstructorOptions } from "electron";
-import { Menu } from "electron";
+import { type MenuItemConstructorOptions, Menu } from "electron";
 
 const devOnly: (menu: MenuItemConstructorOptions[]) => MenuItemConstructorOptions[] = process.env.NODE_ENV === "production" ? () => [] : menu => menu;
 

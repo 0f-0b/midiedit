@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ByteArrayInput } from "./inputs/byte-array-input";
 import { IntegerInput } from "./inputs/integer-input";
 import { SelectInput } from "./inputs/select-input";

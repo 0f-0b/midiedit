@@ -1,0 +1,17 @@
+diff --git a/node_modules/midievents/src/MIDIEvents.js b/node_modules/midievents/src/MIDIEvents.js
+index 0ea480f..8417ddd 100755
+--- a/node_modules/midievents/src/MIDIEvents.js
++++ b/node_modules/midievents/src/MIDIEvents.js
+@@ -329,12 +329,6 @@ MIDIEvents.createParser = function midiEventsCreateParser(
+             return event;
+           case MIDIEvents.EVENT_MIDI_NOTE_ON:
+             event.param2 = stream.readUint8();
+-
+-            // If velocity is 0, it's a note off event in fact
+-            if (!event.param2) {
+-              event.subtype = MIDIEvents.EVENT_MIDI_NOTE_OFF;
+-              event.param2 = 127; // Find a standard telling what to do here
+-            }
+             return event;
+           case MIDIEvents.EVENT_MIDI_NOTE_AFTERTOUCH:
+             event.param2 = stream.readUint8();

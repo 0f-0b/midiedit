@@ -1,7 +1,6 @@
-import type { BrowserWindow, FileFilter } from "electron";
-import { app, dialog } from "electron";
-import { promises as fs } from "fs";
-import * as path from "path";
+import { type BrowserWindow, type FileFilter, app, dialog } from "electron";
+import fs from "fs/promises";
+import path from "path";
 import type { Midi } from "../../../src/midi";
 import { readMidi, writeMidi } from "./midi-io";
 

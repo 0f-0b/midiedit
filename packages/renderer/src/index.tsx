@@ -1,16 +1,15 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useBeforeunload } from "react-beforeunload";
 import { newMidi } from "../../../src/midi";
-import api from "./api";
-import EventsEditor from "./components/events-editor";
-import InsertNotesWindow from "./components/insert-notes-window";
-import Metadata from "./components/metadata";
-import SplitView from "./components/split-view";
-import TrackList from "./components/track-list";
+import { api } from "./api";
+import { EventsEditor } from "./components/events-editor";
+import { InsertNotesWindow } from "./components/insert-notes-window";
+import { Metadata } from "./components/metadata";
+import { SplitView } from "./components/split-view";
+import { TrackList } from "./components/track-list";
 import classes from "./index.module.css";
-import useIpc from "./use-ipc";
-import useUndoable from "./use-undoable";
+import { useIpc } from "./use-ipc";
+import { useUndoable } from "./use-undoable";
 
 export function Index(): JSX.Element {
   const [filePath, setFilePath] = useState<string | undefined>(undefined);

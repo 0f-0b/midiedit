@@ -1,5 +1,4 @@
-import type { IpcRendererEvent } from "electron";
-import { contextBridge, ipcRenderer } from "electron";
+import { type IpcRendererEvent, contextBridge, ipcRenderer } from "electron";
 import type { Midi } from "../../../src/midi";
 import type { OpenResult, SaveResult } from "../../main/src/remote";
 

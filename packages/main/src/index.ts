@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, Menu } from "electron";
-import * as path from "path";
+import path from "path";
 import type { Midi } from "../../../src/midi";
 import { buildMenu } from "./menu";
 import { askSave, exportJson, openFile, saveFile } from "./remote";
@@ -16,8 +16,6 @@ app.once("ready", () => {
     backgroundColor: "#222",
     show: false,
     webPreferences: {
-      contextIsolation: true,
-      nativeWindowOpen: true,
       preload: path.join(app.getAppPath(), "packages/preload/dist/index.cjs")
     }
   });

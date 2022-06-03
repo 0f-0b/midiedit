@@ -1,7 +1,5 @@
-import type { ReactNode } from "react";
-import * as React from "react";
-import type { ListRowRenderer } from "react-virtualized";
-import { AutoSizer, List as VList } from "react-virtualized";
+import React, { type ReactNode } from "react";
+import { type ListRowRenderer, AutoSizer, List as VList } from "react-virtualized";
 import { AddButton, RemoveButton } from "./edit-button";
 import classes from "./list.module.css";
 
@@ -18,7 +16,7 @@ export interface ListProps {
   onRemove: (index: number) => void;
 }
 
-export default function List({ rowCount, rowHeight, rowRenderer, selectedIndex, onSelect, canAppend, canInsert, canRemove, onAdd, onRemove }: ListProps): JSX.Element {
+export function List({ rowCount, rowHeight, rowRenderer, selectedIndex, onSelect, canAppend, canInsert, canRemove, onAdd, onRemove }: ListProps): JSX.Element {
   const measureRow = typeof rowHeight === "number" ? rowHeight : ({ index }: { index: number; }) => index === rowCount ? 28 : rowHeight(index);
   const renderRow: ListRowRenderer = ({ index, key, style }) => {
     if (index === rowCount)

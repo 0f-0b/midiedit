@@ -1,7 +1,7 @@
 import eslint from "@rollup/plugin-eslint";
 import reactRefresh from "@vitejs/plugin-react-refresh";
 import { defineConfig, Plugin } from "vite";
-import { minifyHtml } from "vite-plugin-html";
+import { createHtmlPlugin } from "vite-plugin-html";
 
 function preprocessor(plugin: Plugin): Plugin {
   return { ...plugin, enforce: "pre" };
@@ -12,7 +12,7 @@ export default defineConfig(({ command }) => ({
   plugins: [
     command === "build" ? preprocessor(eslint({ include: ["./packages/main/src/**/*.ts"] })) : [],
     reactRefresh(),
-    minifyHtml()
+    createHtmlPlugin()
   ],
   css: {
     modules: {
@@ -27,7 +27,7 @@ export default defineConfig(({ command }) => ({
       formats: ["cjs"],
     },
     rollupOptions: {
-      external: ["electron", "fs", "path"],
+      external: ["electron", "fs/promises", "path"],
       output: {
         entryFileNames: "index.cjs"
       }

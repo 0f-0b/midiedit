@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AutoSizer, Collection } from "react-virtualized";
 import { Track } from "../../../../src/midi";
 import classes from "./notes-viewer.module.css";
@@ -64,7 +63,7 @@ export interface NotesViewerProps {
   track: Track;
 }
 
-export default function NotesViewer({ track }: NotesViewerProps): JSX.Element {
+export function NotesViewer({ track }: NotesViewerProps): JSX.Element {
   const [scale, setScale] = useState(0);
   const tickWidth = 2 ** scale;
   const noteHeight = 8;

@@ -1,7 +1,6 @@
-import * as React from "react";
-import type { TextEvent, Track } from "../../../../src/midi";
-import { newTrack } from "../../../../src/midi";
-import List from "./list";
+import React from "react";
+import { type TextEvent, type Track, newTrack } from "../../../../src/midi";
+import { List } from "./list";
 import classes from "./track-list.module.css";
 
 export interface TrackListProps {
@@ -12,7 +11,7 @@ export interface TrackListProps {
   onChange: (tracks: Track[], selectedIndex: number) => void;
 }
 
-export default function TrackList({ tracks, selectedIndex, multiTrack, onSelect, onChange }: TrackListProps): JSX.Element {
+export function TrackList({ tracks, selectedIndex, multiTrack, onSelect, onChange }: TrackListProps): JSX.Element {
   return <List
     rowCount={tracks.length}
     rowHeight={50}

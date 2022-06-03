@@ -1,12 +1,11 @@
-import type { Dispatch, SetStateAction } from "react";
-import { useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 
 export interface Undoable<S> {
   history: S[];
   cursor: number;
 }
 
-export default function useUndoable<S>(initialState: S | (() => S)): [
+export function useUndoable<S>(initialState: S | (() => S)): [
   state: S,
   setState: Dispatch<SetStateAction<S>>,
   replaceState: Dispatch<SetStateAction<S>>,

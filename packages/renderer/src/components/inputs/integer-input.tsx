@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import classes from "./input.module.css";
 
 export interface IntegerInputProps extends Omit<React.ComponentPropsWithoutRef<"input">, "value" | "min" | "max" | "onChange"> {

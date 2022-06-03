@@ -1,11 +1,11 @@
-import * as React from "react";
+import React from "react";
 import type { Track } from "../../../../src/midi";
-import EventList from "./event-list";
+import { EventList } from "./event-list";
 import { getEventProperties } from "./events";
 import classes from "./events-editor.module.css";
-import NotesViewer from "./notes-viewer";
+import { NotesViewer } from "./notes-viewer";
 import { PropertiesEditor } from "./properties-editor";
-import SplitView from "./split-view";
+import { SplitView } from "./split-view";
 
 export interface EventsEditorProps {
   track: Track;
@@ -14,7 +14,7 @@ export interface EventsEditorProps {
   onChange: (track: Track, selectedIndex: number) => void;
 }
 
-export default function EventsEditor({ track, selectedIndex, onSelect, onChange }: EventsEditorProps): JSX.Element {
+export function EventsEditor({ track, selectedIndex, onSelect, onChange }: EventsEditorProps): JSX.Element {
   return <SplitView className={classes.eventsEditor} direction="vertical">
     <NotesViewer track={track} />
     <SplitView className={classes.eventListContainer} direction="horizontal">

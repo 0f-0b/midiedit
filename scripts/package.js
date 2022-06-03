@@ -1,4 +1,4 @@
-import * as child_process from "child_process";
+import child_process from "child_process";
 import packager from "electron-packager";
 
 child_process.execFile("git", ["rev-parse", "--short=7", "HEAD"], (err, stdout) => void packager({
