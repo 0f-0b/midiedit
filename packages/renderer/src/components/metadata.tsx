@@ -1,9 +1,19 @@
 import React from "react";
-import { type Division, type DivisionType, type Format, type Midi, newDivision, smpteFrames } from "../../../../src/midi";
+import {
+  type Division,
+  type DivisionType,
+  type Format,
+  type Midi,
+  newDivision,
+  smpteFrames,
+} from "../../../../src/midi";
 import classes from "./metadata.module.css";
-import { PropertiesEditor, type Property } from "./properties-editor";
+import { PropertiesEditor, type Property } from "./properties_editor";
 
-function divisionProperties(division: Division, onChange: (division: Division) => void): { [id: string]: Property; } {
+function divisionProperties(
+  division: Division,
+  onChange: (division: Division) => void,
+): { [id: string]: Property } {
   switch (division.type) {
     case 0: {
       const { ticksPerBeat } = division;
@@ -16,8 +26,8 @@ function divisionProperties(division: Division, onChange: (division: Division) =
           max: 32767,
           onChange(value) {
             onChange({ type: 0, ticksPerBeat: value });
-          }
-        }
+          },
+        },
       };
     }
     case 1: {
@@ -30,7 +40,7 @@ function divisionProperties(division: Division, onChange: (division: Division) =
           options: smpteFrames.map(String),
           onChange(value) {
             onChange({ type: 1, smpteFormat: value, ticksPerFrame });
-          }
+          },
         },
         ticksPerFrame: {
           type: "integer",
@@ -40,8 +50,8 @@ function divisionProperties(division: Division, onChange: (division: Division) =
           max: 127,
           onChange(value) {
             onChange({ type: 1, smpteFormat, ticksPerFrame: value });
-          }
-        }
+          },
+        },
       };
     }
   }
@@ -53,27 +63,40 @@ export interface MetadataProps {
 }
 
 export function Metadata({ midi, onChange }: MetadataProps): JSX.Element {
-  return <PropertiesEditor className={classes.metadata}
-    properties={{
-      format: {
-        type: "select",
-        label: "Format: ",
-        value: midi.format,
-        options: ["Single track", "Simultaneous", "Independent"],
-        onChange(value) {
-          onChange({ ...midi, format: value as Format, tracks: value === 0 ? midi.tracks.slice(0, 1) : midi.tracks });
-        }
-      },
-      division: {
-        type: "select",
-        label: "Division: ",
-        value: midi.division.type,
-        // midifile does not handle SMPTE time correctly
-        options: ["Metrical"/*, "SMPTE"*/],
-        onChange(value) {
-          onChange({ ...midi, division: newDivision(value as DivisionType) });
-        }
-      },
-      ...divisionProperties(midi.division, division => onChange({ ...midi, division }))
-    }} />;
+  return (
+    <PropertiesEditor
+      className={classes.metadata}
+      properties={{
+        format: {
+          type: "select",
+          label: "Format: ",
+          value: midi.format,
+          options: ["Single track", "Simultaneous", "Independent"],
+          onChange(value) {
+            onChange({
+              ...midi,
+              format: value as Format,
+              tracks: value === 0 ? midi.tracks.slice(0, 1) : midi.tracks,
+            });
+          },
+        },
+        division: {
+          type: "select",
+          label: "Division: ",
+          value: midi.division.type,
+          options: [
+            "Metrical",
+            // "SMPTE", // midifile does not handle SMPTE time correctly
+          ],
+          onChange(value) {
+            onChange({ ...midi, division: newDivision(value as DivisionType) });
+          },
+        },
+        ...divisionProperties(
+          midi.division,
+          (division) => onChange({ ...midi, division }),
+        ),
+      }}
+    />
+  );
 }

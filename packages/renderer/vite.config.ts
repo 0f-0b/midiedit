@@ -11,18 +11,27 @@ export default defineConfig(({ command }) => ({
   root: "./packages/renderer",
   base: "",
   plugins: [
-    command === "build" ? preprocessor(eslint({ include: ["./packages/renderer/src/**/*.ts", "./packages/renderer/src/**/*.tsx"] })) : [],
+    command === "build"
+      ? preprocessor(
+        eslint({
+          include: [
+            "./packages/renderer/src/**/*.ts",
+            "./packages/renderer/src/**/*.tsx",
+          ],
+        }),
+      )
+      : [],
     react(),
-    createHtmlPlugin()
+    createHtmlPlugin(),
   ],
   css: {
     modules: {
-      localsConvention: "camelCaseOnly"
-    }
+      localsConvention: "camelCaseOnly",
+    },
   },
   build: {
     target: "es2020",
     sourcemap: true,
-    brotliSize: false
-  }
+    brotliSize: false,
+  },
 }));

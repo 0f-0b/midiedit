@@ -1,45 +1,51 @@
-import { type IpcRendererEvent, contextBridge, ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer, type IpcRendererEvent } from "electron";
 import type { Midi } from "../../../src/midi";
 import type { OpenResult, SaveResult } from "../../main/src/remote";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type IpcListener = (event: IpcRendererEvent, ...args: any[]) => void;
+export type IpcListener = (
+  event: IpcRendererEvent,
+  ...args: never[]
+) => unknown;
 
 export interface Api {
-  ready(): void;
-  updateState(filePath: string | undefined, dirty: boolean): void;
-  addIpcListener(channel: string, listener: IpcListener): void;
-  removeIpcListener(channel: string, listener: IpcListener): void;
-  openFile(filePath: string | undefined): Promise<OpenResult | null>;
-  saveFile(filePath: string | undefined, midi: Midi): Promise<SaveResult | null>;
-  askSave(filePath: string | undefined, midi: Midi): Promise<SaveResult | null>;
-  exportJson(midi: Midi): Promise<void>;
+  ready(): undefined;
+  updateState(path: string | undefined, dirty: boolean): undefined;
+  addIpcListener(channel: string, listener: IpcListener): undefined;
+  removeIpcListener(channel: string, listener: IpcListener): undefined;
+  openFile(path: string | undefined): Promise<OpenResult | null>;
+  saveFile(path: string | undefined, midi: Midi): Promise<SaveResult | null>;
+  askSave(path: string | undefined, midi: Midi): Promise<SaveResult | null>;
+  exportJson(midi: Midi): Promise<undefined>;
 }
 
 const api: Api = {
-  ready() {
+  ready(): undefined {
     ipcRenderer.send("ready");
+    return;
   },
-  updateState(filePath, dirty) {
-    ipcRenderer.send("update-state", filePath, dirty);
+  updateState(path, dirty): undefined {
+    ipcRenderer.send("update-state", path, dirty);
+    return;
   },
-  addIpcListener(channel, listener) {
-    ipcRenderer.addListener(channel, listener);
+  addIpcListener(channel, listener): undefined {
+    ipcRenderer.addListener(channel, listener as never);
+    return;
   },
-  removeIpcListener(channel, listener) {
-    ipcRenderer.removeListener(channel, listener);
+  removeIpcListener(channel, listener): undefined {
+    ipcRenderer.removeListener(channel, listener as never);
+    return;
   },
-  openFile(filePath) {
-    return ipcRenderer.invoke("open-file", filePath);
+  openFile(path) {
+    return ipcRenderer.invoke("open-file", path);
   },
-  saveFile(filePath, midi) {
-    return ipcRenderer.invoke("save-file", filePath, midi);
+  saveFile(path, midi) {
+    return ipcRenderer.invoke("save-file", path, midi);
   },
-  askSave(filePath, midi) {
-    return ipcRenderer.invoke("ask-save", filePath, midi);
+  askSave(path, midi) {
+    return ipcRenderer.invoke("ask-save", path, midi);
   },
   exportJson(midi) {
     return ipcRenderer.invoke("export-json", midi);
-  }
+  },
 };
 contextBridge.exposeInMainWorld("api", api);

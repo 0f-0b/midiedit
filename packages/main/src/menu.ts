@@ -1,6 +1,10 @@
-import { type MenuItemConstructorOptions, Menu } from "electron";
+import { Menu, type MenuItemConstructorOptions } from "electron";
 
-const devOnly: (menu: MenuItemConstructorOptions[]) => MenuItemConstructorOptions[] = process.env.NODE_ENV === "production" ? () => [] : menu => menu;
+const devOnly: (
+  menu: MenuItemConstructorOptions[],
+) => MenuItemConstructorOptions[] = process.env.NODE_ENV === "production"
+  ? () => []
+  : (menu) => menu;
 
 function menuTemplate(): MenuItemConstructorOptions[] {
   return [
@@ -10,27 +14,27 @@ function menuTemplate(): MenuItemConstructorOptions[] {
         {
           label: "&New",
           accelerator: "CmdOrCtrl+N",
-          click: (_, window) => window?.webContents.send("new-file")
+          click: (_, window) => window?.webContents.send("new-file"),
         },
         {
           label: "&Open…",
           accelerator: "CmdOrCtrl+O",
-          click: (_, window) => window?.webContents.send("open-file")
+          click: (_, window) => window?.webContents.send("open-file"),
         },
         { type: "separator" },
         {
           label: "&Save",
           accelerator: "CmdOrCtrl+S",
-          click: (_, window) => window?.webContents.send("save-file")
+          click: (_, window) => window?.webContents.send("save-file"),
         },
         { type: "separator" },
         {
           label: "&Export as JSON",
-          click: (_, window) => window?.webContents.send("export-json")
+          click: (_, window) => window?.webContents.send("export-json"),
         },
         { type: "separator" },
-        { role: "quit" }
-      ]
+        { role: "quit" },
+      ],
     },
     {
       role: "editMenu",
@@ -38,12 +42,12 @@ function menuTemplate(): MenuItemConstructorOptions[] {
         {
           label: "Undo",
           accelerator: "CmdOrCtrl+Z",
-          click: (_, window) => window?.webContents.send("undo")
+          click: (_, window) => window?.webContents.send("undo"),
         },
         {
           label: "Redo",
           accelerator: "CmdOrCtrl+Shift+Z",
-          click: (_, window) => window?.webContents.send("redo")
+          click: (_, window) => window?.webContents.send("redo"),
         },
         { type: "separator" },
         { role: "cut" },
@@ -54,9 +58,9 @@ function menuTemplate(): MenuItemConstructorOptions[] {
         { type: "separator" },
         {
           label: "&Insert Notes",
-          click: (_, window) => window?.webContents.send("insert-notes")
-        }
-      ]
+          click: (_, window) => window?.webContents.send("insert-notes"),
+        },
+      ],
     },
     ...devOnly([
       {
@@ -64,21 +68,21 @@ function menuTemplate(): MenuItemConstructorOptions[] {
         submenu: [
           {
             role: "reload",
-            accelerator: "CmdOrCtrl+R"
+            accelerator: "CmdOrCtrl+R",
           },
           {
             role: "toggleDevTools",
-            accelerator: "F12"
-          }
-        ]
-      }
+            accelerator: "F12",
+          },
+        ],
+      },
     ]),
     {
       role: "help",
       submenu: [
-        { role: "about" }
-      ]
-    }
+        { role: "about" },
+      ],
+    },
   ];
 }
 
@@ -95,8 +99,8 @@ function darwinMenuTemplate(): MenuItemConstructorOptions[] {
         { role: "hideOthers" },
         { role: "unhide" },
         { type: "separator" },
-        { role: "quit" }
-      ]
+        { role: "quit" },
+      ],
     },
     {
       role: "fileMenu",
@@ -104,25 +108,25 @@ function darwinMenuTemplate(): MenuItemConstructorOptions[] {
         {
           label: "New",
           accelerator: "CmdOrCtrl+N",
-          click: (_, window) => window?.webContents.send("new-file")
+          click: (_, window) => window?.webContents.send("new-file"),
         },
         {
           label: "Open…",
           accelerator: "CmdOrCtrl+O",
-          click: (_, window) => window?.webContents.send("open-file")
+          click: (_, window) => window?.webContents.send("open-file"),
         },
         { type: "separator" },
         {
           label: "Save",
           accelerator: "CmdOrCtrl+S",
-          click: (_, window) => window?.webContents.send("save-file")
+          click: (_, window) => window?.webContents.send("save-file"),
         },
         { type: "separator" },
         {
           label: "&Export as JSON",
-          click: (_, window) => window?.webContents.send("export-json")
-        }
-      ]
+          click: (_, window) => window?.webContents.send("export-json"),
+        },
+      ],
     },
     {
       role: "editMenu",
@@ -130,12 +134,12 @@ function darwinMenuTemplate(): MenuItemConstructorOptions[] {
         {
           label: "Undo",
           accelerator: "CmdOrCtrl+Z",
-          click: (_, window) => window?.webContents.send("undo")
+          click: (_, window) => window?.webContents.send("undo"),
         },
         {
           label: "Redo",
           accelerator: "CmdOrCtrl+Shift+Z",
-          click: (_, window) => window?.webContents.send("redo")
+          click: (_, window) => window?.webContents.send("redo"),
         },
         { type: "separator" },
         { role: "cut" },
@@ -146,9 +150,9 @@ function darwinMenuTemplate(): MenuItemConstructorOptions[] {
         { type: "separator" },
         {
           label: "&Insert Notes",
-          click: (_, window) => window?.webContents.send("insert-notes")
-        }
-      ]
+          click: (_, window) => window?.webContents.send("insert-notes"),
+        },
+      ],
     },
     { role: "windowMenu" },
     ...devOnly([
@@ -157,18 +161,20 @@ function darwinMenuTemplate(): MenuItemConstructorOptions[] {
         submenu: [
           {
             role: "reload",
-            accelerator: "CmdOrCtrl+R"
+            accelerator: "CmdOrCtrl+R",
           },
           {
             role: "toggleDevTools",
-            accelerator: "F12"
-          }
-        ]
-      }
-    ])
+            accelerator: "F12",
+          },
+        ],
+      },
+    ]),
   ];
 }
 
 export function buildMenu(): Menu {
-  return Menu.buildFromTemplate(process.platform === "darwin" ? darwinMenuTemplate() : menuTemplate());
+  return Menu.buildFromTemplate(
+    process.platform === "darwin" ? darwinMenuTemplate() : menuTemplate(),
+  );
 }

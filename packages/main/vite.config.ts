@@ -10,14 +10,16 @@ function preprocessor(plugin: Plugin): Plugin {
 export default defineConfig(({ command }) => ({
   root: "./packages/main",
   plugins: [
-    command === "build" ? preprocessor(eslint({ include: ["./packages/main/src/**/*.ts"] })) : [],
+    command === "build"
+      ? preprocessor(eslint({ include: ["./packages/main/src/**/*.ts"] }))
+      : [],
     react(),
-    createHtmlPlugin()
+    createHtmlPlugin(),
   ],
   css: {
     modules: {
-      localsConvention: "camelCaseOnly"
-    }
+      localsConvention: "camelCaseOnly",
+    },
   },
   build: {
     target: "es2020",
@@ -27,11 +29,11 @@ export default defineConfig(({ command }) => ({
       formats: ["cjs"],
     },
     rollupOptions: {
-      external: ["electron", "fs/promises", "path"],
+      external: ["electron", /^node:/],
       output: {
-        entryFileNames: "index.cjs"
-      }
+        entryFileNames: "index.cjs",
+      },
     },
-    brotliSize: false
-  }
+    brotliSize: false,
+  },
 }));

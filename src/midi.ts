@@ -1,7 +1,7 @@
 export type Format = 0 | 1 | 2;
 export type Division =
-  | { type: 0; ticksPerBeat: number; }
-  | { type: 1; smpteFormat: number; ticksPerFrame: number; };
+  | { type: 0; ticksPerBeat: number }
+  | { type: 1; smpteFormat: number; ticksPerFrame: number };
 export type DivisionType = Division["type"];
 
 export interface NoteOffEvent {
@@ -130,7 +130,7 @@ export type MetaEvent =
   | SequencerSpecificEvent;
 
 export type Event = MIDIEvent | SysExEvent | MetaEvent;
-export type TrackEvent = Event & { delta: number; };
+export type TrackEvent = Event & { delta: number };
 export type Track = TrackEvent[];
 
 export interface Midi {
@@ -158,6 +158,6 @@ export function newMidi(): Midi {
   return {
     format: 1,
     division: newDivision(0),
-    tracks: [newTrack()]
+    tracks: [newTrack()],
   };
 }

@@ -1,20 +1,23 @@
 import type { Event, TrackEvent } from "../../../../src/midi";
-import type { Property } from "./properties-editor";
+import type { Property } from "./properties_editor";
 
 interface EventType<T> {
   name: string;
-  default: Event & { type: T; };
-  properties(event: Event & { type: T; }, onChange: (event: Event & { type: T; }) => void): { [id: string]: Property; };
+  default: Event & { type: T };
+  properties(
+    event: Event & { type: T },
+    onChange: (event: Event & { type: T }) => void,
+  ): { [id: string]: Property };
 }
 
-const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
+const eventTypeMap: { [K in Event["type"]]: EventType<K> } = {
   "note-off": {
     name: "Note Off",
     default: {
       type: "note-off",
       channel: 0,
       key: 60,
-      velocity: 64
+      velocity: 64,
     },
     properties(event, onChange) {
       return {
@@ -26,7 +29,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 15,
           onChange(channel) {
             onChange({ ...event, channel });
-          }
+          },
         },
         key: {
           type: "integer",
@@ -36,7 +39,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(key) {
             onChange({ ...event, key });
-          }
+          },
         },
         velocity: {
           type: "integer",
@@ -46,10 +49,10 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(velocity) {
             onChange({ ...event, velocity });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "note-on": {
     name: "Note On",
@@ -57,7 +60,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
       type: "note-on",
       channel: 0,
       key: 60,
-      velocity: 64
+      velocity: 64,
     },
     properties(event, onChange) {
       return {
@@ -69,7 +72,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 15,
           onChange(channel) {
             onChange({ ...event, channel });
-          }
+          },
         },
         key: {
           type: "integer",
@@ -79,7 +82,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(key) {
             onChange({ ...event, key });
-          }
+          },
         },
         velocity: {
           type: "integer",
@@ -89,10 +92,10 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(velocity) {
             onChange({ ...event, velocity });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "polyphonic-key-pressure": {
     name: "Polyphonic Key Pressure",
@@ -100,7 +103,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
       type: "polyphonic-key-pressure",
       channel: 0,
       key: 60,
-      pressure: 0
+      pressure: 0,
     },
     properties(event, onChange) {
       return {
@@ -112,7 +115,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 15,
           onChange(channel) {
             onChange({ ...event, channel });
-          }
+          },
         },
         key: {
           type: "integer",
@@ -122,7 +125,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(key) {
             onChange({ ...event, key });
-          }
+          },
         },
         pressure: {
           type: "integer",
@@ -132,10 +135,10 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(pressure) {
             onChange({ ...event, pressure });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "control-change": {
     name: "Control Change",
@@ -143,7 +146,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
       type: "control-change",
       channel: 0,
       id: 0,
-      value: 0
+      value: 0,
     },
     properties(event, onChange) {
       return {
@@ -155,7 +158,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 15,
           onChange(channel) {
             onChange({ ...event, channel });
-          }
+          },
         },
         id: {
           type: "integer",
@@ -165,7 +168,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(id) {
             onChange({ ...event, id });
-          }
+          },
         },
         value: {
           type: "integer",
@@ -175,17 +178,17 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(value) {
             onChange({ ...event, value });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "program-change": {
     name: "Program Change",
     default: {
       type: "program-change",
       channel: 0,
-      program: 0
+      program: 0,
     },
     properties(event, onChange) {
       return {
@@ -197,7 +200,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 15,
           onChange(channel) {
             onChange({ ...event, channel });
-          }
+          },
         },
         program: {
           type: "integer",
@@ -207,17 +210,17 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(program) {
             onChange({ ...event, program });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "channel-pressure": {
     name: "Channel Pressure",
     default: {
       type: "channel-pressure",
       channel: 0,
-      pressure: 0
+      pressure: 0,
     },
     properties(event, onChange) {
       return {
@@ -229,7 +232,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 15,
           onChange(channel) {
             onChange({ ...event, channel });
-          }
+          },
         },
         pressure: {
           type: "integer",
@@ -239,17 +242,17 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(pressure) {
             onChange({ ...event, pressure });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "pitch-bend-change": {
     name: "Pitch Bend Change",
     default: {
       type: "pitch-bend-change",
       channel: 0,
-      pitch: 8192
+      pitch: 8192,
     },
     properties(event, onChange) {
       return {
@@ -261,7 +264,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 15,
           onChange(channel) {
             onChange({ ...event, channel });
-          }
+          },
         },
         pitch: {
           type: "integer",
@@ -271,16 +274,16 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 16383,
           onChange(pitch) {
             onChange({ ...event, pitch });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "sysex": {
     name: "SysEx",
     default: {
       type: "sysex",
-      data: new Uint8Array
+      data: new Uint8Array(),
     },
     properties(event, onChange) {
       return {
@@ -290,16 +293,16 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           value: event.data,
           onChange(data) {
             onChange({ ...event, data });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "sysex-escape": {
     name: "SysEx (Escape)",
     default: {
       type: "sysex-escape",
-      data: new Uint8Array
+      data: new Uint8Array(),
     },
     properties(event, onChange) {
       return {
@@ -309,16 +312,16 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           value: event.data,
           onChange(data) {
             onChange({ ...event, data });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "sequence-number": {
     name: "Sequence Number",
     default: {
       type: "sequence-number",
-      sequenceNumber: 0
+      sequenceNumber: 0,
     },
     properties(event, onChange) {
       return {
@@ -330,17 +333,17 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 65535,
           onChange(sequenceNumber) {
             onChange({ ...event, sequenceNumber });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "text": {
     name: "Text",
     default: {
       type: "text",
       subtype: 0,
-      text: ""
+      text: "",
     },
     properties(event, onChange) {
       return {
@@ -363,11 +366,11 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
             "12",
             "13",
             "14",
-            "15"
+            "15",
           ],
           onChange(subtype) {
             onChange({ ...event, subtype });
-          }
+          },
         },
         text: {
           type: "string",
@@ -375,16 +378,16 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           value: event.text,
           onChange(text) {
             onChange({ ...event, text });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "midi-channel-prefix": {
     name: "MIDI Channel Prefix",
     default: {
       type: "midi-channel-prefix",
-      channel: 0
+      channel: 0,
     },
     properties(event, onChange) {
       return {
@@ -396,25 +399,25 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 15,
           onChange(channel) {
             onChange({ ...event, channel });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "end-of-track": {
     name: "End of Track",
     default: {
-      type: "end-of-track"
+      type: "end-of-track",
     },
     properties() {
       return {};
-    }
+    },
   },
   "set-tempo": {
     name: "Set Tempo",
     default: {
       type: "set-tempo",
-      tempo: 500000
+      tempo: 500000,
     },
     properties(event, onChange) {
       return {
@@ -426,10 +429,10 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 16777215,
           onChange(tempo) {
             onChange({ ...event, tempo });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "smpte-offset": {
     name: "SMPTE Offset",
@@ -440,7 +443,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
       minutes: 0,
       seconds: 0,
       frames: 0,
-      subframes: 0
+      subframes: 0,
     },
     properties(event, onChange) {
       return {
@@ -452,7 +455,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 23,
           onChange(hours) {
             onChange({ ...event, hours });
-          }
+          },
         },
         minutes: {
           type: "integer",
@@ -462,7 +465,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 59,
           onChange(minutes) {
             onChange({ ...event, minutes });
-          }
+          },
         },
         seconds: {
           type: "integer",
@@ -472,7 +475,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 59,
           onChange(seconds) {
             onChange({ ...event, seconds });
-          }
+          },
         },
         frames: {
           type: "integer",
@@ -482,7 +485,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 29,
           onChange(frames) {
             onChange({ ...event, frames });
-          }
+          },
         },
         subframes: {
           type: "integer",
@@ -492,10 +495,10 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 99,
           onChange(subframes) {
             onChange({ ...event, subframes });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "time-signature": {
     name: "Time Signature",
@@ -504,7 +507,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
       numerator: 4,
       denominator: 2,
       metronomeClick: 24,
-      quarterNote: 8
+      quarterNote: 8,
     },
     properties(event, onChange) {
       return {
@@ -516,16 +519,23 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 1 << event.denominator,
           onChange(numerator) {
             onChange({ ...event, numerator });
-          }
+          },
         },
         denominator: {
           type: "select",
           label: "Denominator: ",
           value: event.denominator,
-          options: Array.from({ length: 5 }, (_, index) => (1 << index).toString()),
+          options: Array.from(
+            { length: 5 },
+            (_, index) => (1 << index).toString(),
+          ),
           onChange(denominator) {
-            onChange({ ...event, numerator: Math.min(event.numerator, 1 << denominator), denominator });
-          }
+            onChange({
+              ...event,
+              numerator: Math.min(event.numerator, 1 << denominator),
+              denominator,
+            });
+          },
         },
         metronomeClick: {
           type: "integer",
@@ -535,7 +545,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(metronomeClick) {
             onChange({ ...event, metronomeClick });
-          }
+          },
         },
         quarterNote: {
           type: "integer",
@@ -545,17 +555,17 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 127,
           onChange(quarterNote) {
             onChange({ ...event, quarterNote });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "key-signature": {
     name: "Key Signature",
     default: {
       type: "key-signature",
       key: 0,
-      scale: 0
+      scale: 0,
     },
     properties(event, onChange) {
       return {
@@ -567,7 +577,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           max: 7,
           onChange(key) {
             onChange({ ...event, key });
-          }
+          },
         },
         scale: {
           type: "select",
@@ -576,16 +586,16 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           options: ["Major", "Minor"],
           onChange(scale) {
             onChange({ ...event, scale });
-          }
-        }
+          },
+        },
       };
-    }
+    },
   },
   "sequencer-specific": {
     name: "Sequencer Specific",
     default: {
       type: "sequencer-specific",
-      data: new Uint8Array
+      data: new Uint8Array(),
     },
     properties(event, onChange) {
       return {
@@ -595,14 +605,17 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K>; } = {
           value: event.data,
           onChange(data) {
             onChange({ ...event, data });
-          }
-        }
+          },
+        },
       };
-    }
-  }
+    },
+  },
 };
 
-const eventTypes = (keys => (keys.splice(keys.indexOf("end-of-track"), 1), keys))(Object.keys(eventTypeMap)) as Exclude<Event["type"], "end-of-track">[];
+const eventTypes = Object.keys(eventTypeMap).filter(
+  (key): key is Exclude<Event["type"], "end-of-track"> =>
+    key !== "end-of-track",
+);
 
 export function newTrackEvent(type: Event["type"], delta: number): TrackEvent {
   return { ...eventTypeMap[type].default, delta };
@@ -612,9 +625,12 @@ export function getEventName(type: Event["type"]): string {
   return eventTypeMap[type].name;
 }
 
-export function getEventProperties(event: TrackEvent, onChange: (event: TrackEvent) => void): { [id: string]: Property; } {
+export function getEventProperties(
+  event: TrackEvent,
+  onChange: (event: TrackEvent) => void,
+): { [id: string]: Property } {
   const delta = event.delta;
-  if (event.type === "end-of-track")
+  if (event.type === "end-of-track") {
     return {
       delta: {
         type: "integer",
@@ -623,11 +639,15 @@ export function getEventProperties(event: TrackEvent, onChange: (event: TrackEve
         min: 0,
         onChange(delta) {
           onChange({ ...event, delta });
-        }
-      }
+        },
+      },
     };
+  }
   const eventType: EventType<string> = eventTypeMap[event.type];
-  const eventProperties = eventType.properties(event, event => onChange({ ...event, delta }));
+  const eventProperties = eventType.properties(
+    event,
+    (event) => onChange({ ...event, delta }),
+  );
   return {
     type: {
       type: "select",
@@ -636,7 +656,7 @@ export function getEventProperties(event: TrackEvent, onChange: (event: TrackEve
       options: eventTypes.map(getEventName),
       onChange(type) {
         onChange(newTrackEvent(eventTypes[type], delta));
-      }
+      },
     },
     delta: {
       type: "integer",
@@ -645,8 +665,8 @@ export function getEventProperties(event: TrackEvent, onChange: (event: TrackEve
       min: 0,
       onChange(delta) {
         onChange({ ...event, delta });
-      }
+      },
     },
-    ...eventProperties
+    ...eventProperties,
   };
 }
