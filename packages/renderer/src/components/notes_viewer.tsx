@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AutoSizer, Collection } from "react-virtualized";
-import { Track } from "../../../../src/midi";
+import { Track } from "../../../shared/src/midi";
 import classes from "./notes_viewer.module.css";
 
 const channelCount = 16;

@@ -6,7 +6,7 @@ import {
   type Midi,
   newDivision,
   smpteFrames,
-} from "../../../../src/midi";
+} from "../../../shared/src/midi";
 import classes from "./metadata.module.css";
 import { PropertiesEditor, type Property } from "./properties_editor";
 

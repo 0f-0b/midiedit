@@ -29,12 +29,13 @@ import {
   type TextEvent as RawTextEvent,
 } from "midievents";
 import MIDIFile from "midifile";
+import { Buffer } from "node:buffer";
 import {
   type Midi,
   smpteFrames,
   type Track,
   type TrackEvent,
-} from "../../../src/midi";
+} from "../../shared/src/midi";
 
 function readTrack(events: readonly RawEvent[]): Track {
   return events.map((event): TrackEvent => {

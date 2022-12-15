@@ -1,13 +1,15 @@
 import { app, BrowserWindow, ipcMain, Menu } from "electron";
+import { once } from "node:events";
 import { basename, join } from "node:path";
-import type { Midi } from "../../../src/midi";
+import { pathToFileURL } from "node:url";
+import type { Midi } from "../../shared/src/midi";
 import { buildMenu } from "./menu";
 import { askSave, exportJson, openFile, saveFile } from "./remote";
 
-let window: BrowserWindow;
-app.once("ready", () => {
+void (async () => {
+  await once(app, "ready");
   Menu.setApplicationMenu(buildMenu());
-  window = new BrowserWindow({
+  const window = new BrowserWindow({
     title: app.name,
     width: 800,
     height: 600,
@@ -19,9 +21,6 @@ app.once("ready", () => {
       preload: join(app.getAppPath(), "packages/preload/dist/index.cjs"),
     },
   });
-  void window.loadFile(
-    join(app.getAppPath(), "packages/renderer/dist/index.html"),
-  );
   app.on("open-file", (event, path) => {
     event.preventDefault();
     window.webContents.send("open-file", path);
@@ -41,9 +40,7 @@ app.once("ready", () => {
           },
         };
       default:
-        return {
-          action: "deny",
-        };
+        return { action: "deny" };
     }
   });
   ipcMain.on("ready", () => window.show());
@@ -72,4 +69,9 @@ app.once("ready", () => {
     (_, path: string | undefined, midi: Midi) => askSave(window, path, midi),
   );
   ipcMain.handle("export-json", (_, midi: Midi) => exportJson(window, midi));
-});
+  await window.loadURL(
+    process.env.VITE_DEV_SERVER_URL ||
+      pathToFileURL(join(app.getAppPath(), "packages/renderer/dist/index.html"))
+        .href,
+  );
+})();

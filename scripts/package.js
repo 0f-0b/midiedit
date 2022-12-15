@@ -2,6 +2,7 @@
 
 import packager from "electron-packager";
 import { execFile } from "node:child_process";
+import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 

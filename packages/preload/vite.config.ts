@@ -1,28 +1,19 @@
-import eslint from "@rollup/plugin-eslint";
-import react from "@vitejs/plugin-react";
-import { defineConfig, type Plugin } from "vite";
+import createEslintPlugin from "@rollup/plugin-eslint";
+import type { Plugin } from "vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 
-function preprocessor(plugin: Plugin): Plugin {
+function pre(plugin: Plugin): Plugin {
   return { ...plugin, enforce: "pre" };
 }
 
-export default defineConfig(({ command }) => ({
+export default {
   root: "./packages/preload",
   plugins: [
-    command === "build"
-      ? preprocessor(eslint({ include: ["./packages/preload/src/**/*.ts"] }))
-      : [],
-    react(),
+    pre(createEslintPlugin({ include: ["./packages/preload/src/**/*.ts"] })),
     createHtmlPlugin(),
   ],
-  css: {
-    modules: {
-      localsConvention: "camelCaseOnly",
-    },
-  },
   build: {
-    target: "es2020",
+    target: "es2022",
     sourcemap: true,
     lib: {
       entry: "./src/index.ts",
@@ -34,6 +25,6 @@ export default defineConfig(({ command }) => ({
         entryFileNames: "index.cjs",
       },
     },
-    brotliSize: false,
+    reportCompressedSize: false,
   },
-}));
+};

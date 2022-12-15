@@ -1,10 +1,11 @@
 import { Menu, type MenuItemConstructorOptions } from "electron";
+import process from "node:process";
 
-const devOnly: (
+function devOnly(
   menu: MenuItemConstructorOptions[],
-) => MenuItemConstructorOptions[] = process.env.NODE_ENV === "production"
-  ? () => []
-  : (menu) => menu;
+): MenuItemConstructorOptions[] {
+  return process.env.NODE_ENV === "production" ? [] : menu;
+}
 
 function menuTemplate(): MenuItemConstructorOptions[] {
   return [

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useBeforeunload } from "react-beforeunload";
-import { newMidi } from "../../../src/midi";
+import { newMidi } from "../../shared/src/midi";
 import { api } from "./api";
 import { EventsEditor } from "./components/events_editor";
 import { InsertNotesWindow } from "./components/insert_notes_window";

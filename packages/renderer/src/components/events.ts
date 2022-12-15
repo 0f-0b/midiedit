@@ -1,4 +1,4 @@
-import type { Event, TrackEvent } from "../../../../src/midi";
+import type { Event, TrackEvent } from "../../../shared/src/midi";
 import type { Property } from "./properties_editor";
 
 interface EventType<T> {

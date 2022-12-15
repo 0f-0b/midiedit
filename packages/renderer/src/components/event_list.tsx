@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import type { Track } from "../../../../src/midi";
+import type { Track } from "../../../shared/src/midi";
 import { scan } from "../util";
 import { getEventName, newTrackEvent } from "./events";
 import { List } from "./list";

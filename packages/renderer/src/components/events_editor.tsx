@@ -1,5 +1,5 @@
 import React from "react";
-import type { Track } from "../../../../src/midi";
+import type { Track } from "../../../shared/src/midi";
 import { getEventProperties } from "./events";
 import classes from "./events_editor.module.css";
 import { EventList } from "./event_list";

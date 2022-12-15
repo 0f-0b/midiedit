@@ -1,21 +1,11 @@
 #!/usr/bin/env node
 
 import fs from "node:fs/promises";
-import { join } from "node:path";
+import process from "node:process";
 import { fileURLToPath } from "node:url";
 
-/**
- * @param {string} path
- * @returns {Promise<undefined>}
- */
-async function remove(path) {
-  console.log(`remove '${path}'`);
-  await fs.rm(path, { recursive: true, force: true });
-  return;
-}
-
 process.chdir(fileURLToPath(new URL("..", import.meta.url)));
-await remove("dist");
-for (const name of await fs.readdir("packages")) {
-  await remove(join("packages", name, "dist"));
-}
+await fs.rm("dist", { recursive: true, force: true });
+await fs.rm("packages/main/dist", { recursive: true, force: true });
+await fs.rm("packages/preload/dist", { recursive: true, force: true });
+await fs.rm("packages/renderer/dist", { recursive: true, force: true });

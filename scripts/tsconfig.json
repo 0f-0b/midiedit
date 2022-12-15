@@ -1,8 +1,9 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "checkJs": true
+    "target": "esnext",
+    "checkJs": true,
+    "baseUrl": "."
   },
   "include": [
     "./*.js"

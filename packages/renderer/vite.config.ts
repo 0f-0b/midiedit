@@ -1,27 +1,23 @@
-import eslint from "@rollup/plugin-eslint";
-import react from "@vitejs/plugin-react";
-import { defineConfig, type Plugin } from "vite";
+import createEslintPlugin from "@rollup/plugin-eslint";
+import createReactPlugin from "@vitejs/plugin-react";
+import type { Plugin } from "vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 
-function preprocessor(plugin: Plugin): Plugin {
+function pre(plugin: Plugin): Plugin {
   return { ...plugin, enforce: "pre" };
 }
 
-export default defineConfig(({ command }) => ({
+export default {
   root: "./packages/renderer",
   base: "",
   plugins: [
-    command === "build"
-      ? preprocessor(
-        eslint({
-          include: [
-            "./packages/renderer/src/**/*.ts",
-            "./packages/renderer/src/**/*.tsx",
-          ],
-        }),
-      )
-      : [],
-    react(),
+    pre(createEslintPlugin({
+      include: [
+        "./packages/renderer/src/**/*.ts",
+        "./packages/renderer/src/**/*.tsx",
+      ],
+    })),
+    createReactPlugin(),
     createHtmlPlugin(),
   ],
   css: {
@@ -30,8 +26,8 @@ export default defineConfig(({ command }) => ({
     },
   },
   build: {
-    target: "es2020",
+    target: "es2022",
     sourcemap: true,
-    brotliSize: false,
+    reportCompressedSize: false,
   },
-}));
+};

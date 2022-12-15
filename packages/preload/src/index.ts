@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer, type IpcRendererEvent } from "electron";
-import type { Midi } from "../../../src/midi";
 import type { OpenResult, SaveResult } from "../../main/src/remote";
+import type { Midi } from "../../shared/src/midi";
 
 export type IpcListener = (
   event: IpcRendererEvent,

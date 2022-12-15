@@ -1,11 +1,16 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "jsx": "react",
-    "baseUrl": "./src",
+    "lib": [
+      "dom",
+      "es2022"
+    ],
     "types": [
       "vite/client"
-    ]
+    ],
+    "target": "es2022",
+    "jsx": "react",
+    "baseUrl": "./src"
   },
   "include": [
     "./src/**/*"

@@ -1,15 +1,23 @@
 #!/usr/bin/env node
 
-import fs from "node:fs/promises";
-import { join } from "node:path";
+import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { build } from "vite";
 
 process.chdir(fileURLToPath(new URL("..", import.meta.url)));
-for (const name of await fs.readdir("packages")) {
-  console.log(`build '${name}'`);
-  await build({
-    configFile: join("packages", name, "vite.config.ts"),
-    mode: process.env.NODE_ENV || undefined,
-  });
-}
+const mode = process.env.NODE_ENV || undefined;
+await build({
+  configFile: "packages/main/vite.config.ts",
+  mode,
+  define: {
+    "process.env.VITE_DEV_SERVER_URL": "undefined",
+  },
+});
+await build({
+  configFile: "packages/preload/vite.config.ts",
+  mode,
+});
+await build({
+  configFile: "packages/renderer/vite.config.ts",
+  mode,
+});

@@ -1,5 +1,5 @@
 import React from "react";
-import { newTrack, type TextEvent, type Track } from "../../../../src/midi";
+import { newTrack, type TextEvent, type Track } from "../../../shared/src/midi";
 import { List } from "./list";
 import classes from "./track_list.module.css";
 
