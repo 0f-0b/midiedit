@@ -1,13 +1,13 @@
 import createEslintPlugin from "@rollup/plugin-eslint";
 import createReactPlugin from "@vitejs/plugin-react";
-import type { Plugin } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 
 function pre(plugin: Plugin): Plugin {
   return { ...plugin, enforce: "pre" };
 }
 
-export default {
+export default defineConfig({
   root: "./packages/renderer",
   base: "",
   plugins: [
@@ -30,4 +30,4 @@ export default {
     sourcemap: true,
     reportCompressedSize: false,
   },
-};
+});

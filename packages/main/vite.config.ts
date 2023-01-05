@@ -1,12 +1,12 @@
 import createEslintPlugin from "@rollup/plugin-eslint";
-import type { Plugin } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 
 function pre(plugin: Plugin): Plugin {
   return { ...plugin, enforce: "pre" };
 }
 
-export default {
+export default defineConfig({
   root: "./packages/main",
   plugins: [
     pre(createEslintPlugin({ include: ["./packages/main/src/**/*.ts"] })),
@@ -27,4 +27,4 @@ export default {
     },
     reportCompressedSize: false,
   },
-};
+});
