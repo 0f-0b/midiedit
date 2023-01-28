@@ -7,8 +7,7 @@
     "types": [
       "node"
     ],
-    "target": "es2022",
-    "baseUrl": "./src"
+    "target": "es2022"
   },
   "include": [
     "./src/**/*"

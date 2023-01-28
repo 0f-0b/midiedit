@@ -2,9 +2,9 @@ import { app, BrowserWindow, ipcMain, Menu } from "electron";
 import { once } from "node:events";
 import { basename, join } from "node:path";
 import { pathToFileURL } from "node:url";
-import type { Midi } from "../../shared/src/midi";
-import { buildMenu } from "./menu";
-import { askSave, exportJson, openFile, saveFile } from "./remote";
+import type { Midi } from "../../shared/src/midi.ts";
+import { buildMenu } from "./menu.ts";
+import { askSave, exportJson, openFile, saveFile } from "./remote.ts";
 
 void (async () => {
   await once(app, "ready");

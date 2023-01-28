@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import NewWindow from "react-new-window";
-import type { Track } from "../../../shared/src/midi";
+import type { Track } from "../../../shared/src/midi.ts";
 import classes from "./insert_notes_window.module.css";
-import { PropertiesEditor } from "./properties_editor";
+import { PropertiesEditor } from "./properties_editor.tsx";
 
 export interface InsertNotesWindowProps {
   track: Track;

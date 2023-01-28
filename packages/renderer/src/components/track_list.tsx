@@ -1,6 +1,10 @@
 import React from "react";
-import { newTrack, type TextEvent, type Track } from "../../../shared/src/midi";
-import { List } from "./list";
+import {
+  newTrack,
+  type TextEvent,
+  type Track,
+} from "../../../shared/src/midi.ts";
+import { List } from "./list.tsx";
 import classes from "./track_list.module.css";
 
 export interface TrackListProps {

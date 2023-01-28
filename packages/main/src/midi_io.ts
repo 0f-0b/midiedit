@@ -1,3 +1,5 @@
+/// <reference types="../types/midievents.d.ts" />
+/// <reference types="../types/midifile.d.ts" />
 import {
   type Event as RawEvent,
   EVENT_DIVSYSEX,
@@ -35,7 +37,7 @@ import {
   smpteFrames,
   type Track,
   type TrackEvent,
-} from "../../shared/src/midi";
+} from "../../shared/src/midi.ts";
 
 function readTrack(events: readonly RawEvent[]): Track {
   return events.map((event): TrackEvent => {

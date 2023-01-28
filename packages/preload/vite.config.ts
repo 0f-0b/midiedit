@@ -1,16 +1,17 @@
-import createEslintPlugin from "@rollup/plugin-eslint";
+import eslint from "@rollup/plugin-eslint";
 import { defineConfig, type Plugin } from "vite";
-import { createHtmlPlugin } from "vite-plugin-html";
 
-function pre(plugin: Plugin): Plugin {
+function enforcePre(plugin: Plugin): Plugin {
   return { ...plugin, enforce: "pre" };
 }
 
 export default defineConfig({
   root: "./packages/preload",
   plugins: [
-    pre(createEslintPlugin({ include: ["./packages/preload/src/**/*.ts"] })),
-    createHtmlPlugin(),
+    enforcePre(eslint({
+      overrideConfigFile: "./packages/preload/.eslintrc.json",
+      throwOnError: true,
+    })),
   ],
   build: {
     target: "es2022",

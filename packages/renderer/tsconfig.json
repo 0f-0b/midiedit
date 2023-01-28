@@ -9,8 +9,7 @@
       "vite/client"
     ],
     "target": "es2022",
-    "jsx": "react",
-    "baseUrl": "./src"
+    "jsx": "react"
   },
   "include": [
     "./src/**/*"

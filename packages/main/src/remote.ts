@@ -1,8 +1,8 @@
 import { app, type BrowserWindow, dialog, type FileFilter } from "electron";
 import { readFile, writeFile } from "node:fs/promises";
 import { basename } from "node:path";
-import type { Midi } from "../../shared/src/midi";
-import { readMidi, writeMidi } from "./midi_io";
+import type { Midi } from "../../shared/src/midi.ts";
+import { readMidi, writeMidi } from "./midi_io.ts";
 
 const midiFilters: FileFilter[] = [
   { name: "Standard MIDI File", extensions: ["mid", "midi"] },

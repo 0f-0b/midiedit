@@ -6,9 +6,9 @@ import {
   type Midi,
   newDivision,
   smpteFrames,
-} from "../../../shared/src/midi";
+} from "../../../shared/src/midi.ts";
 import classes from "./metadata.module.css";
-import { PropertiesEditor, type Property } from "./properties_editor";
+import { PropertiesEditor, type Property } from "./properties_editor.tsx";
 
 function divisionProperties(
   division: Division,

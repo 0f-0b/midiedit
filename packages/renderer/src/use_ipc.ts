@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useLatest from "use-latest";
-import { api, type IpcListener } from "./api";
+import { api, type IpcListener } from "./api.ts";
 
 export function useIpc(channel: string, listener: IpcListener): undefined {
   const ref = useLatest(listener);

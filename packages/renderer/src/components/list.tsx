@@ -4,7 +4,7 @@ import {
   List as VList,
   type ListRowRenderer,
 } from "react-virtualized";
-import { AddButton, RemoveButton } from "./edit_button";
+import { AddButton, RemoveButton } from "./edit_button.tsx";
 import classes from "./list.module.css";
 
 export interface ListProps {

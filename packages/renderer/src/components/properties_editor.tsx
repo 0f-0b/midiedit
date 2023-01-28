@@ -1,8 +1,8 @@
 import React from "react";
-import { ByteArrayInput } from "./inputs/byte_array_input";
-import { IntegerInput } from "./inputs/integer_input";
-import { SelectInput } from "./inputs/select_input";
-import { StringInput } from "./inputs/string_input";
+import { ByteArrayInput } from "./inputs/byte_array_input.tsx";
+import { IntegerInput } from "./inputs/integer_input.tsx";
+import { SelectInput } from "./inputs/select_input.tsx";
+import { StringInput } from "./inputs/string_input.tsx";
 import classes from "./properties_editor.module.css";
 
 export interface StringProperty {

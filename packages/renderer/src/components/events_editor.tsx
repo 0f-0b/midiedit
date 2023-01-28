@@ -1,11 +1,11 @@
 import React from "react";
-import type { Track } from "../../../shared/src/midi";
-import { getEventProperties } from "./events";
+import type { Track } from "../../../shared/src/midi.ts";
+import { EventList } from "./event_list.tsx";
+import { getEventProperties } from "./events.ts";
 import classes from "./events_editor.module.css";
-import { EventList } from "./event_list";
-import { NotesViewer } from "./notes_viewer";
-import { PropertiesEditor } from "./properties_editor";
-import { SplitView } from "./split_view";
+import { NotesViewer } from "./notes_viewer.tsx";
+import { PropertiesEditor } from "./properties_editor.tsx";
+import { SplitView } from "./split_view.tsx";
 
 export interface EventsEditorProps {
   track: Track;

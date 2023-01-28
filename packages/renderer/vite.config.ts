@@ -1,9 +1,9 @@
-import createEslintPlugin from "@rollup/plugin-eslint";
-import createReactPlugin from "@vitejs/plugin-react";
+import eslint from "@rollup/plugin-eslint";
+import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin } from "vite";
-import { createHtmlPlugin } from "vite-plugin-html";
+import { createHtmlPlugin as html } from "vite-plugin-html";
 
-function pre(plugin: Plugin): Plugin {
+function enforcePre(plugin: Plugin): Plugin {
   return { ...plugin, enforce: "pre" };
 }
 
@@ -11,14 +11,13 @@ export default defineConfig({
   root: "./packages/renderer",
   base: "",
   plugins: [
-    pre(createEslintPlugin({
-      include: [
-        "./packages/renderer/src/**/*.ts",
-        "./packages/renderer/src/**/*.tsx",
-      ],
+    enforcePre(eslint({
+      overrideConfigFile: "./packages/renderer/.eslintrc.json",
+      throwOnError: true,
+      include: /\.tsx?$/,
     })),
-    createReactPlugin(),
-    createHtmlPlugin(),
+    react(),
+    html(),
   ],
   css: {
     modules: {

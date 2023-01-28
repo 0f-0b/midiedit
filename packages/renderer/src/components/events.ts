@@ -1,5 +1,5 @@
-import type { Event, TrackEvent } from "../../../shared/src/midi";
-import type { Property } from "./properties_editor";
+import type { Event, TrackEvent } from "../../../shared/src/midi.ts";
+import type { Property } from "./properties_editor.tsx";
 
 interface EventType<T> {
   name: string;

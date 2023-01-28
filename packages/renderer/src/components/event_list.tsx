@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
-import type { Track } from "../../../shared/src/midi";
-import { scan } from "../util";
-import { getEventName, newTrackEvent } from "./events";
-import { List } from "./list";
+import type { Track } from "../../../shared/src/midi.ts";
+import { scan } from "../util.ts";
+import { getEventName, newTrackEvent } from "./events.ts";
+import { List } from "./list.tsx";
 
 export interface EventListProps {
   track: Track;
