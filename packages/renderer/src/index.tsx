@@ -1,3 +1,4 @@
+/// <reference types="../types/array.with.d.ts" />
 import React, { useEffect, useState } from "react";
 import { useBeforeunload } from "react-beforeunload";
 import { newMidi } from "../../shared/src/midi.ts";
@@ -27,6 +28,7 @@ export function Index(): JSX.Element {
   }));
   const [persisted, setPersisted] = useState(midi);
   const [showInsertNotes, setShowInsertNotes] = useState(false);
+  const [exiting, setExiting] = useState(false);
   const dirty = midi !== persisted;
   useEffect(() => api.ready(), []);
   useEffect(() => api.updateState(filePath, dirty), [filePath, dirty]);
@@ -45,21 +47,21 @@ export function Index(): JSX.Element {
   });
   useIpc("open-file", async (_, preferredPath?: string) => {
     if (dirty) {
-      const saved = await api.askSave(filePath, midi);
-      if (!saved) {
+      const result = await api.askSave(filePath, midi);
+      if (!result) {
         return;
       }
-      if (saved.path !== undefined) {
-        setFilePath(saved.path);
+      if (result.path !== undefined) {
+        setFilePath(result.path);
         setPersisted(midi);
       }
     }
-    const opened = await api.openFile(preferredPath);
-    if (!opened) {
+    const result = await api.openFile(preferredPath);
+    if (!result) {
       return;
     }
-    setFilePath(opened.path);
-    const root = opened.midi;
+    setFilePath(result.path);
+    const root = result.midi;
     resetState({
       midi: root,
       selectedTrack: 0,
@@ -68,9 +70,9 @@ export function Index(): JSX.Element {
     setPersisted(root);
   });
   useIpc("save-file", async () => {
-    const saved = await api.saveFile(filePath, midi);
-    if (saved) {
-      setFilePath(saved.path);
+    const result = await api.saveFile(filePath, midi);
+    if (result) {
+      setFilePath(result.path);
       setPersisted(midi);
     }
   });
@@ -78,18 +80,23 @@ export function Index(): JSX.Element {
   useIpc("undo", () => undo?.());
   useIpc("redo", () => redo?.());
   useIpc("insert-notes", () => setShowInsertNotes(!showInsertNotes));
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  useBeforeunload(async (event) => {
-    if (dirty) {
+  useBeforeunload((event) => {
+    if (dirty && !exiting) {
       event.preventDefault();
-      const saved = await api.askSave(filePath, midi);
-      if (!saved) {
-        return;
-      }
-      setPersisted(midi);
-      close();
+      void (async () => {
+        const result = await api.askSave(filePath, midi);
+        if (!result) {
+          return;
+        }
+        setExiting(true);
+      })();
     }
   });
+  useEffect(() => {
+    if (exiting) {
+      close();
+    }
+  }, [exiting]);
   return (
     <>
       <SplitView className={classes.app} direction="horizontal">
@@ -139,14 +146,7 @@ export function Index(): JSX.Element {
             })}
           onChange={(track, selectedIndex) =>
             setState({
-              midi: {
-                ...midi,
-                tracks: [
-                  ...midi.tracks.slice(0, selectedTrack),
-                  track,
-                  ...midi.tracks.slice(selectedTrack + 1),
-                ],
-              },
+              midi: { ...midi, tracks: midi.tracks.with(selectedTrack, track) },
               selectedTrack,
               selectedEvent: selectedIndex,
             })}
@@ -158,14 +158,7 @@ export function Index(): JSX.Element {
           selectedIndex={selectedEvent}
           onChange={(track, selectedIndex) =>
             setState({
-              midi: {
-                ...midi,
-                tracks: [
-                  ...midi.tracks.slice(0, selectedTrack),
-                  track,
-                  ...midi.tracks.slice(selectedTrack + 1),
-                ],
-              },
+              midi: { ...midi, tracks: midi.tracks.with(selectedTrack, track) },
               selectedTrack,
               selectedEvent: selectedIndex,
             })}

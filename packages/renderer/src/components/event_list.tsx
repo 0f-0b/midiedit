@@ -1,3 +1,4 @@
+/// <reference types="../../types/array.to_spliced.d.ts" />
 import React, { useMemo } from "react";
 import type { Track } from "../../../shared/src/midi.ts";
 import { scan } from "../util.ts";
@@ -38,17 +39,10 @@ export function EventList(
       canRemove={(index) => index < track.length - 1}
       onSelect={(index) => onSelect(index)}
       onAdd={(index) =>
-        onChange(
-          [
-            ...track.slice(0, index),
-            newTrackEvent("text", 0),
-            ...track.slice(index),
-          ],
-          index,
-        )}
+        onChange(track.toSpliced(index, 0, newTrackEvent("text", 0)), index)}
       onRemove={(index) =>
         onChange(
-          [...track.slice(0, index), ...track.slice(index + 1)],
+          track.toSpliced(index, 1),
           selectedIndex >= index && selectedIndex > 0
             ? selectedIndex - 1
             : selectedIndex,

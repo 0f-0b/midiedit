@@ -1,3 +1,4 @@
+/// <reference types="../../types/array.to_spliced.d.ts" />
 import React, { useState } from "react";
 import NewWindow from "react-new-window";
 import type { Track } from "../../../shared/src/midi.ts";
@@ -21,12 +22,15 @@ export function InsertNotesWindow(
   const [attack, setAttack] = useState(64);
   const [release, setRelease] = useState(64);
   const insert = () =>
-    onChange([
-      ...track.slice(0, selectedIndex),
-      { type: "note-on", channel, key, velocity: attack, delta: delta },
-      { type: "note-off", channel, key, velocity: release, delta: duration },
-      ...track.slice(selectedIndex),
-    ], selectedIndex + 2);
+    onChange(
+      track.toSpliced(
+        selectedIndex,
+        0,
+        { type: "note-on", channel, key, velocity: attack, delta: delta },
+        { type: "note-off", channel, key, velocity: release, delta: duration },
+      ),
+      selectedIndex + 2,
+    );
   return (
     <NewWindow name="insert-notes" copyStyles onUnload={onUnload}>
       <PropertiesEditor

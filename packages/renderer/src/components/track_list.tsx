@@ -1,3 +1,4 @@
+/// <reference types="../../types/array.to_spliced.d.ts" />
 import React from "react";
 import {
   newTrack,
@@ -43,14 +44,10 @@ export function TrackList(
       canInsert={multiTrack}
       canRemove={tracks.length > 1}
       onSelect={(index) => onSelect(index)}
-      onAdd={(index) =>
-        onChange(
-          [...tracks.slice(0, index), newTrack(), ...tracks.slice(index)],
-          index,
-        )}
+      onAdd={(index) => onChange(tracks.toSpliced(index, 0, newTrack()), index)}
       onRemove={(index) =>
         onChange(
-          [...tracks.slice(0, index), ...tracks.slice(index + 1)],
+          tracks.toSpliced(index, 1),
           selectedIndex >= index && selectedIndex > 0
             ? selectedIndex - 1
             : selectedIndex,

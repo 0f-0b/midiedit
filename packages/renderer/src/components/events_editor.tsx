@@ -1,3 +1,4 @@
+/// <reference types="../../types/array.with.d.ts" />
 import React from "react";
 import type { Track } from "../../../shared/src/midi.ts";
 import { EventList } from "./event_list.tsx";
@@ -29,15 +30,11 @@ export function EventsEditor(
         />
         <PropertiesEditor
           className={classes.eventProperties}
-          properties={getEventProperties(track[selectedIndex], (event) =>
-            onChange(
-              [
-                ...track.slice(0, selectedIndex),
-                event,
-                ...track.slice(selectedIndex + 1),
-              ],
-              selectedIndex,
-            ))}
+          properties={getEventProperties(
+            track[selectedIndex],
+            (event) =>
+              onChange(track.with(selectedIndex, event), selectedIndex),
+          )}
         />
       </SplitView>
     </SplitView>
