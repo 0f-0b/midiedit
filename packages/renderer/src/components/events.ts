@@ -1,3 +1,4 @@
+import { makeArray } from "../../../shared/src/array.ts";
 import type { Event, TrackEvent } from "../../../shared/src/midi.ts";
 import type { Property } from "./properties_editor.tsx";
 
@@ -525,10 +526,7 @@ const eventTypeMap: { [K in Event["type"]]: EventType<K> } = {
           type: "select",
           label: "Denominator: ",
           value: event.denominator,
-          options: Array.from(
-            { length: 5 },
-            (_, index) => (1 << index).toString(),
-          ),
+          options: makeArray(5, (i) => (1 << i).toString()),
           onChange(denominator) {
             onChange({
               ...event,

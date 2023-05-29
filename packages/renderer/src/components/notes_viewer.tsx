@@ -1,6 +1,7 @@
 import { clsx } from "clsx";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AutoSizer, Collection } from "react-virtualized";
+import { makeArray } from "../../../shared/src/array.ts";
 import { Track } from "../../../shared/src/midi.ts";
 import classes from "./notes_viewer.module.css";
 
@@ -17,8 +18,8 @@ interface Note {
 
 function extractNotes(track: Track): Note[] {
   const notes: Note[] = [];
-  const channels = Array.from(
-    { length: channelCount * keyCount },
+  const channels = makeArray(
+    channelCount * keyCount,
     () => ({ time: 0, velocity: 0 }),
   );
   let time = 0;

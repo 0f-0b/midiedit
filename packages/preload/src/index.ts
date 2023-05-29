@@ -2,10 +2,7 @@ import { contextBridge, ipcRenderer, type IpcRendererEvent } from "electron";
 import type { OpenResult, SaveResult } from "../../main/src/remote.ts";
 import type { Midi } from "../../shared/src/midi.ts";
 
-export type IpcListener = (
-  event: IpcRendererEvent,
-  ...args: never[]
-) => unknown;
+export type IpcListener = (event: IpcRendererEvent, ...args: never) => unknown;
 
 export interface Api {
   ready(): undefined;
