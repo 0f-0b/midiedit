@@ -1,4 +1,3 @@
-/// <reference types="../../types/array.to_spliced.d.ts" />
 import React, { useMemo } from "react";
 import type { Track } from "../../../shared/src/midi.ts";
 import { scan } from "../util.ts";

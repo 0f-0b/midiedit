@@ -3,7 +3,8 @@
   "compilerOptions": {
     "lib": [
       "dom",
-      "es2022"
+      "es2022",
+      "es2023.array"
     ],
     "types": [
       "vite/client"

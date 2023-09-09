@@ -1,4 +1,3 @@
-/// <reference types="../../types/array.to_spliced.d.ts" />
 import React, { useState } from "react";
 import NewWindow from "react-new-window";
 import type { Track } from "../../../shared/src/midi.ts";

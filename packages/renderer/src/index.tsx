@@ -1,4 +1,3 @@
-/// <reference types="../types/array.with.d.ts" />
 import React, { useEffect, useState } from "react";
 import { useBeforeunload } from "react-beforeunload";
 import { newMidi } from "../../shared/src/midi.ts";

@@ -1,5 +1,3 @@
-/// <reference types="../types/array.to_spliced.d.ts" />
-/// <reference types="../types/array.with.d.ts" />
 import { type SetStateAction, useState } from "react";
 
 interface Undoable<S> {
@@ -31,7 +29,7 @@ export function useUndoable<S>(initialState: S | (() => S)): [
       setState({
         history: history.toSpliced(
           cursor + 1,
-          undefined,
+          0,
           typeof value === "function"
             ? (value as (prevState: S) => S)(current)
             : value,

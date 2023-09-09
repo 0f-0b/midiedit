@@ -1,4 +1,3 @@
-/// <reference types="../../types/array.with.d.ts" />
 import React from "react";
 import type { Track } from "../../../shared/src/midi.ts";
 import { EventList } from "./event_list.tsx";

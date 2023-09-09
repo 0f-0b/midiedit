@@ -1,4 +1,3 @@
-/// <reference types="../../types/array.to_spliced.d.ts" />
 import React from "react";
 import {
   newTrack,

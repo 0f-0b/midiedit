@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "lib": [
-      "es2022"
+      "es2022",
+      "es2023.array"
     ],
     "types": [
       "node"

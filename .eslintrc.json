@@ -22,7 +22,7 @@
     "project": "./tsconfig.json"
   },
   "env": {
-    "es2020": true
+    "es2022": true
   },
   "rules": {
     // typescript-eslint/typescript-eslint#1824
