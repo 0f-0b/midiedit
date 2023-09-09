@@ -29,7 +29,7 @@ export function useUndoable<S>(initialState: S | (() => S)): [
       setState({
         history: history.toSpliced(
           cursor + 1,
-          0,
+          Infinity,
           typeof value === "function"
             ? (value as (prevState: S) => S)(current)
             : value,
