@@ -44,7 +44,10 @@ export function Index(): JSX.Element {
     });
     setPersisted(root);
   });
-  useIpc("open-file", async (_, preferredPath?: string) => {
+  useIpc("open-file", async (preferredPath) => {
+    if (!(preferredPath === undefined || typeof preferredPath === "string")) {
+      throw new TypeError("preferredPath must be a string or undefined");
+    }
     if (dirty) {
       const result = await api.askSave(filePath, midi);
       if (!result) {

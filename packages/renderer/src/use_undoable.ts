@@ -25,7 +25,7 @@ export function useUndoable<S>(initialState: S | (() => S)): [
   const current = history[cursor];
   return [
     current,
-    (value): undefined => {
+    (value) => {
       setState({
         history: history.toSpliced(
           cursor + 1,
@@ -36,9 +36,8 @@ export function useUndoable<S>(initialState: S | (() => S)): [
         ),
         cursor: cursor + 1,
       });
-      return;
     },
-    (value): undefined => {
+    (value) => {
       setState({
         history: history.with(
           cursor,
@@ -48,9 +47,8 @@ export function useUndoable<S>(initialState: S | (() => S)): [
         ),
         cursor,
       });
-      return;
     },
-    (value): undefined => {
+    (value) => {
       setState({
         history: [
           typeof value === "function"
@@ -59,15 +57,12 @@ export function useUndoable<S>(initialState: S | (() => S)): [
         ],
         cursor: 0,
       });
-      return;
     },
-    cursor === 0 ? undefined : (): undefined => {
+    cursor === 0 ? undefined : () => {
       setState({ history, cursor: cursor - 1 });
-      return;
     },
-    cursor === history.length - 1 ? undefined : (): undefined => {
+    cursor === history.length - 1 ? undefined : () => {
       setState({ history, cursor: cursor + 1 });
-      return;
     },
   ];
 }
