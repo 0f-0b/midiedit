@@ -1,5 +1,4 @@
 import { app, BrowserWindow, ipcMain, Menu } from "electron";
-import { once } from "node:events";
 import { basename, join } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { Midi } from "../../shared/src/midi.ts";
@@ -7,7 +6,7 @@ import { buildMenu } from "./menu.ts";
 import { askSave, exportJson, openFile, saveFile } from "./remote.ts";
 
 void (async () => {
-  await once(app, "ready");
+  await app.whenReady(); // deadlocks if moved to top level
   Menu.setApplicationMenu(buildMenu());
   const window = new BrowserWindow({
     title: app.name,

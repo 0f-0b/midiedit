@@ -18,12 +18,12 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: "./src/index.ts",
-      formats: ["cjs"],
+      formats: ["es"],
     },
     rollupOptions: {
       external: ["electron", /^node:/],
       output: {
-        entryFileNames: "index.cjs",
+        entryFileNames: "index.js",
       },
     },
     reportCompressedSize: false,
