@@ -7,7 +7,6 @@ import { askSave, exportJson, openFile, saveFile } from "./remote.ts";
 
 void (async () => {
   await app.whenReady(); // deadlocks if moved to top level
-  Menu.setApplicationMenu(buildMenu());
   const window = new BrowserWindow({
     title: app.name,
     width: 800,
@@ -20,6 +19,7 @@ void (async () => {
       preload: join(app.getAppPath(), "packages/preload/dist/index.cjs"),
     },
   });
+  Menu.setApplicationMenu(buildMenu(window));
   app.on("open-file", (event, path) => {
     event.preventDefault();
     window.webContents.send("open-file", path);
