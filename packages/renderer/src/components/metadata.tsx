@@ -62,7 +62,9 @@ export interface MetadataProps {
   onChange: (midi: Midi) => void;
 }
 
-export function Metadata({ midi, onChange }: MetadataProps): JSX.Element {
+export function Metadata(
+  { midi, onChange }: MetadataProps,
+): JSX.Element {
   return (
     <PropertiesEditor
       className={classes.metadata}

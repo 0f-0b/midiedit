@@ -9,8 +9,8 @@ void (async () => {
   await app.whenReady(); // deadlocks if moved to top level
   const window = new BrowserWindow({
     title: app.name,
-    width: 800,
-    height: 600,
+    width: 854,
+    height: 640,
     minWidth: 640,
     minHeight: 480,
     backgroundColor: "#222",

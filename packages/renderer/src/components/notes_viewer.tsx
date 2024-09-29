@@ -1,6 +1,4 @@
-import { clsx } from "clsx";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { AutoSizer, Collection } from "react-virtualized";
+import React, { useMemo, useState } from "react";
 import { makeArray } from "../../../shared/src/array.ts";
 import { Track } from "../../../shared/src/midi.ts";
 import classes from "./notes_viewer.module.css";
@@ -58,14 +56,7 @@ function extractNotes(track: Track): Note[] {
   return notes;
 }
 
-const colors: string[] = [
-  classes.color0,
-  classes.color1,
-  classes.color2,
-  classes.color3,
-  classes.color4,
-  classes.color5,
-];
+const colors = ["#00f", "#0f0", "#0ff", "#f00", "#f0f", "#ff0"];
 
 function color(index: number): string {
   return colors[index % colors.length];
@@ -73,73 +64,69 @@ function color(index: number): string {
 
 export interface NotesViewerProps {
   track: Track;
+  ticksPerBeat: number | null;
 }
 
-export function NotesViewer({ track }: NotesViewerProps): JSX.Element {
+export function NotesViewer(
+  { track, ticksPerBeat }: NotesViewerProps,
+): JSX.Element {
   const [scale, setScale] = useState(0);
   const tickWidth = 2 ** scale;
-  const noteHeight = 8;
+  const keyHeight = 8;
   const trackLength = useMemo(
     () => track.reduce((time, event) => time + event.delta, 0),
     [track],
   );
   const notes = useMemo(() => extractNotes(track), [track]);
-  const collection = useRef<Collection>(null);
-  useEffect(() => collection.current?.recomputeCellSizesAndPositions(), [
-    trackLength,
-    notes,
-    scale,
-  ]);
   return (
     <div className={classes.notesViewer}>
-      <AutoSizer>
-        {({ width, height }) => (
-          <Collection
-            width={width}
-            height={height}
-            cellCount={notes.length + 1}
-            cellSizeAndPositionGetter={({ index }) => {
-              if (index === notes.length) {
-                return {
-                  x: Math.ceil(trackLength * tickWidth),
-                  y: Math.ceil(keyCount * noteHeight),
-                  width: 0,
-                  height: 0,
-                };
-              }
-              const note = notes[index];
-              return {
-                x: Math.floor(note.start * tickWidth),
-                y: Math.floor(noteHeight * ((keyCount - 1) - note.key)),
-                width: Math.ceil((note.end - note.start) * tickWidth),
-                height: Math.ceil(noteHeight),
-              };
-            }}
-            cellRenderer={({ index, key, style }) => {
-              if (index === notes.length) {
-                return undefined;
-              }
-              const note = notes[index];
-              return (
-                <div
-                  key={key}
-                  className={clsx(classes.note, color(note.channel))}
-                  style={{ ...style, opacity: note.velocity / 127 }}
+      <div className={classes.notesWrapper}>
+        <svg
+          className={classes.notes}
+          width={trackLength * tickWidth}
+          height={keyCount * keyHeight}
+          transform="scale(1, -1)"
+        >
+          {notes.map((note, index) => (
+            <rect
+              key={index}
+              x={note.start * tickWidth}
+              y={note.key * keyHeight}
+              width={(note.end - note.start) * tickWidth}
+              height={keyHeight}
+              fill={color(note.channel)}
+              opacity={note.velocity / 127}
+            />
+          ))}
+          <g fill="none" stroke="#333">
+            {ticksPerBeat === null || Array.from(
+              { length: Math.ceil(trackLength / ticksPerBeat) - 1 },
+              (_, index) => (
+                <line
+                  key={index}
+                  x1={(index + 1) * ticksPerBeat * tickWidth}
+                  x2={(index + 1) * ticksPerBeat * tickWidth}
+                  y2={keyCount * keyHeight}
                 />
-              );
-            }}
-            ref={collection}
-          />
-        )}
-      </AutoSizer>
+              ),
+            )}
+            <line
+              x={trackLength * tickWidth}
+              width={trackLength * tickWidth}
+              height={keyCount * keyHeight}
+            />
+          </g>
+        </svg>
+      </div>
       <input
-        className={classes.scale}
+        className={classes.scaleSlider}
         type="range"
         value={scale}
         min={-4}
         max={4}
         step="any"
         onChange={(event) => setScale(event.target.valueAsNumber)}
+        aria-label="Scale"
       />
     </div>
   );

@@ -1,9 +1,8 @@
-.track {
+.event {
   white-space: nowrap;
   padding: 6px;
 }
 
-.track-name {
+.event-name {
   font-weight: bold;
-  text-overflow: ellipsis;
 }

@@ -5,22 +5,22 @@ import { getEventProperties } from "./events.ts";
 import classes from "./events_editor.module.css";
 import { NotesViewer } from "./notes_viewer.tsx";
 import { PropertiesEditor } from "./properties_editor.tsx";
-import { SplitView } from "./split_view.tsx";
 
 export interface EventsEditorProps {
   track: Track;
+  ticksPerBeat: number | null;
   selectedIndex: number;
   onSelect: (index: number) => void;
   onChange: (track: Track, selectedIndex: number) => void;
 }
 
 export function EventsEditor(
-  { track, selectedIndex, onSelect, onChange }: EventsEditorProps,
+  { track, ticksPerBeat, selectedIndex, onSelect, onChange }: EventsEditorProps,
 ): JSX.Element {
   return (
-    <SplitView className={classes.eventsEditor} direction="vertical">
-      <NotesViewer track={track} />
-      <SplitView className={classes.eventListContainer} direction="horizontal">
+    <div className={classes.eventsEditor}>
+      <NotesViewer track={track} ticksPerBeat={ticksPerBeat} />
+      <div className={classes.eventListWrapper}>
         <EventList
           track={track}
           selectedIndex={selectedIndex}
@@ -35,7 +35,7 @@ export function EventsEditor(
               onChange(track.with(selectedIndex, event), selectedIndex),
           )}
         />
-      </SplitView>
-    </SplitView>
+      </div>
+    </div>
   );
 }

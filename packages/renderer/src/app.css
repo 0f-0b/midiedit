@@ -1,27 +1,21 @@
 * {
-  line-height: 1.5;
+  --color-fg: #fbfbfe;
+  --color-bg: #1c1b22;
+  --color-border: #444;
+  color-scheme: dark;
   user-select: none;
-  outline-color: var(--focus-color);
-  --background-color: #222;
-  --focus-color: #333;
-  --border-color: #444;
-  --foreground-color: #fff;
-}
-
-:root {
-  height: 100%;
+  line-height: 1.5;
+  overflow: hidden;
 }
 
 body {
-  color: var(--foreground-color);
-  background-color: var(--background-color);
+  color: var(--color-fg);
+  background-color: var(--color-bg);
   font-family: system-ui;
   font-size: 12px;
-  height: 100%;
-  margin: 0px;
+  margin: 0;
 }
 
 #root {
-  width: 100%;
-  height: 100%;
+  height: 100vh;
 }

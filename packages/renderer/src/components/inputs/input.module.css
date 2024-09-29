@@ -1,11 +1,10 @@
 .input {
   display: inline-block;
-  color: var(--foreground-color);
-  background-color: var(--background-color);
+  color: var(--color-fg);
+  background-color: var(--color-bg);
   min-width: 60px;
   height: 14px;
-  box-sizing: content-box;
-  border: 2px inset var(--border-color);
+  border: 2px inset var(--color-border);
   border-radius: 4px;
 }
 

@@ -1,39 +1,19 @@
 .notes-viewer {
-  height: 100%;
+  position: relative;
   background-color: black;
-  overflow: scroll;
 }
 
-.scale {
+.notes-wrapper {
+  height: 100%;
+  overflow: auto;
+}
+
+.notes {
+  display: block;
+}
+
+.scale-slider {
   position: absolute;
   top: 6px;
   left: 6px;
-}
-
-.note {
-  position: absolute;
-}
-
-.color-0 {
-  background-color: #00f;
-}
-
-.color-1 {
-  background-color: #0f0;
-}
-
-.color-2 {
-  background-color: #0ff;
-}
-
-.color-3 {
-  background-color: #f00;
-}
-
-.color-4 {
-  background-color: #f0f;
-}
-
-.color-5 {
-  background-color: #ff0;
 }

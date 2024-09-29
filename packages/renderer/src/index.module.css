@@ -1,7 +1,15 @@
 .app {
-  grid-template-columns: 200px minmax(0, auto);
+  display: grid;
+  grid-template: 100% / 208px auto;
+  height: 100%;
 }
 
 .side {
-  grid-template-rows: min-content minmax(0, auto);
+  display: grid;
+  grid-template: min-content auto / 100%;
+  border-right: 1px solid var(--color-border);
+}
+
+.metadata-wrapper {
+  border-bottom: 1px solid var(--color-border);
 }

@@ -4,6 +4,7 @@ import {
   type TextEvent,
   type Track,
 } from "../../../shared/src/midi.ts";
+import { inflect } from "../inflection.ts";
 import { List } from "./list.tsx";
 import classes from "./track_list.module.css";
 
@@ -21,21 +22,20 @@ export function TrackList(
   return (
     <List
       rowCount={tracks.length}
-      rowHeight={50}
       rowRenderer={(index) => {
         const track = tracks[index];
         const trackName = track.find((event) =>
           event.type === "text" && event.subtype === 2
         ) as TextEvent | undefined;
         return (
-          <>
-            <b className={classes.trackName}>
-              {trackName?.text ?? "(Unnamed)"}
-            </b>
-            {`#${index}, ${track.length} ${
-              track.length === 1 ? "event" : "events"
-            }`}
-          </>
+          <div className={classes.track}>
+            <div className={classes.trackName}>
+              {trackName ? trackName.text : "(Unnamed)"}
+            </div>
+            <div>
+              {`#${index}, ${inflect(track.length, "event", "events")}`}
+            </div>
+          </div>
         );
       }}
       selectedIndex={selectedIndex}

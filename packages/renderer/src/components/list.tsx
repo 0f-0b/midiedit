@@ -1,15 +1,10 @@
+import { clsx } from "clsx";
 import React, { type ReactNode } from "react";
-import {
-  AutoSizer,
-  List as VList,
-  type ListRowRenderer,
-} from "react-virtualized";
 import { AddButton, RemoveButton } from "./edit_button.tsx";
 import classes from "./list.module.css";
 
 export interface ListProps {
   rowCount: number;
-  rowHeight: number | ((index: number) => number);
   rowRenderer: (index: number) => ReactNode;
   selectedIndex: number;
   canAppend: boolean;
@@ -23,7 +18,6 @@ export interface ListProps {
 export function List(
   {
     rowCount,
-    rowHeight,
     rowRenderer,
     selectedIndex,
     onSelect,
@@ -34,65 +28,73 @@ export function List(
     onRemove,
   }: ListProps,
 ): JSX.Element {
-  const measureRow = typeof rowHeight === "number"
-    ? rowHeight
-    : ({ index }: { index: number }) =>
-      index === rowCount ? 28 : rowHeight(index);
-  const renderRow: ListRowRenderer = ({ index, key, style }) => {
-    if (index === rowCount) {
-      return (
-        <div key={key} style={style}>
-          <div className={classes.buttons}>
-            <AddButton onClick={() => onAdd(rowCount)} />
-          </div>
-        </div>
-      );
-    }
-    const selected = index === selectedIndex;
-    const canInsertHere = typeof canInsert === "boolean"
-      ? canInsert
-      : canInsert(index);
-    const canRemoveHere = typeof canRemove === "boolean"
-      ? canRemove
-      : canRemove(index);
-    return (
-      <div
-        key={key}
-        style={style}
-        className={selected
-          ? classes.selectedContainer
-          : classes.elementContainer}
-      >
-        <div
-          className={classes.element}
-          onClick={() => selected || onSelect(index)}
-        >
-          {rowRenderer(index)}
-        </div>
-        {(canInsertHere || canRemoveHere) && (
-          <div className={classes.elementButtons}>
-            {canInsertHere && (
-              <AddButton onClick={() => onAdd(index)} />
-            )}
-            {canRemoveHere && (
-              <RemoveButton onClick={() => onRemove(index)} />
-            )}
-          </div>
-        )}
-      </div>
-    );
-  };
   return (
-    <AutoSizer>
-      {({ width, height }) => (
-        <VList
-          width={width}
-          height={height}
-          rowCount={rowCount + Number(canAppend)}
-          rowHeight={measureRow}
-          rowRenderer={renderRow}
-        />
+    <ol className={classes.list}>
+      {Array.from({ length: rowCount }, (_, index) => {
+        const selected = index === selectedIndex;
+        const canInsertHere = typeof canInsert === "boolean"
+          ? canInsert
+          : canInsert(index);
+        const canRemoveHere = typeof canRemove === "boolean"
+          ? canRemove
+          : canRemove(index);
+        return (
+          <li
+            key={index}
+            className={clsx(
+              classes.elementWrapper,
+              selected && classes.selected,
+            )}
+            tabIndex={0}
+            onKeyDown={(event) => {
+              if (
+                event.target === event.currentTarget &&
+                event.key === "Enter" && !selected
+              ) {
+                onSelect(index);
+              }
+            }}
+            aria-selected={selected}
+          >
+            <div
+              className={classes.element}
+              onClick={() => {
+                if (!selected) {
+                  onSelect(index);
+                }
+              }}
+            >
+              {rowRenderer(index)}
+            </div>
+            {(canInsertHere || canRemoveHere) && (
+              <div className={classes.buttons}>
+                {canInsertHere && (
+                  <AddButton
+                    onClick={() => onAdd(index)}
+                    aria-label="Insert"
+                  />
+                )}
+                {canRemoveHere && (
+                  <RemoveButton
+                    onClick={() => onRemove(index)}
+                    aria-label="Remove"
+                  />
+                )}
+              </div>
+            )}
+          </li>
+        );
+      })}
+      {canAppend && (
+        <li className={classes.appendButtonWrapper}>
+          <div className={classes.buttons}>
+            <AddButton
+              onClick={() => onAdd(rowCount)}
+              aria-label="Append"
+            />
+          </div>
+        </li>
       )}
-    </AutoSizer>
+    </ol>
   );
 }

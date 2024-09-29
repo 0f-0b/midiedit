@@ -5,7 +5,6 @@ import { api } from "./api.ts";
 import { EventsEditor } from "./components/events_editor.tsx";
 import { InsertNotesWindow } from "./components/insert_notes_window.tsx";
 import { Metadata } from "./components/metadata.tsx";
-import { SplitView } from "./components/split_view.tsx";
 import { TrackList } from "./components/track_list.tsx";
 import classes from "./index.module.css";
 import { useIpc } from "./use_ipc.ts";
@@ -101,21 +100,23 @@ export function Index(): JSX.Element {
   }, [exiting]);
   return (
     <>
-      <SplitView className={classes.app} direction="horizontal">
-        <SplitView className={classes.side} direction="vertical">
-          <Metadata
-            midi={midi}
-            onChange={(midi) =>
-              setState({
-                midi,
-                selectedTrack: selectedTrack < midi.tracks.length
-                  ? selectedTrack
-                  : 0,
-                selectedEvent: selectedTrack < midi.tracks.length
-                  ? selectedEvent
-                  : 0,
-              })}
-          />
+      <div className={classes.app}>
+        <div className={classes.side}>
+          <div className={classes.metadataWrapper}>
+            <Metadata
+              midi={midi}
+              onChange={(midi) =>
+                setState({
+                  midi,
+                  selectedTrack: selectedTrack < midi.tracks.length
+                    ? selectedTrack
+                    : 0,
+                  selectedEvent: selectedTrack < midi.tracks.length
+                    ? selectedEvent
+                    : 0,
+                })}
+            />
+          </div>
           <TrackList
             tracks={midi.tracks}
             selectedIndex={selectedTrack}
@@ -136,9 +137,12 @@ export function Index(): JSX.Element {
                     : 0,
               })}
           />
-        </SplitView>
+        </div>
         <EventsEditor
           track={midi.tracks[selectedTrack]}
+          ticksPerBeat={midi.division.type === 0
+            ? midi.division.ticksPerBeat
+            : null}
           selectedIndex={selectedEvent}
           onSelect={(index) =>
             replaceState({
@@ -153,7 +157,7 @@ export function Index(): JSX.Element {
               selectedEvent: selectedIndex,
             })}
         />
-      </SplitView>
+      </div>
       {showInsertNotes && (
         <InsertNotesWindow
           track={midi.tracks[selectedTrack]}
